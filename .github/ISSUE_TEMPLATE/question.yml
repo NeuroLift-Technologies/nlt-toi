@@ -1,0 +1,110 @@
+name: Question or Support
+description: Ask a question about using or implementing OTOI
+title: "[Question]: "
+labels: ["question", "support"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We're here to help! Ask any questions about understanding, using, or implementing the OTOI framework.
+
+  - type: dropdown
+    id: question-type
+    attributes:
+      label: What type of question is this?
+      options:
+        - Understanding OTOI concepts
+        - Using the templates
+        - Implementing OTOI in code
+        - JSON schema questions
+        - Best practices
+        - Community and contribution
+        - Accessibility considerations
+        - Privacy and security
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to know?
+      placeholder: Ask your question in as much detail as you'd like
+    validations:
+      required: true
+
+  - type: dropdown
+    id: background
+    attributes:
+      label: Your Background
+      description: This helps us tailor our answer appropriately
+      options:
+        - Complete beginner to OTOI
+        - Familiar with OTOI concepts
+        - Technical/developer background
+        - Non-technical user
+        - Researcher or academic
+        - Organization considering adoption
+        - Neurodivergent community member
+        - Accessibility advocate
+        - Prefer not to specify
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What are you trying to accomplish? What's your use case?
+      placeholder: Describe what you're working on or trying to understand
+    validations:
+      required: false
+
+  - type: textarea
+    id: tried-already
+    attributes:
+      label: What have you tried already?
+      description: Have you looked at documentation, examples, or tried anything else?
+      placeholder: Let us know what you've already looked at or attempted
+    validations:
+      required: false
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: How soon do you need an answer?
+      options:
+        - No rush - whenever convenient
+        - Within a week would be helpful
+        - Within a few days would be great
+        - Somewhat urgent - within 1-2 days
+        - Very urgent - ASAP
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: answer-format
+    attributes:
+      label: Preferred Answer Format
+      description: How would you prefer to receive help? (Check all that apply)
+      options:
+        - label: Written explanation
+        - label: Code examples
+        - label: Links to documentation
+        - label: Step-by-step guide
+        - label: Visual diagrams
+        - label: Video explanation
+        - label: Live discussion/call
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

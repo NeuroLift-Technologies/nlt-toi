@@ -1,0 +1,141 @@
+name: Documentation Improvement
+description: Suggest improvements to documentation, guides, or examples
+title: "[Docs]: "
+labels: ["documentation", "enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping us improve our documentation! Clear, accessible documentation is essential for OTOI adoption.
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: What type of documentation needs improvement?
+      multiple: true
+      options:
+        - README
+        - Contributing Guidelines
+        - Framework Overview
+        - Implementation Guide
+        - Best Practices
+        - JSON Schema Documentation
+        - Template Instructions
+        - Examples
+        - Code Comments
+        - Error Messages
+        - Other (please specify)
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-problem
+    attributes:
+      label: What's unclear or missing?
+      description: Describe what's confusing, incomplete, or hard to understand
+      placeholder: Be specific about what you found unclear or what information is missing
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Who is the primary audience?
+      multiple: true
+      options:
+        - Complete beginners
+        - Non-technical users
+        - Technical users
+        - Developers
+        - Organizations
+        - Researchers
+        - Neurodivergent community
+        - Accessibility community
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-improvement
+    attributes:
+      label: Suggested Improvement
+      description: How could we make this clearer or more complete?
+      placeholder: Describe specific changes, additions, or restructuring that would help
+    validations:
+      required: true
+
+  - type: dropdown
+    id: format-preference
+    attributes:
+      label: Preferred Format Improvements
+      multiple: true
+      options:
+        - More examples
+        - Step-by-step instructions
+        - Visual diagrams
+        - Video tutorials
+        - Interactive guides
+        - FAQ section
+        - Glossary
+        - Quick reference
+        - Templates
+        - Code samples
+    validations:
+      required: false
+
+  - type: dropdown
+    id: difficulty-level
+    attributes:
+      label: Current Difficulty Level
+      description: How hard is it to understand this documentation currently?
+      options:
+        - Very Easy
+        - Easy
+        - Moderate
+        - Hard
+        - Very Hard
+        - Impossible to understand
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What were you trying to accomplish when you encountered this issue?
+      placeholder: Describe your use case and what you were trying to learn or do
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: accessibility-considerations
+    attributes:
+      label: Accessibility Considerations
+      description: Does this documentation improvement relate to accessibility?
+      options:
+        - label: This improvement would help neurodivergent users
+        - label: This improvement would help users with disabilities
+        - label: This improvement would help non-native English speakers
+        - label: This improvement would help users with limited technical experience
+        - label: This improvement would help users of assistive technology
+
+  - type: checkboxes
+    id: contribution-offer
+    attributes:
+      label: Contribution Offer
+      description: Would you be willing to help improve this documentation?
+      options:
+        - label: I'd be willing to write the improved documentation
+        - label: I'd be willing to review proposed changes
+        - label: I'd be willing to test the improved documentation
+        - label: I'd be willing to provide examples
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
