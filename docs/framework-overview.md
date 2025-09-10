@@ -1,6 +1,6 @@
 # OTOI Framework Overview
 
-The OTOI (One-Time One-Issue) framework is a comprehensive standard for defining human-AI interaction preferences. It puts users in complete control of how AI systems interact with them, ensuring respectful, accessible, and personalized collaboration.
+The OTOI (Orchestrated Terms of Interaction) framework is a comprehensive standard for defining human-AI interaction preferences. It puts users in complete control of how AI systems interact with them, ensuring respectful, accessible, and personalized collaboration.
 
 ## Core Philosophy
 

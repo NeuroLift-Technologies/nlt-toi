@@ -1,6 +1,6 @@
 # Contributing to OTOI Framework
 
-Thank you for your interest in contributing to the OTOI (One-Time One-Issue) framework! This project is designed to be accessible to contributors of all technical backgrounds, from users sharing their interaction needs to developers implementing the standard.
+Thank you for your interest in contributing to the OTOI (Orchestrated Terms of Interaction) framework! This project is designed to be accessible to contributors of all technical backgrounds, from users sharing their interaction needs to developers implementing the standard.
 
 ## 🌟 How You Can Contribute
 

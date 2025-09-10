@@ -1,10 +1,10 @@
 # NeuroLift OTOI Framework
 
-**One-Time One-Issue (OTOI)**: User-defined Terms of Interaction for AI systems. Enables neurodivergent-friendly multi-agent orchestration with privacy-first governance. Open standard for human-controlled AI collaboration.
+**Orchestrated Terms of Interaction (OTOI)**: User-defined Terms of Interaction for AI systems. Enables neurodivergent-friendly multi-agent orchestration with privacy-first governance. Open standard for human-controlled AI collaboration.
 
 ## 🌟 What is OTOI?
 
-The OTOI (One-Time One-Issue) framework is a revolutionary approach to human-AI interaction that puts users in complete control of their AI collaborations. It provides a structured way to define Terms of Interaction (TOI) that ensure AI systems work exactly how you need them to, respecting your cognitive preferences, privacy requirements, and collaboration style.
+The OTOI (Orchestrated Terms of Interaction) framework is a revolutionary approach to human-AI interaction that puts users in complete control of their AI collaborations. It provides a structured way to define Terms of Interaction (TOI) that ensure AI systems work exactly how you need them to, respecting your cognitive preferences, privacy requirements, and collaboration style.
 
 ### Key Principles
 
