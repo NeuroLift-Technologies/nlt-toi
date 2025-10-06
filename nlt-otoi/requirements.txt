@@ -1,0 +1,50 @@
+# OTOI Framework Requirements
+# Core dependencies for tools and validators
+
+# JSON Schema validation
+jsonschema>=4.0.0
+
+# Data validation and parsing
+pydantic>=2.0.0
+
+# Command line argument parsing (built-in, but listed for clarity)
+# argparse - built-in
+
+# File path handling (built-in, but listed for clarity)  
+# pathlib - built-in
+
+# JSON handling (built-in, but listed for clarity)
+# json - built-in
+
+# Date/time handling (built-in, but listed for clarity)
+# datetime - built-in
+
+# Type hints support
+typing-extensions>=4.0.0
+
+# Development dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
+
+# Documentation generation
+sphinx>=7.0.0
+sphinx-rtd-theme>=1.0.0
+
+# Web interface (optional)
+flask>=2.0.0
+flask-cors>=4.0.0
+
+# API development (optional)
+fastapi>=0.100.0
+uvicorn>=0.20.0
+
+# Data processing (optional)
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Testing and validation
+hypothesis>=6.0.0
+faker>=19.0.0
