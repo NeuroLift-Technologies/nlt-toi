@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "created": "2024-01-15T10:00:00Z",
+    "updated": "2024-01-15T10:00:00Z",
+    "author": "alex-adhd-student",
+    "description": "TOI for university student with ADHD - focus on learning support"
+  },
+  "communication": {
+    "style": "friendly",
+    "directness": "direct",
+    "feedback_preference": "immediate",
+    "question_style": "structured",
+    "explanation_level": "detailed"
+  },
+  "cognitive": {
+    "processing_time": "moderate",
+    "information_structure": "bullet-points",
+    "cognitive_load": "moderate",
+    "attention_span": "short-bursts",
+    "decision_support": "step-by-step",
+    "sensory_preferences": {
+      "text_density": "sparse",
+      "color_sensitivity": false,
+      "motion_sensitivity": true
+    }
+  },
+  "privacy": {
+    "data_retention": "short-term",
+    "sharing_consent": "never",
+    "anonymization": true,
+    "third_party_access": false,
+    "audit_trail": true
+  },
+  "energy_management": {
+    "interaction_frequency": "batched",
+    "complexity_adaptation": true,
+    "break_reminders": true,
+    "energy_level_tracking": true
+  },
+  "collaboration": {
+    "agent_coordination": "user-mediated",
+    "conflict_resolution": "user-decides",
+    "delegation_comfort": "simple-tasks"
+  },
+  "accessibility": {
+    "screen_reader": false,
+    "keyboard_only": false,
+    "high_contrast": false,
+    "reduced_motion": true,
+    "alternative_formats": []
+  }
+}

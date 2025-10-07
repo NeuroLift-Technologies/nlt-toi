@@ -1,0 +1,107 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "created": "2024-01-15T14:00:00Z",
+    "updated": "2024-01-15T14:00:00Z",
+    "organization": "diverse-remote-team",
+    "scope": "Software development team",
+    "participants": [
+      {
+        "id": "team-lead-alex",
+        "role": "admin",
+        "toi_reference": "personal-toi-alex.json"
+      },
+      {
+        "id": "developer-sam",
+        "role": "member",
+        "toi_reference": "personal-toi-sam.json"
+      },
+      {
+        "id": "designer-jordan",
+        "role": "member",
+        "toi_reference": "personal-toi-jordan.json"
+      },
+      {
+        "id": "qa-casey",
+        "role": "member",
+        "toi_reference": "personal-toi-casey.json"
+      }
+    ]
+  },
+  "governance": {
+    "decision_model": "consensus",
+    "authority_levels": {
+      "ai_configuration": "consensus",
+      "data_access": "individual",
+      "protocol_changes": "member-vote"
+    },
+    "conflict_resolution": {
+      "process": "mediation",
+      "escalation_path": [
+        "team-discussion",
+        "team-lead-review",
+        "hr-mediation"
+      ],
+      "timeout_policy": "revert-to-individual-preferences"
+    }
+  },
+  "integration": {
+    "toi_priority": "individual-first",
+    "override_policy": {
+      "emergency_override": false,
+      "consent_required": true,
+      "notification_required": true
+    },
+    "accommodation_process": {
+      "request_method": "discussion",
+      "response_time": "24 hours",
+      "appeal_process": "team-vote"
+    }
+  },
+  "protocols": {
+    "communication": {
+      "default_style": "professional",
+      "announcement_channels": ["slack", "email"],
+      "feedback_mechanisms": ["real-time", "periodic-summary"],
+      "language_preferences": ["en-US", "es-ES"]
+    },
+    "collaboration": {
+      "workflow_integration": "explicit-handoffs",
+      "task_distribution": "human-assigns",
+      "coordination_method": "peer-to-peer",
+      "progress_tracking": {
+        "frequency": "daily",
+        "visibility": "team-only",
+        "format": "dashboard"
+      }
+    },
+    "ai_behavior": {
+      "agent_coordination": "multi-agent-coordinated",
+      "context_sharing": "limited-sharing",
+      "learning_approach": "individual-learning"
+    }
+  },
+  "privacy": {
+    "data_governance": {
+      "retention_policy": "shortest-individual",
+      "access_controls": {
+        "member_data": "individual-only",
+        "group_analytics": "aggregate-only",
+        "audit_logs": "participant-visible"
+      }
+    },
+    "sharing_policies": {
+      "internal_sharing": "opt-in",
+      "external_sharing": "prohibited",
+      "research_participation": "opt-in"
+    }
+  },
+  "compliance": {
+    "regulatory_frameworks": ["GDPR"],
+    "audit_requirements": {
+      "frequency": "quarterly",
+      "scope": ["data-handling", "access-controls"],
+      "external_auditor": false
+    }
+  }
+}

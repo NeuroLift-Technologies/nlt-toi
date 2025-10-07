@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JDUB1216/nlt-otoi/schemas/personal-toi.schema.json",
+  "title": "Personal Terms of Interaction (TOI)",
+  "description": "Schema for defining individual user preferences for AI interaction",
+  "type": "object",
+  "required": ["version", "metadata", "communication", "cognitive", "privacy"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Version of the OTOI schema",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "examples": ["1.0.0"]
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["created", "updated", "author"],
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this TOI was created"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author identifier (can be pseudonymous)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional description of this TOI's purpose"
+        }
+      }
+    },
+    "communication": {
+      "type": "object",
+      "description": "Communication style and preferences",
+      "required": ["style", "directness"],
+      "properties": {
+        "style": {
+          "type": "string",
+          "enum": ["formal", "casual", "professional", "friendly", "adaptive"],
+          "description": "Preferred communication style"
+        },
+        "directness": {
+          "type": "string",
+          "enum": ["very-direct", "direct", "moderate", "indirect", "context-sensitive"],
+          "description": "Preferred level of directness"
+        },
+        "feedback_preference": {
+          "type": "string",
+          "enum": ["immediate", "summary", "on-request", "minimal"],
+          "description": "How to receive feedback and corrections"
+        },
+        "question_style": {
+          "type": "string",
+          "enum": ["open-ended", "multiple-choice", "yes-no", "structured"],
+          "description": "Preferred way to be asked questions"
+        },
+        "explanation_level": {
+          "type": "string",
+          "enum": ["minimal", "concise", "detailed", "comprehensive", "adaptive"],
+          "description": "Preferred level of explanation detail"
+        }
+      }
+    },
+    "cognitive": {
+      "type": "object",
+      "description": "Cognitive accessibility and processing preferences",
+      "required": ["processing_time", "information_structure"],
+      "properties": {
+        "processing_time": {
+          "type": "string",
+          "enum": ["immediate", "short", "moderate", "extended", "flexible"],
+          "description": "Time needed to process information"
+        },
+        "information_structure": {
+          "type": "string",
+          "enum": ["linear", "hierarchical", "visual", "bullet-points", "narrative"],
+          "description": "Preferred way to receive structured information"
+        },
+        "cognitive_load": {
+          "type": "string",
+          "enum": ["low", "moderate", "high", "variable"],
+          "description": "Preferred cognitive load level"
+        },
+        "attention_span": {
+          "type": "string",
+          "enum": ["short-bursts", "focused-sessions", "continuous", "flexible"],
+          "description": "Attention and focus patterns"
+        },
+        "decision_support": {
+          "type": "string",
+          "enum": ["options-list", "pros-cons", "step-by-step", "quick-recommendation"],
+          "description": "Preferred decision-making support"
+        },
+        "sensory_preferences": {
+          "type": "object",
+          "properties": {
+            "text_density": {
+              "type": "string",
+              "enum": ["sparse", "moderate", "dense"]
+            },
+            "color_sensitivity": {
+              "type": "boolean"
+            },
+            "motion_sensitivity": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "description": "Privacy and data handling requirements",
+      "required": ["data_retention", "sharing_consent"],
+      "properties": {
+        "data_retention": {
+          "type": "string",
+          "enum": ["session-only", "short-term", "long-term", "permanent", "user-controlled"],
+          "description": "How long data should be kept"
+        },
+        "sharing_consent": {
+          "type": "string",
+          "enum": ["never", "explicit-only", "aggregate-only", "research-approved"],
+          "description": "Data sharing permissions"
+        },
+        "anonymization": {
+          "type": "boolean",
+          "description": "Whether data should be anonymized"
+        },
+        "third_party_access": {
+          "type": "boolean",
+          "description": "Whether third parties may access data"
+        },
+        "audit_trail": {
+          "type": "boolean",
+          "description": "Whether to maintain audit logs"
+        }
+      }
+    },
+    "energy_management": {
+      "type": "object",
+      "description": "Energy and spoon management preferences",
+      "properties": {
+        "interaction_frequency": {
+          "type": "string",
+          "enum": ["continuous", "batched", "scheduled", "on-demand"],
+          "description": "Preferred frequency of interactions"
+        },
+        "complexity_adaptation": {
+          "type": "boolean",
+          "description": "Whether to adapt complexity based on energy levels"
+        },
+        "break_reminders": {
+          "type": "boolean",
+          "description": "Whether to receive break reminders"
+        },
+        "energy_level_tracking": {
+          "type": "boolean",
+          "description": "Whether to track and adapt to energy levels"
+        }
+      }
+    },
+    "collaboration": {
+      "type": "object",
+      "description": "Multi-agent and team collaboration preferences",
+      "properties": {
+        "agent_coordination": {
+          "type": "string",
+          "enum": ["centralized", "distributed", "user-mediated", "autonomous"],
+          "description": "How multiple agents should coordinate"
+        },
+        "conflict_resolution": {
+          "type": "string",
+          "enum": ["user-decides", "consensus", "priority-based", "expertise-weighted"],
+          "description": "How to resolve conflicting advice"
+        },
+        "delegation_comfort": {
+          "type": "string",
+          "enum": ["none", "simple-tasks", "complex-tasks", "autonomous"],
+          "description": "Comfort level with task delegation"
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "description": "Specific accessibility requirements",
+      "properties": {
+        "screen_reader": {
+          "type": "boolean",
+          "description": "Uses screen reader technology"
+        },
+        "keyboard_only": {
+          "type": "boolean",
+          "description": "Keyboard-only navigation required"
+        },
+        "high_contrast": {
+          "type": "boolean",
+          "description": "High contrast mode preferred"
+        },
+        "reduced_motion": {
+          "type": "boolean",
+          "description": "Reduced motion preferred"
+        },
+        "alternative_formats": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["audio", "braille", "large-print", "simplified"]
+          },
+          "description": "Alternative format requirements"
+        }
+      }
+    }
+  }
+}

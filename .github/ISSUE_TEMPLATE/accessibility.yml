@@ -1,0 +1,133 @@
+name: Accessibility Issue
+description: Report accessibility problems or suggest improvements
+title: "[Accessibility]: "
+labels: ["accessibility", "needs-review"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping us make OTOI more accessible! Accessibility is core to our mission.
+
+  - type: dropdown
+    id: accessibility-type
+    attributes:
+      label: Type of Accessibility Issue
+      multiple: true
+      options:
+        - Visual accessibility (vision, contrast, fonts)
+        - Motor accessibility (navigation, interaction)
+        - Auditory accessibility (hearing, sound)
+        - Cognitive accessibility (processing, comprehension)
+        - Neurodivergent considerations
+        - Screen reader compatibility
+        - Keyboard navigation
+        - Language and literacy
+        - Documentation clarity
+        - Other (please specify)
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Describe the accessibility issue
+      description: What makes this difficult or impossible to use?
+      placeholder: Be specific about what barriers you encounter
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected-users
+    attributes:
+      label: Who is affected?
+      multiple: true
+      options:
+        - People who are blind or have low vision
+        - People who are deaf or hard of hearing
+        - People with motor disabilities
+        - People with cognitive disabilities
+        - Neurodivergent individuals
+        - People using assistive technology
+        - People with limited technical experience
+        - Non-native language speakers
+        - People with temporary impairments
+        - Everyone (universal design issue)
+    validations:
+      required: true
+
+  - type: textarea
+    id: assistive-technology
+    attributes:
+      label: Assistive Technology Used
+      description: What assistive technology or accommodations do you use?
+      placeholder: e.g., Screen reader (NVDA, JAWS, VoiceOver), Keyboard only, Voice control, etc.
+    validations:
+      required: false
+
+  - type: textarea
+    id: suggested-improvement
+    attributes:
+      label: Suggested Improvement
+      description: How could we make this more accessible?
+      placeholder: Describe specific changes that would help
+    validations:
+      required: false
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Which component needs improvement?
+      multiple: true
+      options:
+        - Documentation
+        - JSON Schemas
+        - Templates
+        - Examples
+        - GitHub Repository
+        - Contribution Process
+        - Issue Templates
+        - All of the above
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How much does this affect accessibility?
+      options:
+        - Low - Minor barrier
+        - Medium - Significant barrier
+        - High - Major barrier
+        - Critical - Complete barrier to access
+    validations:
+      required: true
+
+  - type: textarea
+    id: wcag-reference
+    attributes:
+      label: WCAG Guidelines (if known)
+      description: If you know which WCAG guidelines this relates to, please mention them
+      placeholder: e.g., WCAG 2.1 AA 1.4.3 Contrast (Minimum)
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that would help us understand and address this issue
+      placeholder: Screenshots, error messages, links to accessibility resources, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

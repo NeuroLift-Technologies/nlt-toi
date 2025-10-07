@@ -1,0 +1,113 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for the OTOI framework
+title: "[Feature]: "
+labels: ["enhancement", "needs-discussion"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature! Your ideas help make OTOI more useful for everyone.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Need
+      description: What problem would this feature solve? What need does it address?
+      placeholder: Describe the problem or use case this feature would address
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: What would you like to happen? How should this feature work?
+      placeholder: Describe your proposed solution in detail
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Which component would this affect?
+      multiple: true
+      options:
+        - Personal TOI Schema
+        - Collaborative Charter Schema
+        - Documentation
+        - Templates
+        - Examples
+        - Developer Tools
+        - Community Resources
+        - Other (please specify in description)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-type
+    attributes:
+      label: Who would primarily benefit from this feature?
+      multiple: true
+      options:
+        - End users creating TOI documents
+        - Developers implementing OTOI
+        - Organizations adopting OTOI
+        - Neurodivergent community
+        - Accessibility community
+        - AI researchers
+        - General public
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: What alternatives have you considered?
+      placeholder: Describe any alternative solutions or workarounds you've considered
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would be helpful
+        - High - Significantly improves usability
+        - Critical - Essential for adoption
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, or examples
+      placeholder: Screenshots, mockups, links to similar features, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation Willingness
+      description: Are you willing to help implement this feature?
+      options:
+        - label: I'd be willing to help with documentation
+        - label: I'd be willing to help with implementation
+        - label: I'd be willing to help with testing
+        - label: I'd be willing to help with examples
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
