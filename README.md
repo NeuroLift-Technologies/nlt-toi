@@ -118,6 +118,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [OTOI Browser Extension](#) (Coming Soon)
 - [OTOI for Teams](#) (Coming Soon)
 
+## 📖 Deep Dive
+
+For a comprehensive technical overview of the TOI-OTOI framework, including framework philosophy, architecture layers, and development roadmap, see our [Framework Overview](/docs/framework-overview.md).
+
 ---
 
 **Made with ❤️ for the neurodivergent community and everyone who values respectful human-AI collaboration.**
