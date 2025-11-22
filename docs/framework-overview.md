@@ -106,4 +106,4 @@ The TOI-OTOI framework represents a paradigm shift in neurodivergent support tec
 
 ---
 
-*This framework embodies a year of collaborative development and represents the innovative foundation of NeuroLift Technologies approach to empowering neurodivergent individuals.*
+*This framework embodies a year of collaborative development and represents the innovative foundation of NeuroLift Technologies' approach to empowering neurodivergent individuals.*
