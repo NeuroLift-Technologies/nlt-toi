@@ -1,206 +1,109 @@
-# OTOI Framework Overview
+# nlt-otoi Framework Overview
 
-The OTOI (Orchestrated Terms of Interaction) framework is a comprehensive standard for defining human-AI interaction preferences. It puts users in complete control of how AI systems interact with them, ensuring respectful, accessible, and personalized collaboration.
+NeuroLift OTOI Framework: User-defined Terms of Interaction for AI systems. Enables neurodivergent-friendly multi-agent orchestration with privacy-first governance. Open standard for human-controlled AI collaboration.
 
-## Core Philosophy
+> Framework description contributed by Joshua Dorsey
 
-### User-Controlled AI Interaction
+## 🎯 TOI-OTOI Framework Deep Dive
 
-Traditional AI systems operate with built-in assumptions about how users want to interact. OTOI flips this model by letting users explicitly define their preferences, needs, and boundaries. This ensures:
+**TOI — OTOI: Terms of Interaction — Orchestrated Terms of Interaction**
 
-- **Personalized Experience**: AI adapts to you, not the other way around
-- **Consistent Behavior**: Predictable interactions across different AI systems
-- **Respectful Boundaries**: Clear limits on what AI can and cannot do
-- **Accessible Design**: Built-in support for diverse cognitive and accessibility needs
+## Revolutionary Concept
 
-### Neurodivergent-Friendly Design
+The TOI‑OTOI framework defines how users and AI interact and how those interactions are orchestrated across multiple agents. This framework represents the core governance and orchestration architecture that will power the NeuroLift MVP.
 
-OTOI was designed from the ground up with neurodivergent users in mind:
+## Framework Philosophy
 
-- **Explicit Communication**: No guessing what the AI means or wants
-- **Predictable Patterns**: Consistent interaction styles reduce cognitive load
-- **Sensory Considerations**: Control over information density and presentation
-- **Executive Function Support**: Structured decision-making and clear processes
-- **Energy Management**: Awareness of spoon theory and cognitive resources
+### TOI (Terms of Interaction)
 
-## Key Concepts
+Governance schema that lets a person define boundaries, preferences, and operational parameters for AI interactions. TOI functions as a user-authored "constitution" that agents must honor.
 
-### Terms of Interaction (TOI)
+- Consent and boundaries: What data can be used, when to ask, when to stop
+- Communication preferences: tone, pace, modality, and structure
+- Safety and privacy rules: red lines, escalation paths, and auditability
+- Accessibility clauses: ADHD-friendly patterns like progressive disclosure, chunking, and predictable navigation
 
-A TOI document defines how you want AI systems to interact with you. It includes:
+### OTOI (Orchestrated Terms of Interaction)
 
-**Communication Preferences**
-- Formal vs. casual language
-- Direct vs. indirect feedback
-- Explanation detail level
-- Question formats
+Multi-agent coordination layer that enforces TOI across all agents, tools, and handoffs. OTOI is the orchestration brain that ensures consistency and compliance end-to-end.
 
-**Cognitive Accessibility**
-- Processing time needs
-- Information structure preferences
-- Attention span considerations
-- Decision-making support
+- Policy enforcement: propagate TOI to every agent and tool
+- Handoff integrity: preserve context, provenance, and user intent across steps
+- Conflict resolution: resolve policy clashes and surface decisions transparently
+- Observability: log actions, provide explanations, and maintain an auditable trail
 
-**Privacy Requirements**
-- Data retention policies
-- Sharing permissions
-- Anonymization needs
-- Audit requirements
+### Layer 1: Intelligence Recognition
 
-**Energy Management**
-- Interaction frequency
-- Complexity adaptation
-- Break reminders
-- Energy level tracking
+- User behavior pattern identification
+- Cognitive style assessment algorithms
+- Strength and challenge mapping
+- Preference learning systems
 
-### Personal vs. Collaborative
+### Layer 2: Organizational Structure
 
-**Personal TOI**: Your individual preferences for AI interaction
-- Completely under your control
-- Applies to one-on-one AI interactions
-- Can be as detailed or simple as needed
-- Travels with you across different systems
+- Task decomposition algorithms
+- Priority matrix generation
+- Resource allocation optimization
+- Timeline management systems
 
-**Collaborative Charter**: Shared protocols for group AI interaction
-- Governs multi-person AI collaborations
-- Balances individual needs with group dynamics
-- Includes conflict resolution processes
-- Defines decision-making structures
+### Layer 3: Optimization Engine
 
-## Framework Benefits
+- Performance metric tracking
+- Adaptive algorithm adjustment
+- Efficiency improvement recommendations
+- Outcome prediction modeling
 
-### For Individuals
+### Layer 4: Integration Interface
 
-- **Respect for Neurodiversity**: Accommodates different cognitive styles
-- **Reduced Frustration**: AI behaves predictably according to your preferences
-- **Improved Accessibility**: Built-in support for diverse access needs
-- **Privacy Control**: You decide what data is shared and how
-- **Energy Conservation**: Interactions designed around your energy patterns
+- User experience optimization
+- Multi-system coordination
+- Feedback loop management
+- Continuous improvement cycles
 
-### For Organizations
+## MVP Integration Strategy
 
-- **Inclusive AI**: Supports team members with diverse needs
-- **Consistent Experience**: Standardized but flexible interaction protocols
-- **Compliance Ready**: Built-in privacy and governance features
-- **Scalable Adoption**: Works for individuals, teams, and enterprises
-- **Future-Proof**: Open standard that works with any AI system
+The TOI-OTOI framework will serve as the core intelligence layer within the NeuroLift MVP:
 
-### For Developers
+1. **Intelligent Task Management**: Automated organization and prioritization
+2. **Adaptive Learning Support**: Personalized educational pathways
+3. **Cognitive Load Optimization**: Balanced information processing
+4. **Performance Enhancement**: Continuous improvement recommendations
 
-- **Clear Specifications**: JSON schemas define exact requirements
-- **Interoperability**: Works across different AI platforms
-- **User-Centric**: Focus on user needs rather than technical constraints
-- **Extensible**: Add new features while maintaining compatibility
-- **Open Source**: Community-driven development and standards
+## Development Roadmap
 
-## Implementation Approaches
+### Phase 1: Framework Specification (75% Complete)
 
-### Individual Users
+- Core principles documentation
+- Technical architecture design
+- Integration planning
 
-1. **Start Simple**: Use our basic templates to define key preferences
-2. **Iterate**: Refine your TOI based on experience
-3. **Share Selectively**: Only share what's necessary with each AI system
-4. **Maintain Control**: Update or revoke access anytime
+### Phase 2: Prototype Development (Planned)
 
-### Development Teams
+- Proof-of-concept implementation
+- Initial testing framework
+- Performance validation
 
-1. **Schema Integration**: Use our JSON schemas for validation
-2. **Protocol Implementation**: Build OTOI support into your AI systems
-3. **User Interface**: Create friendly ways for users to define their TOI
-4. **Testing**: Validate with diverse user groups, especially neurodivergent users
+### Phase 3: MVP Integration (Scheduled)
 
-### Organizations
+- Full system integration
+- AI Personas architecture alignment
+- User testing and validation
 
-1. **Pilot Program**: Start with volunteer teams
-2. **Collaborative Charter**: Define group interaction protocols
-3. **Training**: Help team members create effective TOI documents
-4. **Integration**: Connect with existing accessibility and inclusion initiatives
+### Phase 4: Optimization (Future)
 
-## Privacy and Security
+- Performance refinement
+- Feature enhancement
+- Scalability improvements
 
-### Privacy by Design
+## Innovation Impact
 
-- **Minimal Data**: Only collect what's necessary for interaction
-- **Local Control**: Users control where their TOI is stored
-- **Explicit Consent**: Clear permissions for all data use
-- **Transparency**: Users know exactly how their data is handled
+The TOI-OTOI framework represents a paradigm shift in neurodivergent support technology:
 
-### Security Considerations
-
-- **Authentication**: Verify TOI document authenticity
-- **Integrity**: Ensure TOI documents haven't been tampered with
-- **Confidentiality**: Protect sensitive preference information
-- **Availability**: Ensure TOI is accessible when needed
-
-## Real-World Examples
-
-### Neurodivergent Student
-
-Sarah has ADHD and processes information differently:
-- Prefers bullet points over paragraphs
-- Needs reminders to take breaks
-- Works best with concrete examples
-- Requires consistent interaction patterns
-
-Her TOI ensures AI tutoring systems adapt to these needs automatically.
-
-### Accessibility Advocate
-
-Jordan is blind and uses a screen reader:
-- Needs structured, semantic information
-- Prefers detailed descriptions of visual content
-- Works with keyboard-only navigation
-- Values consistent heading structures
-
-Their TOI ensures AI interfaces are always screen reader friendly.
-
-### Remote Team Lead
-
-Alex manages a diverse global team:
-- Team charter balances individual TOIs with group needs
-- Accommodates different time zones and work styles
-- Supports multiple languages and cultural contexts
-- Includes clear escalation processes for conflicts
-
-## Getting Started
-
-### Step 1: Explore Templates
-- Review our [template library](/templates/)
-- Start with the [Quick Start Template](/templates/quick-start-template.md)
-- Look at [real examples](/examples/) for inspiration
-
-### Step 2: Create Your TOI
-- Fill out a template that matches your needs
-- Start simple and add detail over time
-- Test with AI systems that support OTOI
-
-### Step 3: Share and Iterate
-- Share your TOI with compatible AI systems
-- Refine based on your experience
-- Contribute improvements back to the community
-
-### Step 4: Advocate and Contribute
-- Help others understand the benefits of OTOI
-- Contribute to documentation and examples
-- Request OTOI support from AI developers
-
-## Future Vision
-
-We envision a world where:
-- Every AI interaction respects human preferences and boundaries
-- Neurodivergent individuals have equal access to AI benefits
-- Privacy and user control are the default, not exceptions
-- AI systems adapt to humans, not the other way around
-- Respectful human-AI collaboration is the universal standard
-
-## Learn More
-
-- [Implementation Guide](/docs/implementation-guide.md) - Technical details for developers
-- [Best Practices](/docs/best-practices.md) - Recommendations for effective use
-- [Template Library](/templates/) - Ready-to-use TOI templates
-- [Example Gallery](/examples/) - Real-world OTOI implementations
-- [Contributing Guide](/CONTRIBUTING.md) - How to help improve OTOI
+- **Personalized Intelligence**: Adapts to individual cognitive patterns
+- **Predictive Support**: Anticipates user needs before they arise
+- **Continuous Evolution**: Improves through use and feedback
+- **Holistic Integration**: Seamlessly connects all system components
 
 ---
 
-*The OTOI framework is an open standard developed by and for the neurodivergent community, accessibility advocates, and everyone who believes in respectful human-AI interaction.*
+*This framework embodies a year of collaborative development and represents the innovative foundation of NeuroLift Technologies approach to empowering neurodivergent individuals.*
