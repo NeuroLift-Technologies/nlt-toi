@@ -22,6 +22,8 @@ from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
+
+from jsonschema import Draft202012Validator, ValidationError
 import jsonschema
 
 
@@ -333,11 +335,43 @@ class TOIParser:
                 with open(schema_path, 'r', encoding='utf-8') as f:
                     self._schema = json.load(f)
             else:
-                # Minimal inline schema for standalone use
+                # More complete fallback schema for standalone use
+                # Based on the repository's personal-toi.schema.json
                 self._schema = {
                     "$schema": "https://json-schema.org/draft/2020-12/schema",
                     "type": "object",
-                    "required": ["version", "communication", "cognitive", "privacy"],
+                    "required": ["version", "metadata", "communication", "cognitive", "privacy"],
+                    "properties": {
+                        "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+                        "metadata": {
+                            "type": "object",
+                            "required": ["created", "updated", "author"],
+                        },
+                        "communication": {
+                            "type": "object",
+                            "required": ["style", "directness"],
+                            "properties": {
+                                "style": {"type": "string", "enum": ["formal", "casual", "professional", "friendly", "adaptive"]},
+                                "directness": {"type": "string", "enum": ["very-direct", "direct", "moderate", "indirect", "context-sensitive"]},
+                            },
+                        },
+                        "cognitive": {
+                            "type": "object",
+                            "required": ["processing_time", "information_structure"],
+                            "properties": {
+                                "processing_time": {"type": "string", "enum": ["immediate", "short", "moderate", "extended", "flexible"]},
+                                "information_structure": {"type": "string", "enum": ["linear", "hierarchical", "visual", "bullet-points", "narrative"]},
+                            },
+                        },
+                        "privacy": {
+                            "type": "object",
+                            "required": ["data_retention", "sharing_consent"],
+                            "properties": {
+                                "data_retention": {"type": "string", "enum": ["session-only", "short-term", "long-term", "permanent", "user-controlled"]},
+                                "sharing_consent": {"type": "string", "enum": ["never", "explicit-only", "aggregate-only", "research-approved"]},
+                            },
+                        },
+                    },
                 }
         return self._schema
 

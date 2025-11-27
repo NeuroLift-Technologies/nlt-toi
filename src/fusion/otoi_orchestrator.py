@@ -149,11 +149,39 @@ class OrchestratorConfig:
 
 
 class AgentProtocol(Protocol):
-    """Protocol that agents must implement for orchestration."""
+    """Protocol that agents must implement for orchestration.
+    
+    Agents registered with the OTOI Orchestrator should implement
+    this protocol for proper lifecycle management and coordination.
+    """
     
     @property
     def agent_id(self) -> str:
         """Unique identifier for the agent."""
+        ...
+    
+    async def initialize(self) -> None:
+        """Initialize the agent before first use.
+        
+        Called when the agent is first registered or reactivated.
+        Use for resource allocation, connection setup, etc.
+        """
+        ...
+    
+    async def shutdown(self) -> None:
+        """Clean up agent resources before removal.
+        
+        Called when the agent is unregistered or system shuts down.
+        Use for cleanup, saving state, closing connections, etc.
+        """
+        ...
+    
+    def get_status(self) -> Dict[str, Any]:
+        """Get current agent status.
+        
+        Returns:
+            Dictionary with status information (health, metrics, etc.)
+        """
         ...
     
     async def process(
@@ -161,7 +189,15 @@ class AgentProtocol(Protocol):
         user_input: str,
         context: HandoffContext,
     ) -> Dict[str, Any]:
-        """Process user input with given context."""
+        """Process user input with given context.
+        
+        Args:
+            user_input: The user's input/request
+            context: Handoff context with TOI and provenance
+            
+        Returns:
+            Response dictionary with agent's output
+        """
         ...
 
 

@@ -474,20 +474,24 @@ class PrivacyGuardian:
         consent = self._consent_registry.get(consent_id)
         return consent is not None and consent["status"] == "granted"
 
-    def anonymize_id(self, original_id: str, salt: Optional[str] = None) -> str:
+    def anonymize_id(self, original_id: str, salt: Optional[str] = None) -> tuple[str, str]:
         """Create an anonymized version of an identifier.
+        
+        Returns both the anonymized ID and the salt used, so the same
+        ID can be consistently anonymized for correlation purposes.
         
         Args:
             original_id: The ID to anonymize
-            salt: Optional salt for hashing
+            salt: Optional salt for hashing. If not provided, a new one is generated.
             
         Returns:
-            Anonymized ID that can't be reversed
+            Tuple of (anonymized_id, salt_used) - store salt to correlate data
         """
         if salt is None:
             salt = secrets.token_hex(8)
         combined = f"{original_id}:{salt}"
-        return hashlib.sha256(combined.encode()).hexdigest()[:16]
+        anonymized = hashlib.sha256(combined.encode()).hexdigest()[:16]
+        return (anonymized, salt)
 
     def get_audit_log(self, item_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """Get audit log for data access.
