@@ -20,6 +20,9 @@ on:
       - 'nlt-otoi/templates/**'
       - 'nlt-otoi/schemas/**'
 
+permissions:
+  contents: read
+
 jobs:
   accessibility-check:
     runs-on: ubuntu-latest

@@ -16,6 +16,9 @@ on:
       - 'nlt-otoi/tools/validators/**'
       - 'nlt-otoi/templates/**'
 
+permissions:
+  contents: read
+
 jobs:
   validate-schemas:
     runs-on: ubuntu-latest
