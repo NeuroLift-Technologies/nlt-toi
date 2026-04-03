@@ -16,9 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CODE_OF_CONDUCT.md` — community code of conduct with neurodivergent-inclusive practices
 - `SECURITY.md` — security policy and vulnerability reporting process
 - `CHANGELOG.md` — this changelog
+- `docs/development-process.md` — CI architecture, workflow runbooks, and troubleshooting steps
 
 ### Changed
-- N/A
+- `README.md` — repository structure now includes `docs/development-process.md`
+- `CONTRIBUTING.md` — added CI and automation expectations for pull requests
 
 ### Deprecated
 - N/A

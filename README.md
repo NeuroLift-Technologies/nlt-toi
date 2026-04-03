@@ -48,6 +48,7 @@ The OTOI (Orchestrated Terms of Interaction) framework is a revolutionary approa
 
 /docs/            # Comprehensive documentation
 ├── framework-overview.md
+├── development-process.md
 ├── implementation-guide.md
 └── best-practices.md
 ```
