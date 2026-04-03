@@ -1,0 +1,245 @@
+name: Create Branch Cleanup Issues
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (print issues without creating them)'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  create-cleanup-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+    - name: Create cleanup issue for claude branch
+      if: ${{ inputs.dry_run == 'false' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '[Branch Cleanup] Delete stale branch: claude/claude-md-migpjct2lab0edv0-016DWbUCo1Cvi2A5tCxLTv1X',
+            body: `## Branch Cleanup: \`claude/claude-md-migpjct2lab0edv0-016DWbUCo1Cvi2A5tCxLTv1X\`
+
+**Status:** ✅ Merged into \`main\` via PR #7 — branch is stale
+
+**What was in this branch:**
+- Added \`CLAUDE.md\`: a comprehensive 1,000+ line guide for AI assistants working with the OTOI Framework
+
+**Action Required:**
+- [ ] Delete branch \`claude/claude-md-migpjct2lab0edv0-016DWbUCo1Cvi2A5tCxLTv1X\` (already merged, safe to delete)
+
+**How to delete:**
+\`\`\`bash
+git push origin --delete claude/claude-md-migpjct2lab0edv0-016DWbUCo1Cvi2A5tCxLTv1X
+\`\`\`
+Or use the GitHub UI: [Delete branch](../../branches)`,
+            labels: ['maintenance', 'branch-cleanup']
+          });
+
+    - name: Create cleanup issue for codex branch
+      if: ${{ inputs.dry_run == 'false' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '[Branch Cleanup] Delete stale branch: codex/design-multi-agent-ai-integration-architecture',
+            body: `## Branch Cleanup: \`codex/design-multi-agent-ai-integration-architecture\`
+
+**Status:** ✅ Merged into \`main\` via PR #4 — branch is stale
+
+**What was in this branch:**
+- Enhanced NeuroLift agent architecture and prototypes
+- Added \`examples/neuroLift/context_capsule.py\`
+- Added \`examples/neuroLift/intent_ledger.py\`
+- Added \`examples/neuroLift/orchestrator_patterns.py\`
+- Added \`examples/neuroLift/playbook_engine.py\`
+
+**Action Required:**
+- [ ] Delete branch \`codex/design-multi-agent-ai-integration-architecture\` (already merged, safe to delete)
+
+**How to delete:**
+\`\`\`bash
+git push origin --delete codex/design-multi-agent-ai-integration-architecture
+\`\`\`
+Or use the GitHub UI: [Delete branch](../../branches)`,
+            labels: ['maintenance', 'branch-cleanup']
+          });
+
+    - name: Create cleanup issue for copilot/add-neurodivergent branch
+      if: ${{ inputs.dry_run == 'false' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '[Branch Cleanup] Delete stale branch: copilot/add-neurodivergent-support-features',
+            body: `## Branch Cleanup: \`copilot/add-neurodivergent-support-features\`
+
+**Status:** ✅ Merged into \`main\` via PR #8 — branch is stale
+
+**What was in this branch:**
+- Implemented TOI-OTOI governance framework (core library)
+- Added \`src/fusion/toi_parser.py\` — parses/validates user TOI documents
+- Added \`src/fusion/otoi_orchestrator.py\` — multi-agent coordination
+- Added \`src/fusion/privacy_guardian.py\` — enforces privacy settings
+
+**Action Required:**
+- [ ] Delete branch \`copilot/add-neurodivergent-support-features\` (already merged, safe to delete)
+
+**How to delete:**
+\`\`\`bash
+git push origin --delete copilot/add-neurodivergent-support-features
+\`\`\`
+Or use the GitHub UI: [Delete branch](../../branches)`,
+            labels: ['maintenance', 'branch-cleanup']
+          });
+
+    - name: Create cleanup issue for copilot/create-framework-overview branch
+      if: ${{ inputs.dry_run == 'false' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '[Branch Cleanup] Delete stale branch: copilot/create-framework-overview-document',
+            body: `## Branch Cleanup: \`copilot/create-framework-overview-document\`
+
+**Status:** ✅ Merged into \`main\` via PR #5 — branch is stale
+
+**What was in this branch:**
+- Extracted TOI-OTOI Framework Deep Dive to dedicated \`docs/framework-overview.md\` document
+- Refactored README to separate high-level introduction from technical details
+
+**Action Required:**
+- [ ] Delete branch \`copilot/create-framework-overview-document\` (already merged, safe to delete)
+
+**How to delete:**
+\`\`\`bash
+git push origin --delete copilot/create-framework-overview-document
+\`\`\`
+Or use the GitHub UI: [Delete branch](../../branches)`,
+            labels: ['maintenance', 'branch-cleanup']
+          });
+
+    - name: Create cleanup issue for copilot/fix branch
+      if: ${{ inputs.dry_run == 'false' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '[Branch Cleanup] Delete stale branch: copilot/fix-83d90a16-8de3-42f8-bcd7-792a6d9c9a6c',
+            body: `## Branch Cleanup: \`copilot/fix-83d90a16-8de3-42f8-bcd7-792a6d9c9a6c\`
+
+**Status:** ✅ Merged into \`main\` via PR #1 — branch is stale
+
+**What was in this branch:**
+- Implemented complete OTOI framework with schemas, templates, documentation, and community infrastructure
+- This was the initial comprehensive setup of the \`nlt-otoi/\` subdirectory
+
+**Action Required:**
+- [ ] Delete branch \`copilot/fix-83d90a16-8de3-42f8-bcd7-792a6d9c9a6c\` (already merged, safe to delete)
+
+**How to delete:**
+\`\`\`bash
+git push origin --delete copilot/fix-83d90a16-8de3-42f8-bcd7-792a6d9c9a6c
+\`\`\`
+Or use the GitHub UI: [Delete branch](../../branches)`,
+            labels: ['maintenance', 'branch-cleanup']
+          });
+
+    - name: Create cleanup issue for cursor/explore branch
+      if: ${{ inputs.dry_run == 'false' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '[Branch Cleanup] Delete stale branch: cursor/explore-repository-contents-606b',
+            body: `## Branch Cleanup: \`cursor/explore-repository-contents-606b\`
+
+**Status:** ✅ Merged into \`main\` via PR #2 — branch is stale
+
+**What was in this branch:**
+- Added detailed TOI-OTOI framework description to README
+- Added comprehensive Gemini topography (\`GEMINI_TOPOGRAPHY.py\`) for historical analysis
+
+**Action Required:**
+- [ ] Delete branch \`cursor/explore-repository-contents-606b\` (already merged, safe to delete)
+
+**How to delete:**
+\`\`\`bash
+git push origin --delete cursor/explore-repository-contents-606b
+\`\`\`
+Or use the GitHub UI: [Delete branch](../../branches)`,
+            labels: ['maintenance', 'branch-cleanup']
+          });
+
+    - name: Create cleanup issue for cursor/setup branch
+      if: ${{ inputs.dry_run == 'false' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '[Branch Cleanup] Delete stale branch: cursor/setup-otoi-framework-repository-structure-4938',
+            body: `## Branch Cleanup: \`cursor/setup-otoi-framework-repository-structure-4938\`
+
+**Status:** ✅ Merged into \`main\` via PR #3 — branch is stale
+
+**What was in this branch:**
+- Added GitHub issue templates and workflows (within \`nlt-otoi/\` subdirectory)
+- Set up OTOI framework repository structure
+
+**Action Required:**
+- [ ] Delete branch \`cursor/setup-otoi-framework-repository-structure-4938\` (already merged, safe to delete)
+
+**How to delete:**
+\`\`\`bash
+git push origin --delete cursor/setup-otoi-framework-repository-structure-4938
+\`\`\`
+Or use the GitHub UI: [Delete branch](../../branches)`,
+            labels: ['maintenance', 'branch-cleanup']
+          });
+
+    - name: Dry run summary
+      if: ${{ inputs.dry_run == 'true' }}
+      run: |
+        echo "=== DRY RUN: Would create the following cleanup issues ==="
+        echo ""
+        echo "1. [Branch Cleanup] Delete stale branch: claude/claude-md-migpjct2lab0edv0-016DWbUCo1Cvi2A5tCxLTv1X"
+        echo "   Merged via PR #7 — adds CLAUDE.md"
+        echo ""
+        echo "2. [Branch Cleanup] Delete stale branch: codex/design-multi-agent-ai-integration-architecture"
+        echo "   Merged via PR #4 — enhanced NeuroLift agent architecture"
+        echo ""
+        echo "3. [Branch Cleanup] Delete stale branch: copilot/add-neurodivergent-support-features"
+        echo "   Merged via PR #8 — TOI-OTOI governance framework (src/fusion/)"
+        echo ""
+        echo "4. [Branch Cleanup] Delete stale branch: copilot/create-framework-overview-document"
+        echo "   Merged via PR #5 — framework overview document"
+        echo ""
+        echo "5. [Branch Cleanup] Delete stale branch: copilot/fix-83d90a16-8de3-42f8-bcd7-792a6d9c9a6c"
+        echo "   Merged via PR #1 — initial OTOI framework setup"
+        echo ""
+        echo "6. [Branch Cleanup] Delete stale branch: cursor/explore-repository-contents-606b"
+        echo "   Merged via PR #2 — README updates and GEMINI_TOPOGRAPHY.py"
+        echo ""
+        echo "7. [Branch Cleanup] Delete stale branch: cursor/setup-otoi-framework-repository-structure-4938"
+        echo "   Merged via PR #3 — GitHub issue templates and workflows"
+        echo ""
+        echo "=== To actually create these issues, re-run with dry_run=false ==="
