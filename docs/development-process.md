@@ -6,6 +6,20 @@ which checks run automatically, and how to troubleshoot common failures.
 It is intentionally focused on repository automation and quality gates. For
 general contribution rules, see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
+## Local Prerequisites for CI Reproduction
+
+GitHub Actions runners provide `python` (3.11) and tool binaries on `PATH`.
+Local machines often differ, so use equivalent commands where needed:
+
+- If `python` is unavailable, use `python3`.
+- If `pip` is unavailable, use `python3 -m pip`.
+- If `bandit` is not on `PATH`, run it as `python3 -m bandit`.
+
+Minimum local tools for CI parity:
+- Python 3.11
+- `jsonschema` (schema validation workflow dependency)
+- `bandit` (security scan workflow dependency)
+
 ## Workflow Architecture
 
 The repository uses four GitHub Actions workflows:
@@ -55,6 +69,7 @@ What it does:
 
 Behavioral constraints from source:
 - The docs grep check is keyword-based, not semantic analysis.
+- The grep checks are case-sensitive (`grep -r` without `-i`).
 - The workflow expects terms matching:
   - `neurodivergent|ADHD|autism|accessibility`
   - `clear|simple|easy|understand`
@@ -62,9 +77,14 @@ Behavioral constraints from source:
 Troubleshooting:
 - If the check fails after docs edits, confirm the expected terms still appear in
   `docs/` or `nlt-otoi/docs/`.
+- Reproduce the keyword checks locally:
+  ```bash
+  grep -r "neurodivergent\|ADHD\|autism\|accessibility" docs/ nlt-otoi/docs/
+  grep -r "clear\|simple\|easy\|understand" docs/ nlt-otoi/docs/
+  ```
 - If template validation fails, run:
   ```bash
-  python nlt-otoi/tools/validators/toi-validator.py <template.json>
+  python3 nlt-otoi/tools/validators/toi-validator.py <template.json>
   ```
 
 ### Schema Validation Runbook
@@ -78,6 +98,7 @@ What it does:
 Behavioral constraints from source:
 - This workflow checks JSON parse validity (not full semantic schema conformance
   across every document in the repo).
+- Although it installs `jsonschema`, the current steps only parse JSON files.
 - Any invalid JSON causes a hard failure.
 
 Troubleshooting:
@@ -118,16 +139,20 @@ What it does:
 Behavioral constraints from source:
 - Bandit runs with `--exit-zero`, then a Python gate enforces failure only on
   HIGH-severity findings.
+- The Bandit JSON report can contain path errors (for example, missing `src/`);
+  the current gate does not fail on report `errors` entries.
 - The secret check currently warns but does not fail the job.
 - Schema permissiveness findings are informational warnings.
 
 Troubleshooting:
 - Reproduce Bandit locally:
   ```bash
-  pip install bandit
-  bandit -r src/ nlt-otoi/tools/ -f json -o /tmp/bandit-report.json --exit-zero
+  python3 -m pip install bandit
+  python3 -m bandit -r src/ nlt-otoi/tools/ -f json -o /tmp/bandit-report.json --exit-zero
   ```
 - Inspect high-severity findings in `/tmp/bandit-report.json`.
+- Also inspect `errors` in `/tmp/bandit-report.json` (missing scan paths show up
+  there even when the workflow still passes).
 - For hardcoded credential warnings, move secrets to environment variables or
   secret stores and avoid literal password assignments in committed files.
 
@@ -142,6 +167,8 @@ Important constraints:
 - `dry_run=true` prints a summary and does not create issues.
 - The stale branch list is hardcoded in
   `.github/workflows/create-branch-cleanup-issues.yml`.
+- There is no de-duplication guard; rerunning with `dry_run=false` can create
+  duplicate cleanup issues for the same branches.
 
 How to execute:
 1. Open **Actions** in GitHub.
