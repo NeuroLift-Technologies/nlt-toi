@@ -31,16 +31,27 @@ The repository uses four GitHub Actions workflows:
 | Security Scan | `.github/workflows/security-scan.yml` | Runs Bandit and lightweight security heuristics |
 | Create Branch Cleanup Issues | `.github/workflows/create-branch-cleanup-issues.yml` | Creates maintenance issues for stale merged branches |
 
+### Source of Truth for CI Definitions
+
+GitHub Actions only executes workflow files from the repository root
+`.github/workflows/` directory.
+
+This repository also contains older workflow copies under
+`nlt-otoi/.github/workflows/` for historical context. Those nested copies are
+not loaded by GitHub Actions and should not be used for CI troubleshooting.
+
 ## Trigger Matrix
 
 ### Accessibility Check
 - Triggers on `push` and `pull_request` to `main` or `develop`
+- Pull requests targeting any other base branch do not run this workflow
 - Runs only when changes touch:
   - `docs/**`, `templates/**`, `schemas/**`
   - `nlt-otoi/docs/**`, `nlt-otoi/templates/**`, `nlt-otoi/schemas/**`
 
 ### Schema Validation
 - Triggers on `push` and `pull_request` to `main` or `develop`
+- Pull requests targeting any other base branch do not run this workflow
 - Runs only when changes touch:
   - `schemas/**`
   - `nlt-otoi/schemas/**`
@@ -49,12 +60,28 @@ The repository uses four GitHub Actions workflows:
 
 ### Security Scan
 - Triggers on `push` and `pull_request` to `main` or `develop`
+- Pull requests targeting any other base branch do not run this workflow
 - Also runs on a weekly schedule: Monday at 02:00 UTC
 
 ### Create Branch Cleanup Issues
 - Manual trigger only (`workflow_dispatch`)
 - Input:
   - `dry_run` (boolean, default `false`)
+
+## First Triage When a Workflow Did Not Run
+
+Before deep debugging, verify the run should have triggered at all:
+
+1. Confirm the event type is supported (`push`, `pull_request`, `schedule`, or
+   `workflow_dispatch` as defined per workflow).
+2. For PR-triggered runs, confirm the PR base branch is `main` or `develop`.
+3. Confirm at least one changed file matches that workflow's `paths` filters.
+
+Useful local command for path filter checks:
+
+```bash
+git diff --name-only <base_sha>...<head_sha>
+```
 
 ## Operational Runbooks
 
