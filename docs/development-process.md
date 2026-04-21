@@ -40,6 +40,9 @@ This repository also contains older workflow copies under
 `nlt-otoi/.github/workflows/` for historical context. Those nested copies are
 not loaded by GitHub Actions and should not be used for CI troubleshooting.
 
+When changing automation behavior, always edit the root workflow files first.
+Treat nested workflow copies as archival references, not active automation.
+
 ## Trigger Matrix
 
 ### Accessibility Check
@@ -62,6 +65,7 @@ not loaded by GitHub Actions and should not be used for CI troubleshooting.
 - Triggers on `push` and `pull_request` to `main` or `develop`
 - Pull requests targeting any other base branch do not run this workflow
 - Also runs on a weekly schedule: Monday at 02:00 UTC
+- Has no `paths` filter, so all file changes on supported branches trigger it
 
 ### Create Branch Cleanup Issues
 - Manual trigger only (`workflow_dispatch`)
@@ -82,6 +86,22 @@ Useful local command for path filter checks:
 ```bash
 git diff --name-only <base_sha>...<head_sha>
 ```
+
+## Common Failure Signatures and Fast Fixes
+
+Use this table to quickly map common CI outcomes to likely causes:
+
+| Symptom (Actions log/UI) | Likely cause | First action |
+| --- | --- | --- |
+| Workflow did not appear for a PR | PR base branch is not `main`/`develop`, or changed files did not match `paths` filters | Confirm PR base branch, then run `git diff --name-only <base_sha>...<head_sha>` |
+| `❌ Missing accessibility content in documentation` | Accessibility keywords are absent from scanned docs directories | Add explicit accessibility terms in `docs/` or `nlt-otoi/docs/` |
+| `❌ Documentation may not use clear language` | Clear-language keywords are missing from scanned docs | Add wording that includes `clear`, `simple`, `easy`, or `understand` |
+| `❌ Invalid JSON in ...` (schema workflow) | A schema/template file failed JSON parsing | Run `python -m json.tool <file>` and fix syntax |
+| `❌ N high-severity security issues found` | Bandit reported one or more HIGH findings | Re-run Bandit locally and remediate flagged code paths |
+| `⚠️  Potential hardcoded passwords found — please review` | Grep-based secret heuristic matched literal password assignment pattern | Remove hardcoded credentials or migrate them to environment/secret stores |
+
+Note: warning-level findings do not always fail a workflow. Check each workflow's
+explicit `exit` behavior in the root `.github/workflows/` definitions.
 
 ## Operational Runbooks
 
@@ -192,6 +212,8 @@ What it does:
 Important constraints:
 - This workflow is manual only and does nothing on push/PR events.
 - `dry_run=true` prints a summary and does not create issues.
+- The workflow currently checks string values (`'true'` / `'false'`) for
+  `inputs.dry_run`.
 - The stale branch list is hardcoded in
   `.github/workflows/create-branch-cleanup-issues.yml`.
 - There is no de-duplication guard; rerunning with `dry_run=false` can create
