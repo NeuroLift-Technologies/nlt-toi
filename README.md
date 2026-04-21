@@ -32,26 +32,44 @@ The OTOI (Orchestrated Terms of Interaction) framework is a revolutionary approa
 ## 📁 Repository Structure
 
 ```
-/schemas/          # JSON schemas for validation
+/.github/workflows/ # Active GitHub Actions workflows (source of truth)
+├── accessibility-check.yml
+├── schema-validation.yml
+├── security-scan.yml
+└── create-branch-cleanup-issues.yml
+
+/schemas/           # JSON schemas for validation
 ├── personal-toi.schema.json
 └── collaborative-charter.schema.json
 
-/templates/        # User-friendly templates
+/templates/         # User-friendly templates
 ├── personal-toi-template.md
 ├── collaborative-charter-template.md
 └── quick-start-template.md
 
-/examples/         # Real-world examples
+/examples/          # Real-world examples
 ├── neurodivergent-examples/
 ├── team-collaboration/
-└── ai-assistant-configs/
+└── neuroLift/
 
-/docs/            # Comprehensive documentation
+/docs/              # Core project documentation
 ├── framework-overview.md
 ├── development-process.md
 ├── implementation-guide.md
 └── best-practices.md
+
+/nlt-otoi/          # Legacy/archival project subtree (includes historical workflow copies)
 ```
+
+## 🔧 CI and Runbook Entry Points
+
+- CI trigger behavior, workflow ownership, and troubleshooting:
+  [`docs/development-process.md`](/docs/development-process.md)
+- Contribution requirements and PR expectations:
+  [`CONTRIBUTING.md`](/CONTRIBUTING.md)
+
+When debugging CI, use root `.github/workflows/` files as the active automation source.
+Nested `nlt-otoi/.github/workflows/` files are archival references only.
 
 ## 🎯 Core Components
 

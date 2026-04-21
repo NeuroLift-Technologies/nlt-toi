@@ -87,6 +87,26 @@ Useful local command for path filter checks:
 git diff --name-only <base_sha>...<head_sha>
 ```
 
+## Quick GitHub CLI Triage Commands
+
+Use these commands to inspect workflow status before deeper debugging:
+
+```bash
+# Show PR metadata and changed files
+gh pr view <pr_number> --json baseRefName,headRefName,files,url
+
+# List recent workflow runs for this repository
+gh run list --limit 20
+
+# Inspect a specific failed run (jobs and logs)
+gh run view <run_id> --log
+```
+
+Tips:
+- Confirm the PR base branch first (`main` or `develop` are required for CI triggers here).
+- Compare changed files against each workflow's `paths` filters before assuming a CI outage.
+- Use `gh run list --workflow "<workflow name>"` to scope to a single workflow.
+
 ## Common Failure Signatures and Fast Fixes
 
 Use this table to quickly map common CI outcomes to likely causes:

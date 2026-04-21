@@ -127,6 +127,10 @@ We are committed to providing a welcoming and inclusive environment:
 This repository uses GitHub Actions to enforce baseline quality checks for
 accessibility, schema validity, and security scanning.
 
+- Active workflow definitions live in root `.github/workflows/`.
+- Nested `nlt-otoi/.github/workflows/` files are archival copies and are not
+  executed by GitHub Actions.
+
 - Workflow runbooks and troubleshooting:
   [`docs/development-process.md`](docs/development-process.md)
 - PR format and required review metadata:
