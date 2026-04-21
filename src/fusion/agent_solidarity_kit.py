@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 import urllib.request
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Dict, List
 
 from .toi_parser import TOIPreferences
 
