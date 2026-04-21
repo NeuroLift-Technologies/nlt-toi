@@ -7,6 +7,13 @@
 
 ---
 
+## GOVERNANCE AUTHORITY
+
+This repository operates under **ORG-DEV-OTOI-1.0.0** (`NLT-DEV-OTOI.md`) governance requirements.
+When governance scope, architecture, deployment, or policy amendments are unclear, escalate to **Joshua W. Dorsey, Sr.** (`info@neuroliftsolutions.com`) before proceeding.
+
+---
+
 ## EXECUTIVE SUMMARY
 
 You are working in the **NeuroLift OTOI (Orchestrated Terms of Interaction) Framework** repository. This is an open-source project that defines standards for neurodivergent-friendly, privacy-first, user-controlled AI interactions. The repository contains JSON schemas, documentation, templates, and reference implementations for the TOI-OTOI governance framework.
