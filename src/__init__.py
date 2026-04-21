@@ -1,13 +1,9 @@
-"""NeuroLift TOI-OTOI Framework.
+"""NeuroLift TOI Framework (Solidarity).
 
-This package implements the TOI-OTOI (Terms of Interaction - Orchestrated
-Terms of Interaction) governance framework for AI systems.
-
-The TOI-OTOI framework provides:
-    - TOI: User-defined preferences and interaction contracts
-    - OTOI: Multi-agent coordination and orchestration layer
-    - Privacy-first governance and local-only processing
-    - Neurodivergent-friendly interaction patterns
+This package provides TOI-first governance primitives:
+    - TOI parsing and validation
+    - TOI-governed agent runtime integration
+    - Privacy-first enforcement
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

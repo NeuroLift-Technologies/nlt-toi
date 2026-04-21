@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuroLift TOI Agent</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>NeuroLift TOI Agent</h1>
+    <p class="subtitle">Solidarity Framework · GitHub Pages + GitHub Models</p>
+
+    <label for="token">GitHub token (Models access)</label>
+    <input id="token" type="password" placeholder="ghp_..." autocomplete="off" />
+
+    <label for="model">Model</label>
+    <input id="model" type="text" value="azureml/Phi-4-mini-instruct" />
+
+    <label for="toi">TOI JSON</label>
+    <textarea id="toi" rows="12" spellcheck="false">{
+  "version": "1.0.0",
+  "metadata": {
+    "created": "2026-01-01T00:00:00Z",
+    "updated": "2026-01-01T00:00:00Z",
+    "author": "user"
+  },
+  "communication": {
+    "style": "friendly",
+    "directness": "direct"
+  },
+  "cognitive": {
+    "processing_time": "moderate",
+    "information_structure": "bullet-points"
+  },
+  "privacy": {
+    "data_retention": "session-only",
+    "sharing_consent": "never"
+  }
+}</textarea>
+
+    <label for="prompt">Message</label>
+    <textarea id="prompt" rows="5" placeholder="Ask the TOI agent anything..."></textarea>
+
+    <button id="send">Send</button>
+
+    <section>
+      <h2>Response</h2>
+      <pre id="response"></pre>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,20 +1,20 @@
-"""TOI-OTOI Governance and Orchestration Layer.
+"""TOI governance components for the Solidarity Framework.
 
-This module provides the governance framework for the NeuroLift AI-Fusion system:
+This module provides:
     - TOIParser: Reads and validates user interaction preferences
-    - OTOIOrchestrator: Coordinates multiple Advocates under user governance
-    - PrivacyGuardian: Enforces privacy-first architecture with local-only processing
+    - TOIAgentSolidarityKit: TOI-governed GitHub Models runtime
+    - PrivacyGuardian: Privacy-first enforcement for TOI interactions
 """
 
+from .agent_solidarity_kit import TOIAgentSolidarityKit, SolidarityModelConfig
 from .toi_parser import TOIParser, TOIPreferences
-from .otoi_orchestrator import OTOIOrchestrator, CollaborationContext
 from .privacy_guardian import PrivacyGuardian, PrivacyPolicy
 
 __all__ = [
     "TOIParser",
     "TOIPreferences",
-    "OTOIOrchestrator",
-    "CollaborationContext",
+    "TOIAgentSolidarityKit",
+    "SolidarityModelConfig",
     "PrivacyGuardian",
     "PrivacyPolicy",
 ]
