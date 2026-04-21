@@ -122,6 +122,22 @@ We are committed to providing a welcoming and inclusive environment:
 4. **Documentation**: Update any relevant documentation
 5. **Accessibility**: Note any accessibility considerations
 
+### CI and Automation Expectations
+
+This repository uses GitHub Actions to enforce baseline quality checks for
+accessibility, schema validity, and security scanning.
+
+- Workflow runbooks and troubleshooting:
+  [`docs/development-process.md`](docs/development-process.md)
+- PR format and required review metadata:
+  [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md)
+
+Before opening a PR, verify these minimum expectations:
+1. Updated docs keep accessibility language clear and explicit.
+2. Any changed schema/template JSON files parse correctly.
+3. Security-sensitive changes include testing notes and rationale in the PR
+   description.
+
 ## 🎯 Priority Areas
 
 We especially welcome contributions in these areas:

@@ -1,0 +1,82 @@
+name: Accessibility Check
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'docs/**'
+      - 'templates/**'
+      - 'schemas/**'
+      - 'nlt-otoi/docs/**'
+      - 'nlt-otoi/templates/**'
+      - 'nlt-otoi/schemas/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'docs/**'
+      - 'templates/**'
+      - 'schemas/**'
+      - 'nlt-otoi/docs/**'
+      - 'nlt-otoi/templates/**'
+      - 'nlt-otoi/schemas/**'
+
+permissions:
+  contents: read
+
+jobs:
+  accessibility-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f nlt-otoi/requirements.txt ]; then pip install -r nlt-otoi/requirements.txt; fi
+
+    - name: Check Documentation Accessibility
+      run: |
+        echo "Checking documentation for accessibility compliance..."
+
+        # Check for neurodivergent support mentions
+        if ! grep -r "neurodivergent\|ADHD\|autism\|accessibility" docs/ nlt-otoi/docs/ 2>/dev/null; then
+          echo "❌ Missing accessibility content in documentation"
+          exit 1
+        fi
+
+        # Check for clear language usage
+        if ! grep -r "clear\|simple\|easy\|understand" docs/ nlt-otoi/docs/ 2>/dev/null; then
+          echo "❌ Documentation may not use clear language"
+          exit 1
+        fi
+
+        echo "✅ Documentation accessibility checks passed"
+
+    - name: Validate TOI Templates
+      run: |
+        echo "Validating TOI templates for accessibility compliance..."
+
+        for template in nlt-otoi/templates/personal-toi/*.json; do
+          if [ -f "$template" ]; then
+            echo "Validating $template..."
+            python nlt-otoi/tools/validators/toi-validator.py "$template"
+          fi
+        done
+
+        echo "✅ TOI template validation passed"
+
+    - name: Check Code Accessibility
+      run: |
+        echo "Checking code for accessibility compliance..."
+
+        if ! grep -r "accessibility\|neurodivergent\|ADHD" nlt-otoi/tools/ 2>/dev/null; then
+          echo "⚠️  Code may lack accessibility considerations"
+        fi
+
+        echo "✅ Code accessibility checks completed"
