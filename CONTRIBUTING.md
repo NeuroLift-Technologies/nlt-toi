@@ -138,6 +138,70 @@ Before opening a PR, verify these minimum expectations:
 3. Security-sensitive changes include testing notes and rationale in the PR
    description.
 
+### Local Pre-PR Checks (CI Parity)
+
+Run these commands from repository root to reproduce the same checks locally.
+Use them before opening a PR that touches the related codepaths.
+
+#### Accessibility check parity
+
+Use for changes under:
+`docs/**`, `templates/**`, `schemas/**`, `nlt-otoi/docs/**`,
+`nlt-otoi/templates/**`, `nlt-otoi/schemas/**`.
+
+```bash
+grep -r "neurodivergent\|ADHD\|autism\|accessibility" docs/ nlt-otoi/docs/
+grep -r "clear\|simple\|easy\|understand" docs/ nlt-otoi/docs/
+python3 nlt-otoi/tools/validators/toi-validator.py nlt-otoi/templates/personal-toi/adhd-optimized-toi.json
+```
+
+#### Schema validation parity
+
+Use for changes under:
+`schemas/**`, `nlt-otoi/schemas/**`, `nlt-otoi/templates/**`,
+`nlt-otoi/tools/validators/**`.
+
+```bash
+python - <<'PY'
+import glob, json, sys
+paths = glob.glob('schemas/**/*.json', recursive=True)
+paths += glob.glob('nlt-otoi/schemas/**/*.json', recursive=True)
+paths += glob.glob('nlt-otoi/templates/**/*.json', recursive=True)
+errors = []
+for path in paths:
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            json.load(f)
+    except Exception as exc:
+        errors.append((path, exc))
+if errors:
+    for path, exc in errors:
+        print(f'Invalid JSON: {path}: {exc}')
+    sys.exit(1)
+print('All schema/template JSON files parse successfully.')
+PY
+```
+
+#### Security scan parity
+
+Use for changes under:
+`src/**`, `nlt-otoi/tools/**`, `schemas/**`, `nlt-otoi/schemas/**`.
+
+```bash
+python3 -m pip install bandit
+python3 -m bandit -r src/ nlt-otoi/tools/ -f json -o /tmp/bandit-report.json --exit-zero
+python3 - <<'PY'
+import json, sys
+with open('/tmp/bandit-report.json', 'r', encoding='utf-8') as f:
+    report = json.load(f)
+high = [r for r in report.get('results', []) if r.get('issue_severity') == 'HIGH']
+if high:
+    print(f'HIGH findings: {len(high)}')
+    sys.exit(1)
+print('No HIGH Bandit findings.')
+PY
+```
+
 ## 🎯 Priority Areas
 
 We especially welcome contributions in these areas:

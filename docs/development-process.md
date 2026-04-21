@@ -31,6 +31,18 @@ The repository uses four GitHub Actions workflows:
 | Security Scan | `.github/workflows/security-scan.yml` | Runs Bandit and lightweight security heuristics |
 | Create Branch Cleanup Issues | `.github/workflows/create-branch-cleanup-issues.yml` | Creates maintenance issues for stale merged branches |
 
+### CI Coverage Map (What Codepaths Each Workflow Exercises)
+
+This section maps workflow behavior to concrete repository paths so contributors
+can quickly identify which checks are relevant for a change.
+
+| Workflow | Primary codepaths covered | Notes |
+| --- | --- | --- |
+| Accessibility Check | `docs/**`, `templates/**`, `schemas/**`, `nlt-otoi/docs/**`, `nlt-otoi/templates/**`, `nlt-otoi/schemas/**` | Also runs template validation via `nlt-otoi/tools/validators/toi-validator.py` and scans `nlt-otoi/tools/` for accessibility terms as a warning signal |
+| Schema Validation | `schemas/**`, `nlt-otoi/schemas/**`, `nlt-otoi/templates/**`, `nlt-otoi/tools/validators/**` | Workflow currently enforces JSON parse validity, not full cross-document semantic validation |
+| Security Scan | `src/**`, `nlt-otoi/tools/**`, `schemas/**`, `nlt-otoi/schemas/**` | Triggered on every push/PR to `main`/`develop` (no path filter), plus weekly schedule |
+| Create Branch Cleanup Issues | `.github/workflows/create-branch-cleanup-issues.yml` | Manual maintenance workflow; does not run on push or PR |
+
 ### Source of Truth for CI Definitions
 
 GitHub Actions only executes workflow files from the repository root
@@ -87,6 +99,59 @@ Useful local command for path filter checks:
 git diff --name-only <base_sha>...<head_sha>
 ```
 
+## Local CI Parity Command Pack
+
+Use these commands from repository root to reproduce the same checks performed
+by GitHub Actions.
+
+### Accessibility Check (local parity)
+
+```bash
+grep -r "neurodivergent\|ADHD\|autism\|accessibility" docs/ nlt-otoi/docs/
+grep -r "clear\|simple\|easy\|understand" docs/ nlt-otoi/docs/
+python3 nlt-otoi/tools/validators/toi-validator.py nlt-otoi/templates/personal-toi/adhd-optimized-toi.json
+```
+
+### Schema Validation (local parity)
+
+```bash
+python - <<'PY'
+import glob, json, sys
+paths = glob.glob('schemas/**/*.json', recursive=True)
+paths += glob.glob('nlt-otoi/schemas/**/*.json', recursive=True)
+paths += glob.glob('nlt-otoi/templates/**/*.json', recursive=True)
+errors = []
+for path in paths:
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            json.load(f)
+    except Exception as exc:
+        errors.append((path, exc))
+if errors:
+    for path, exc in errors:
+        print(f'Invalid JSON: {path}: {exc}')
+    sys.exit(1)
+print('All schema/template JSON files parse successfully.')
+PY
+```
+
+### Security Scan (local parity)
+
+```bash
+python3 -m pip install bandit
+python3 -m bandit -r src/ nlt-otoi/tools/ -f json -o /tmp/bandit-report.json --exit-zero
+python3 - <<'PY'
+import json, sys
+with open('/tmp/bandit-report.json', 'r', encoding='utf-8') as f:
+    report = json.load(f)
+high = [r for r in report.get('results', []) if r.get('issue_severity') == 'HIGH']
+if high:
+    print(f'HIGH findings: {len(high)}')
+    sys.exit(1)
+print('No HIGH Bandit findings.')
+PY
+```
+
 ## Common Failure Signatures and Fast Fixes
 
 Use this table to quickly map common CI outcomes to likely causes:
@@ -102,6 +167,18 @@ Use this table to quickly map common CI outcomes to likely causes:
 
 Note: warning-level findings do not always fail a workflow. Check each workflow's
 explicit `exit` behavior in the root `.github/workflows/` definitions.
+
+## Known Workflow Constraints and Pitfalls
+
+- Accessibility and clear-language checks are keyword-based `grep` checks and
+  are case-sensitive.
+- Security secret scanning only checks `*.py` and `*.json` for password-style
+  assignments and currently warns instead of failing.
+- Bandit path scan errors are written into the JSON report `errors` field and
+  are not currently used as a fail condition.
+- `Create Branch Cleanup Issues` compares `inputs.dry_run` as string values in
+  expressions (`'true'` / `'false'`), even though the input is typed as
+  boolean.
 
 ## Operational Runbooks
 
