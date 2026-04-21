@@ -4,9 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "docs/index.html"
-      - "docs/app.js"
-      - "docs/styles.css"
+      - "docs/**"
       - ".github/workflows/deploy-toi-agent-pages.yml"
   workflow_dispatch:
 
