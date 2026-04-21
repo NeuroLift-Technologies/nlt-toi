@@ -32,6 +32,12 @@ The OTOI (Orchestrated Terms of Interaction) framework is a revolutionary approa
 ## 📁 Repository Structure
 
 ```
+/src/              # Python implementation
+├── fusion/        # TOI-OTOI governance layer
+│   ├── toi_parser.py        # Parse & validate TOI documents
+│   ├── otoi_orchestrator.py # Multi-agent coordination
+│   └── privacy_guardian.py  # Privacy-first enforcement
+
 /schemas/          # JSON schemas for validation
 ├── personal-toi.schema.json
 └── collaborative-charter.schema.json
@@ -43,8 +49,8 @@ The OTOI (Orchestrated Terms of Interaction) framework is a revolutionary approa
 
 /examples/         # Real-world examples
 ├── neurodivergent-examples/
-├── team-collaboration/
-└── ai-assistant-configs/
+├── neuroLift/     # NeuroLift integration patterns
+└── team-collaboration/
 
 /docs/            # Comprehensive documentation
 ├── framework-overview.md
@@ -118,6 +124,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [OTOI Reference Implementation](#) (Coming Soon)
 - [OTOI Browser Extension](#) (Coming Soon)
 - [OTOI for Teams](#) (Coming Soon)
+
+## 📖 Deep Dive
+
+For a comprehensive technical overview of the TOI-OTOI framework, including framework philosophy, architecture layers, and development roadmap, see our [Framework Overview](/docs/framework-overview.md).
 
 ---
 
