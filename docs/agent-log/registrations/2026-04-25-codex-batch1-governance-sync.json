@@ -1,0 +1,24 @@
+{
+  "agent_registration": {
+    "agent_name": "Codex",
+    "platform": "codex-cli",
+    "version": "GPT-5",
+    "session_id": "2026-04-25-batch1-governance-sync",
+    "entry_date": "2026-04-25",
+    "entry_point": "Clone Batch 1 missing repos and sync governance core with governance steward and onboarding assistant.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "working_repo": "nlt-toi",
+    "working_branch": "workspace",
+    "capabilities_self_reported": [
+      "Repository cloning",
+      "Governance bootstrap automation",
+      "Cross-repo governance synchronization"
+    ],
+    "known_limitations": [
+      "No architectural decisions without Joshua approval",
+      "No OTOI amendment authority"
+    ],
+    "preferred_handoff_format": "structured JSON plus concise summary"
+  }
+}
