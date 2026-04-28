@@ -7,9 +7,86 @@ This repository is the **TOI layer** of the Solidarity Framework. It focuses on 
 ## What is included
 
 - TOI schema and templates (`/schemas`, `/templates`)
+- **TOI generator CLI + library** (`/nlt_toi`) — create, validate, and render TOI documents
 - TOI parser and privacy guardian (`/src/fusion`)
 - TOI Agent Solidarity Kit runtime (`/src/fusion/agent_solidarity_kit.py`)
 - GitHub Pages web interface for TOI agent interaction (`/docs/index.html`)
+
+## TOI Generator
+
+The `toi-generator` CLI lets you create a Personal TOI document from interactive
+prompts or a JSON/YAML input file, and render it as Markdown or JSON.
+
+### Installation
+
+```bash
+pip install -e ".[dev]"   # development
+# or
+pip install .             # production
+```
+
+### Usage examples
+
+**Generate a TOI with defaults and print Markdown to stdout:**
+
+```bash
+toi-generator --author "alice" --description "My daily coding TOI"
+```
+
+**Interactive mode — answer prompts, then write Markdown to a file:**
+
+```bash
+toi-generator --interactive --output my-toi.md
+```
+
+**Load preferences from a JSON file and output JSON:**
+
+```bash
+toi-generator --input preferences.json --format json --output my-toi.json
+```
+
+**Load preferences from a YAML file:**
+
+```bash
+toi-generator --input preferences.yaml --output my-toi.md
+```
+
+**Validate an existing TOI document against the schema:**
+
+```bash
+toi-generator --input my-toi.json --validate
+```
+
+### Library usage
+
+```python
+from nlt_toi import TOIDocumentGenerator
+
+# Generate from defaults
+gen = TOIDocumentGenerator.from_defaults(author="alice")
+print(gen.to_markdown())
+
+# Generate from a dict (only required fields needed — defaults fill the rest)
+gen = TOIDocumentGenerator.from_dict({
+    "version": "1.0.0",
+    "metadata": {"created": "...", "updated": "...", "author": "bob"},
+    "communication": {"style": "friendly", "directness": "direct"},
+    "cognitive": {"processing_time": "flexible", "information_structure": "bullet-points"},
+    "privacy": {"data_retention": "session-only", "sharing_consent": "never"},
+})
+gen.validate()          # raises jsonschema.ValidationError if invalid
+print(gen.to_json())
+
+# Load from a file
+gen = TOIDocumentGenerator.from_file("preferences.json")
+gen.save("my-toi.md", fmt="markdown")
+```
+
+### Running tests
+
+```bash
+pytest tests/test_generator.py -v
+```
 
 ## Default model
 

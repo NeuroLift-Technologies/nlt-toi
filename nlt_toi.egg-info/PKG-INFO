@@ -1,0 +1,60 @@
+Metadata-Version: 2.4
+Name: nlt-toi
+Version: 0.2.0
+Summary: NeuroLift TOI Framework — Terms of Interaction generator, parser, and validator
+License: MIT
+Keywords: toi,neurodivergent,privacy,accessibility,ai-governance
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: jsonschema>=4.0.0
+Provides-Extra: yaml
+Requires-Dist: PyYAML>=6.0; extra == "yaml"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+Requires-Dist: PyYAML>=6.0; extra == "dev"
+Dynamic: license-file
+
+# NeuroLift TOI Framework (Solidarity)
+
+**Terms of Interaction (TOI)** for user-controlled, neurodivergent-friendly, privacy-first AI collaboration.
+
+This repository is the **TOI layer** of the Solidarity Framework. It focuses on defining and enforcing personal interaction terms, with a single TOI Agent runtime built on the Agent Solidarity Kit.
+
+## What is included
+
+- TOI schema and templates (`/schemas`, `/templates`)
+- TOI parser and privacy guardian (`/src/fusion`)
+- TOI Agent Solidarity Kit runtime (`/src/fusion/agent_solidarity_kit.py`)
+- GitHub Pages web interface for TOI agent interaction (`/docs/index.html`)
+
+## Default model
+
+The TOI Agent uses a free open-source model on GitHub Models:
+
+- `azureml/Phi-4-mini-instruct`
+
+## Quick start
+
+1. Create or copy a TOI JSON document from `/templates`.
+2. Validate it against `/schemas/personal-toi.schema.json`.
+3. Open the GitHub Pages UI (`docs/index.html` when published) and provide:
+   - your TOI JSON
+   - your GitHub token with Models access
+   - your prompt
+
+## GitHub Pages interface
+
+The Pages interface is deployed by `.github/workflows/deploy-toi-agent-pages.yml`.
+
+It sends browser requests directly to GitHub Models and applies TOI as system context for each message.
+
+## Privacy note
+
+- TOI preferences are kept in-browser for the current session unless you choose to persist them.
+- Do not commit personal tokens or personal TOI data to this repository.
+
+## License
+
+MIT
