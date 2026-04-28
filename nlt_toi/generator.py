@@ -179,7 +179,17 @@ class TOIDocumentGenerator:
             "author": author,
             "description": description,
         }
-        return cls(PersonalTOI(**{k: v for k, v in data.items() if k != "version"}, version=data["version"]))
+        toi = PersonalTOI(
+            version=data["version"],
+            metadata=data["metadata"],
+            communication=data["communication"],
+            cognitive=data["cognitive"],
+            privacy=data["privacy"],
+            energy_management=data["energy_management"],
+            collaboration=data["collaboration"],
+            accessibility=data["accessibility"],
+        )
+        return cls(toi)
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any], schema_path: Optional[Path] = None) -> "TOIDocumentGenerator":
@@ -198,7 +208,10 @@ class TOIDocumentGenerator:
             :class:`TOIDocumentGenerator` populated from *data*.
         """
         merged = deepcopy(DEFAULTS)
-        # Deep-merge top-level section dicts so callers can supply partial sections
+        # Shallow-merge each top-level section dict with the caller's values.
+        # Nested dicts (e.g. cognitive.sensory_preferences) are replaced wholesale
+        # rather than recursively merged; callers should supply a complete nested
+        # dict if they want to override nested fields.
         for key, value in data.items():
             if key in merged and isinstance(merged[key], dict) and isinstance(value, dict):
                 merged[key] = {**merged[key], **value}

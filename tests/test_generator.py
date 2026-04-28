@@ -310,11 +310,12 @@ class TestCLI:
         assert out.exists()
         assert "# Personal Terms of Interaction" in out.read_text()
 
-    def test_cli_missing_input_file_returns_error(self, capsys):
+    def test_cli_missing_input_file_returns_error(self, tmp_path: Path, capsys):
         """Running CLI with a non-existent --input file returns exit code 1."""
         from nlt_toi.cli import main
 
-        rc = main(["--input", "/tmp/does_not_exist_xyz.json"])
+        missing = tmp_path / "does_not_exist_xyz.json"
+        rc = main(["--input", str(missing)])
         assert rc == 1
 
     def test_cli_unknown_extension_returns_error(self, tmp_path: Path):
