@@ -61,6 +61,8 @@ venv/
 .venv
 pip-log.txt
 pip-delete-this-directory.txt
+*.egg-info/
+.pytest_cache/
 
 # Go
 *.exe
