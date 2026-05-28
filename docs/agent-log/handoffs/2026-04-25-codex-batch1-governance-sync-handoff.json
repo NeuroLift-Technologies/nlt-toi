@@ -8,7 +8,7 @@
     "work_completed": [
       "Cloned the repository into C:\\Users\\joshd\\nlt-repos.",
       "Added or verified baseline governance files.",
-      "Synchronized org governance core from .github-private into the repository.",
+      "Synchronized org governance core from nlt-toi into the repository.",
       "Added the NLT Governance Steward custom agent.",
       "Added the NLT Onboarding Assistant custom agent.",
       "Added the validate-governance workflow."
