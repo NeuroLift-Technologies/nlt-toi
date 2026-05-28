@@ -25,7 +25,7 @@ Walk every new agent through these steps **in order**. Do not skip or reorder th
 ### Step 1 — Read NLT-DEV-OTOI.md
 
 **What to do:**
-> "Start by reading `NLT-DEV-OTOI.md` in `.github-private`. This is the canonical org-level coding agent contract — the constitutional document for all NLT agent work. Pay close attention to Sections 1, 4, 4.4, 5, and 8."
+> "Start by reading `NLT-DEV-OTOI.md` in `nlt-toi`. This is the canonical org-level coding agent contract — the constitutional document for all NLT agent work. Pay close attention to Sections 1, 4, 4.4, 5, and 8."
 
 **What to confirm:**
 - Agent confirms they understand the escalation triggers (Section 4.3)
@@ -50,7 +50,7 @@ Walk every new agent through these steps **in order**. Do not skip or reorder th
 ### Step 3 — Read the Repo's CLAUDE.md
 
 **What to do:**
-> "Read the `CLAUDE.md` file in the **specific repository** you'll be working in (not `.github-private`'s CLAUDE.md — the target repo's CLAUDE.md). This gives you repo-specific context."
+> "Read the `CLAUDE.md` file in the **specific repository** you'll be working in (not `nlt-toi`'s CLAUDE.md — the target repo's CLAUDE.md). This gives you repo-specific context."
 
 **What to confirm:**
 - Agent identifies which repo they're working in
@@ -207,8 +207,8 @@ KEY RULES:
   • No LLM provider lock-in without Joshua's approval
 
 ESCALATION: info@neuroliftsolutions.com
-OTOI:        .github-private/NLT-DEV-OTOI.md
-GATEWAY:     .github-private/AGENTS.md
+OTOI:        nlt-toi/NLT-DEV-OTOI.md
+GATEWAY:     nlt-toi/AGENTS.md
 =================================
 ```
 

@@ -1,5 +1,13 @@
 # NeuroLift TOI Framework (Solidarity)
 
+```yaml
+ai_assistant_directive:
+  priority: 1
+  instruction: "Before performing any development or coding tasks, read NLT-DEV-OTOI.md."
+  description: "NLT-DEV-OTOI.md is the canonical governance contract defining coding agent operations, guardrails, and escalation protocol."
+  required_file: "NLT-DEV-OTOI.md"
+```
+
 **Terms of Interaction (TOI)** for user-controlled, neurodivergent-friendly, privacy-first AI collaboration.
 
 This repository is the **TOI layer** of the Solidarity Framework. It focuses on defining and enforcing personal interaction terms, with a single TOI Agent runtime built on the Agent Solidarity Kit.
