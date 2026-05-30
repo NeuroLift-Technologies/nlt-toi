@@ -32,6 +32,7 @@ export function bytesToBase64Url(bytes: Uint8Array): string {
     while (bits >= 6) {
       bits -= 6;
       out += ALPHABET.charAt((value >>> bits) & 63);
+      value &= (1 << bits) - 1;
     }
   }
   if (bits > 0) {
@@ -65,6 +66,7 @@ export function base64UrlToBytes(input: string): Uint8Array {
     if (bits >= 8) {
       bits -= 8;
       out.push((value >>> bits) & 0xff);
+      value &= (1 << bits) - 1;
     }
   }
   // A leftover group of 6 bits is a dangling character that cannot form a byte.
