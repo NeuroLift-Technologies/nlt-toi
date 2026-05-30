@@ -41,11 +41,11 @@
         },
         "public_key": {
           "type": "string",
-          "minLength": 1
+          "pattern": "^[A-Za-z0-9_-]+$"
         },
         "value": {
           "type": "string",
-          "minLength": 1
+          "pattern": "^[A-Za-z0-9_-]+$"
         }
       },
       "required": [
