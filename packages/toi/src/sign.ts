@@ -21,6 +21,9 @@ import type { ToiDocument, ToiSignature } from "./types.js";
 ed.etc.sha512Sync = (...messages: Uint8Array[]): Uint8Array =>
   sha512(ed.etc.concatBytes(...messages));
 
+/** SPEC §11.1: signature fields are unpadded base64url — no `=` padding, no whitespace. */
+const UNPADDED_BASE64URL = /^[A-Za-z0-9_-]+$/;
+
 /** An Ed25519 key pair. Keys are raw 32-byte seeds / public points. */
 export interface ToiKeyPair {
   /** 32-byte Ed25519 private seed. Keep secret; never write it into a `.toi` file. */
@@ -87,6 +90,9 @@ export function verifyToi(doc: ToiDocument): boolean {
   const publicKeyB64 = raw["public_key"];
   const valueB64 = raw["value"];
   if (typeof publicKeyB64 !== "string" || typeof valueB64 !== "string") return false;
+  // SPEC §11.1: reject padded / whitespaced encodings instead of silently
+  // normalizing them, so non-conforming envelopes do not verify.
+  if (!UNPADDED_BASE64URL.test(publicKeyB64) || !UNPADDED_BASE64URL.test(valueB64)) return false;
 
   let publicKey: Uint8Array;
   let signature: Uint8Array;

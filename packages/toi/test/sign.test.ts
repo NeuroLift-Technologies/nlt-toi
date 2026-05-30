@@ -91,4 +91,13 @@ describe("ed25519 signing", () => {
     expect(() => verifyToi(malformed)).not.toThrow();
     expect(verifyToi(malformed)).toBe(false);
   });
+
+  it("rejects padded or whitespaced base64url in the envelope (SPEC §11.1)", () => {
+    const { privateKey } = generateKeyPair();
+    const signed = signToi(loadValid("minimal.toi"), privateKey);
+    const padded = { ...signed, $signature: { ...signed.$signature!, value: `${signed.$signature!.value}=` } };
+    const spaced = { ...signed, $signature: { ...signed.$signature!, public_key: ` ${signed.$signature!.public_key}` } };
+    expect(verifyToi(padded)).toBe(false);
+    expect(verifyToi(spaced)).toBe(false);
+  });
 });
