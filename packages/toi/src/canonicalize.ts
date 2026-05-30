@@ -15,6 +15,8 @@
  *     `Number::toString` is exactly the numeric form RFC 8785 prescribes.
  *   - NaN / Infinity / -Infinity rejected (not valid JSON).
  *   - Arrays preserve element order; `undefined`/holes encoded as `null`.
+ *   - Values exposing `toJSON()` (e.g. Date) are replaced by its result first,
+ *     matching `JSON.stringify`.
  */
 import { ToiCanonicalizationError } from "./errors.js";
 
@@ -42,6 +44,13 @@ export function canonicalizeToBytes(value: unknown): Uint8Array {
 function writeValue(value: unknown, out: string[]): void {
   if (value === null) {
     out.push("null");
+    return;
+  }
+
+  // Replace values exposing a custom JSON representation (e.g. Date) with that
+  // representation first, exactly as JSON.stringify does.
+  if (typeof (value as { toJSON?: unknown }).toJSON === "function") {
+    writeValue((value as { toJSON: () => unknown }).toJSON(), out);
     return;
   }
 

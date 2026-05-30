@@ -83,4 +83,12 @@ describe("ed25519 signing", () => {
     const swapped = { ...signed, $signature: { ...signed.$signature!, public_key: other.publicKeyBase64Url } };
     expect(verifyToi(swapped)).toBe(false);
   });
+
+  it("returns false (never throws) for malformed base64url in the envelope", () => {
+    const { privateKey } = generateKeyPair();
+    const signed = signToi(loadValid("minimal.toi"), privateKey);
+    const malformed = { ...signed, $signature: { ...signed.$signature!, value: "@@@" } };
+    expect(() => verifyToi(malformed)).not.toThrow();
+    expect(verifyToi(malformed)).toBe(false);
+  });
 });

@@ -77,10 +77,8 @@ export function signToi(doc: ToiDocument, privateKey: Uint8Array): ToiDocument {
 
 /**
  * Verify a document's embedded `$signature` against its canonical payload.
- * Returns `false` for a missing, malformed, or non-matching signature.
- *
- * @throws {ToiSignatureError} only if the verification cannot be attempted
- *   (e.g. the encoded public key / value are not valid base64url).
+ * Fully defensive: returns `false` for a missing, malformed, undecodable, or
+ * non-matching signature, and never throws.
  */
 export function verifyToi(doc: ToiDocument): boolean {
   const raw = (doc as Record<string, unknown>)["$signature"];
@@ -95,8 +93,9 @@ export function verifyToi(doc: ToiDocument): boolean {
   try {
     publicKey = base64UrlToBytes(publicKeyB64);
     signature = base64UrlToBytes(valueB64);
-  } catch (err) {
-    throw new ToiSignatureError("Malformed signature encoding", { cause: err });
+  } catch {
+    // Malformed base64url in the envelope → not verifiable, but not an error.
+    return false;
   }
 
   const payload = canonicalizeToBytes(withoutSignature(doc));

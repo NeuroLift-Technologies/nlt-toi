@@ -49,4 +49,10 @@ describe("RFC 8785 canonicalization", () => {
   it("escapes strings per JSON", () => {
     expect(canonicalize('a"b\\c')).toBe('"a\\"b\\\\c"');
   });
+
+  it("honors toJSON like JSON.stringify (e.g. Date)", () => {
+    const iso = "2026-05-29T00:00:00.000Z";
+    expect(canonicalize(new Date(iso))).toBe(JSON.stringify(iso));
+    expect(canonicalize({ when: new Date(iso) })).toBe(`{"when":${JSON.stringify(iso)}}`);
+  });
 });
