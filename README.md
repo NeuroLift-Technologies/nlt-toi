@@ -124,4 +124,4 @@ It sends browser requests directly to GitHub Models and applies TOI as system co
 
 ## License
 
-MIT
+Apache-2.0 (see [LICENSE](LICENSE))
