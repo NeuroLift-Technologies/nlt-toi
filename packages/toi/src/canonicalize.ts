@@ -44,6 +44,9 @@ export function canonicalizeToBytes(value: unknown): Uint8Array {
 }
 
 function writeValue(value: unknown, out: string[]): void {
+  if (value === undefined) {
+    throw new ToiCanonicalizationError("Cannot canonicalize an undefined value");
+  }
   if (value === null) {
     out.push("null");
     return;
@@ -75,7 +78,6 @@ function writeValue(value: unknown, out: string[]): void {
       throw new ToiCanonicalizationError("Cannot canonicalize a bigint value");
     case "function":
     case "symbol":
-    case "undefined":
       throw new ToiCanonicalizationError(
         `Cannot canonicalize a value of type ${typeof value}`,
       );

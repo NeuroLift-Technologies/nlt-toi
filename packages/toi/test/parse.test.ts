@@ -68,4 +68,10 @@ describe("parse / serialize", () => {
       expect(r.error.issues.some((i) => i.path.includes("communication"))).toBe(true);
     }
   });
+
+  it("rejects malformed signature encodings (SPEC §11.1)", () => {
+    const r = safeParseToi({ ...minimal, $signature: { alg: "ed25519", public_key: "@@@", value: "@@@" } });
+    expect(r.success).toBe(false);
+    if (!r.success) expect(r.error).toBeInstanceOf(ToiValidationError);
+  });
 });

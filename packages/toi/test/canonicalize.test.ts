@@ -63,4 +63,8 @@ describe("RFC 8785 canonicalization", () => {
     }
     expect(() => canonicalize({ nested: new Tagged() })).toThrow(ToiCanonicalizationError);
   });
+
+  it("rejects a top-level undefined value", () => {
+    expect(() => canonicalize(undefined)).toThrow(ToiCanonicalizationError);
+  });
 });
