@@ -1,0 +1,93 @@
+{
+  "handoff_record": {
+    "session_id": "NLT-HND-2026-004-TOI-Standard-Foundation-Pour",
+    "agent_name": "Claude Code",
+    "platform": "Claude Code (Anthropic CLI)",
+    "model": "claude-opus-4-8",
+    "date": "2026-05-29",
+    "repo": "NeuroLift-Technologies/nlt-toi",
+    "branch": "main",
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "directive": "NLT-HND-2026-004 — establish .toi as a real standard file type (foundation pour)",
+    "work_completed": [
+      "Mandatory reconciliation pass: inventoried existing repo, diffed against canonical §4 schema, confirmed via git history (--diff-filter=A) that no prior TypeScript / RFC 8785 / Ed25519 / .toi code ever existed",
+      "Authored normative SPEC.md (RFC 2119 conformance language; file format, reserved $-namespace, content sections, forward-compat, tier precedence, RFC 8785 canonicalization, Ed25519 signatures, security/privacy)",
+      "Built @neurolift/toi TypeScript reference library driven by a single Zod schema (source of truth): types, parser/serializer, validator, RFC 8785 (JCS) canonicalizer, Ed25519 sign/verify, tier precedence resolver, error taxonomy, stable public API (index)",
+      "Generated JSON Schema (draft 2020-12) artifact from the Zod schema: schema/toi-1.0.0.schema.json",
+      "Conformance suite: 51 tests across 5 files, all passing — valid + invalid fixtures, RFC 8785 known-answer tests, deterministic Ed25519 known-answer vector (signed.toi)",
+      "Drafted Josh's personal .toi (test/fixtures/valid/josh-personal.toi) for his approval",
+      "Authored packages/toi/README.md (install, quick start, file format, API reference)",
+      "Deprecated legacy schemas/personal-toi.schema.json IN PLACE (marked deprecated, pointed to new standard; no properties removed, not deleted)",
+      "Extended packages/toi/package.json files array to ship SPEC.md and schema/",
+      "Created .vscode/settings.json mapping *.toi -> JSON + the JSON Schema (local-only; see blockers)"
+    ],
+    "work_in_progress": [],
+    "blockers": [
+      ".vscode/ is gitignored (.gitignore:21) — the editor association will NOT ship to other clones unless a .gitignore exception (!.vscode/settings.json) is added. Surfaced as a decision; not changed unilaterally.",
+      "Package LICENSE files were skipped per Josh's explicit instruction this session — packages/toi/package.json declares \"Apache-2.0\" but no LICENSE text file is present in the package. Needs resolution before publish.",
+      "'Bump to v1.1.0' target is ambiguous — the @neurolift/toi package is a net-new initial release where 1.0.0 is semantically correct; the bump most likely applies to the external NLT-HND-2026-004 directive artifact (not in-repo). Confirm intended target."
+    ],
+    "decisions_made": [
+      "Implementation language: TypeScript + Zod (Josh)",
+      "Media type: application/toi+json (Josh)",
+      "Standard/package license: Apache-2.0 (Josh)",
+      "Personal .toi: drafted by agent for Josh's approval (Josh)",
+      "Legacy schema handled by deprecate-in-place, never overwrite/delete (governance: do not silently overwrite)",
+      "Package version held at 1.0.0 — correct for a net-new initial release; not auto-bumped"
+    ],
+    "decisions_pending": [
+      "Approve or revise test/fixtures/valid/josh-personal.toi",
+      "Root LICENSE MIT -> Apache-2.0 flip (Josh said he will do this later)",
+      "Resolve package LICENSE: add Apache-2.0 LICENSE text, or change the declared license (currently declared Apache-2.0 with no file)",
+      "Approve a .gitignore exception so the .toi editor association ships, or keep it local-only",
+      "Confirm what 'bump to v1.1.0' applies to (external directive artifact vs package)"
+    ],
+    "escalations": [],
+    "reconciliation": {
+      "summary": "The directive presumed existing RFC 8785 / Ed25519 logic to preserve. Git history proves none ever existed — all canonicalization and signing is net-new. No silent overwrite occurred because there was nothing to overwrite. Non-canonical prior shapes (GHCPT bundle, VibeSDK free-text TOIProfile, legacy personal-toi schema) were NOT merged — single source of truth preserved.",
+      "kept": [
+        "packages/toi/src/constants.ts (pre-existing canonical constants, used as-is)",
+        "schemas/personal-toi.schema.json (retained, now annotated deprecated — not deleted)",
+        "Legacy Python framework, docs, nlt-otoi/, .nltotoi/ governance — untouched",
+        "Root LICENSE (MIT) — untouched (flip deferred to Josh)"
+      ],
+      "changed": [
+        "schemas/personal-toi.schema.json — added deprecated:true, $comment, updated title/description to point to the new standard; zero property removals",
+        "packages/toi/package.json — files array extended with SPEC.md and schema/"
+      ],
+      "added": [
+        "packages/toi/SPEC.md (normative standard)",
+        "packages/toi/README.md",
+        "packages/toi/src/{schema,types,parse,tier,canonicalize,sign,b64url,errors,index,constants}.ts",
+        "packages/toi/scripts/{build-schema,make-signed-fixture}.ts",
+        "packages/toi/schema/toi-1.0.0.schema.json (generated)",
+        "packages/toi/test/ — 5 suites + valid/invalid/signed fixtures + josh-personal.toi",
+        ".vscode/settings.json (.toi -> JSON association; local-only, see blockers)"
+      ]
+    },
+    "next_agent_notes": "The Zod schema (packages/toi/src/schema.ts) is the single source of truth; the JSON Schema artifact is generated from it via `npm run build:schema`. Do NOT hand-edit schema/toi-1.0.0.schema.json. The .toi format version ($toi) and the npm package version are independent: the format is 1.0.0 (the standard), the package is 1.0.0 (the impl). signed.toi is a deterministic Ed25519 KAT (fixed non-secret seed) — treat it as a cross-implementation conformance vector; its public_key is ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ. The custom field is the ONLY place non-schema content is permitted; multi-agent/orchestration content belongs in the .otoi layer (nlt-otoi), which is a SEPARATE pour gated on Josh's sign-off — do not auto-proceed.",
+    "files_modified": [
+      "schemas/personal-toi.schema.json (modified — deprecated in place)",
+      "packages/toi/** (added — entire reference library, spec, readme, tests, fixtures, schema, scripts, manifest)",
+      ".vscode/settings.json (added — gitignored, local-only)"
+    ],
+    "tests_run": [
+      "npm test (vitest run) — packages/toi",
+      "npm run typecheck (tsc --noEmit, strict + noUncheckedIndexedAccess)",
+      "npm run build (tsc emit with declarations)",
+      "npm run build:schema (regenerate JSON Schema artifact)"
+    ],
+    "tests_passing": true,
+    "conformance": {
+      "total": 51,
+      "passed": 51,
+      "suites": {
+        "canonicalize.test.ts": 9,
+        "tier.test.ts": 6,
+        "parse.test.ts": 9,
+        "sign.test.ts": 7,
+        "conformance.test.ts": 20
+      }
+    }
+  }
+}

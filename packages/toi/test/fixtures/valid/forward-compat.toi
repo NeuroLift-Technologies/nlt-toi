@@ -1,0 +1,19 @@
+{
+  "$toi": "1.0.0",
+  "$tier": "personal",
+  "$futureReserved": "a v1.0.0 parser must preserve this, not reject it",
+  "identity": {
+    "author": "forward-compat tester",
+    "future_identity_field": "kept verbatim"
+  },
+  "communication": {
+    "tone": "adaptive",
+    "experimental_modality": "haptic"
+  },
+  "v2_section": {
+    "added_in_a_later_minor": true
+  },
+  "custom": {
+    "anything": ["goes", "here", { "nested": true }]
+  }
+}

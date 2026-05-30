@@ -1,0 +1,7 @@
+[
+  {
+    "$toi": "1.0.0",
+    "$tier": "personal",
+    "identity": { "author": "root is an array, not an object" }
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "name": "@neurolift/toi",
+  "version": "1.0.0",
+  "description": "Reference implementation of the .toi (Terms of Interaction) standard file type — NeuroLift Solidarity Framework.",
+  "keywords": [
+    "toi",
+    "terms-of-interaction",
+    "neurodivergent",
+    "ai-governance",
+    "user-agency",
+    "ed25519",
+    "rfc8785",
+    "solidarity-framework"
+  ],
+  "license": "Apache-2.0",
+  "author": "NeuroLift Technologies, LLC",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "SPEC.md",
+    "schema"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:schema": "tsx scripts/build-schema.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@noble/ed25519": "^2.1.0",
+    "@noble/hashes": "^1.4.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

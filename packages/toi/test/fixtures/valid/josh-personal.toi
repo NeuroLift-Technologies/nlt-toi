@@ -1,0 +1,54 @@
+{
+  "$toi": "1.0.0",
+  "$tier": "personal",
+  "$created": "2026-05-29",
+  "$id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+  "$license": "Apache-2.0",
+  "identity": {
+    "author": "Joshua W. Dorsey, Sr.",
+    "organization": "NeuroLift Technologies, LLC",
+    "handle": "JDUB1216"
+  },
+  "cognitive_profile": {
+    "self_described": "ADHD; systems thinker; multi-threaded, interest-driven focus",
+    "processing_style": "associative",
+    "attention_model": "hyperfocus-prone",
+    "scaffolding_preference": "moderate",
+    "energy_model": "variable",
+    "thread_support": true,
+    "hyperfocus_protection": true,
+    "executive_function_support": true
+  },
+  "privacy": {
+    "retention": "user-controlled",
+    "cross_platform_sharing": "never",
+    "training_use": "prohibited",
+    "analytics": "opt-in",
+    "override_rights": "user-only",
+    "data_requests": "honored-immediately"
+  },
+  "agency": {
+    "task_initiation": "ai-may-suggest",
+    "ai_suggestions": "on-request",
+    "interruptibility": "urgent-only",
+    "action_confirmation": "destructive-only",
+    "override_authority": "user-final"
+  },
+  "communication": {
+    "tone": "direct",
+    "verbosity": "concise",
+    "structure": "bullet-points",
+    "language": "en",
+    "jargon_tolerance": "high",
+    "pattern_highlighting": true,
+    "summary_on_return": true,
+    "thread_reconnection": "brief-summary"
+  },
+  "ethical_pillars": [
+    "user-agency",
+    "neurodivergent-first",
+    "privacy-by-default",
+    "no-dependency-patterns",
+    "solidarity-framework"
+  ]
+}

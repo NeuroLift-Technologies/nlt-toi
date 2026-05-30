@@ -1,8 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/JDUB1216/nlt-otoi/schemas/personal-toi.schema.json",
-  "title": "Personal Terms of Interaction (TOI)",
-  "description": "Schema for defining individual user preferences for AI interaction",
+  "title": "Personal Terms of Interaction (TOI) — DEPRECATED (legacy shape)",
+  "description": "DEPRECATED legacy schema. Superseded by the .toi standard file type v1.0.0. This shape (version/metadata/communication/cognitive/privacy) is NOT the canonical .toi format — the standard uses a reserved $-namespace ($toi/$tier/…). Retained for historical reference only; do not author new documents against it. Canonical schema: packages/toi/schema/toi-1.0.0.schema.json. Normative spec: packages/toi/SPEC.md.",
+  "deprecated": true,
+  "$comment": "Superseded by the .toi standard (media type application/toi+json). Left in place per governance — do not silently overwrite. Use packages/toi/schema/toi-1.0.0.schema.json for all new work.",
   "type": "object",
   "required": ["version", "metadata", "communication", "cognitive", "privacy"],
   "properties": {

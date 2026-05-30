@@ -1,0 +1,322 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neurolift.tech/schemas/toi-1.0.0.schema.json",
+  "title": "Terms of Interaction (.toi) v1.0.0",
+  "description": "Canonical JSON Schema for the .toi standard file type (media type application/toi+json). Derived from the @neurolift/toi Zod schema; do not edit by hand.",
+  "type": "object",
+  "properties": {
+    "$toi": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "$tier": {
+      "type": "string",
+      "enum": [
+        "personal",
+        "community",
+        "project"
+      ]
+    },
+    "$created": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}(?:[T ]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?(?:Z|[+-]\\d{2}:\\d{2})?)?$"
+    },
+    "$updated": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}(?:[T ]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?(?:Z|[+-]\\d{2}:\\d{2})?)?$"
+    },
+    "$id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "$license": {
+      "type": "string"
+    },
+    "$signature": {
+      "type": "object",
+      "properties": {
+        "alg": {
+          "type": "string",
+          "const": "ed25519"
+        },
+        "public_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "alg",
+        "public_key",
+        "value"
+      ],
+      "additionalProperties": {}
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "type": "string",
+          "minLength": 1
+        },
+        "handle": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "pronouns": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "author"
+      ],
+      "additionalProperties": {}
+    },
+    "cognitive_profile": {
+      "type": "object",
+      "properties": {
+        "self_described": {
+          "type": "string"
+        },
+        "processing_style": {
+          "type": "string",
+          "enum": [
+            "sequential",
+            "parallel",
+            "associative",
+            "variable"
+          ]
+        },
+        "attention_model": {
+          "type": "string",
+          "enum": [
+            "sustained",
+            "short-bursts",
+            "hyperfocus-prone",
+            "variable"
+          ]
+        },
+        "scaffolding_preference": {
+          "type": "string",
+          "enum": [
+            "minimal",
+            "moderate",
+            "extensive",
+            "step-by-step"
+          ]
+        },
+        "energy_model": {
+          "type": "string",
+          "enum": [
+            "steady",
+            "variable",
+            "spoon-limited",
+            "burst"
+          ]
+        },
+        "thread_support": {
+          "type": "boolean"
+        },
+        "hyperfocus_protection": {
+          "type": "boolean"
+        },
+        "executive_function_support": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "privacy": {
+      "type": "object",
+      "properties": {
+        "retention": {
+          "type": "string",
+          "enum": [
+            "session-only",
+            "short-term",
+            "long-term",
+            "permanent",
+            "user-controlled"
+          ]
+        },
+        "cross_platform_sharing": {
+          "type": "string",
+          "enum": [
+            "never",
+            "explicit-only",
+            "aggregate-only",
+            "research-approved"
+          ]
+        },
+        "training_use": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "explicit-only",
+            "anonymized-only",
+            "permitted"
+          ]
+        },
+        "analytics": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "opt-in",
+            "anonymized-only",
+            "permitted"
+          ]
+        },
+        "override_rights": {
+          "type": "string",
+          "enum": [
+            "user-only",
+            "delegated",
+            "admin-allowed"
+          ]
+        },
+        "data_requests": {
+          "type": "string",
+          "enum": [
+            "honored-immediately",
+            "honored-on-request",
+            "not-supported"
+          ]
+        }
+      },
+      "additionalProperties": {}
+    },
+    "agency": {
+      "type": "object",
+      "properties": {
+        "task_initiation": {
+          "type": "string",
+          "enum": [
+            "user-initiated",
+            "ai-may-suggest",
+            "ai-may-initiate"
+          ]
+        },
+        "ai_suggestions": {
+          "type": "string",
+          "enum": [
+            "none",
+            "on-request",
+            "proactive"
+          ]
+        },
+        "interruptibility": {
+          "type": "string",
+          "enum": [
+            "never",
+            "urgent-only",
+            "always"
+          ]
+        },
+        "action_confirmation": {
+          "type": "string",
+          "enum": [
+            "always",
+            "destructive-only",
+            "never"
+          ]
+        },
+        "override_authority": {
+          "type": "string",
+          "enum": [
+            "user-final",
+            "shared",
+            "ai-advisory"
+          ]
+        }
+      },
+      "additionalProperties": {}
+    },
+    "communication": {
+      "type": "object",
+      "properties": {
+        "tone": {
+          "type": "string",
+          "enum": [
+            "formal",
+            "casual",
+            "professional",
+            "friendly",
+            "direct",
+            "adaptive"
+          ]
+        },
+        "verbosity": {
+          "type": "string",
+          "enum": [
+            "minimal",
+            "concise",
+            "detailed",
+            "comprehensive",
+            "adaptive"
+          ]
+        },
+        "structure": {
+          "type": "string",
+          "enum": [
+            "linear",
+            "hierarchical",
+            "visual",
+            "bullet-points",
+            "narrative"
+          ]
+        },
+        "language": {
+          "type": "string"
+        },
+        "jargon_tolerance": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "moderate",
+            "high"
+          ]
+        },
+        "pattern_highlighting": {
+          "type": "boolean"
+        },
+        "summary_on_return": {
+          "type": "boolean"
+        },
+        "thread_reconnection": {
+          "type": "string",
+          "enum": [
+            "none",
+            "brief-summary",
+            "full-context"
+          ]
+        }
+      },
+      "additionalProperties": {}
+    },
+    "ethical_pillars": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "custom": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {}
+    }
+  },
+  "required": [
+    "$toi",
+    "$tier",
+    "identity"
+  ],
+  "additionalProperties": {}
+}
