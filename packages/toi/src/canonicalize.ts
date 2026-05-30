@@ -17,6 +17,8 @@
  *   - Arrays preserve element order; `undefined`/holes encoded as `null`.
  *   - Values exposing `toJSON()` (e.g. Date) are replaced by its result first,
  *     matching `JSON.stringify`.
+ *   - Non-plain objects (Map, Set, class instances) are rejected — only JSON
+ *     objects, arrays, and primitives are canonicalizable.
  */
 import { ToiCanonicalizationError } from "./errors.js";
 
@@ -42,6 +44,9 @@ export function canonicalizeToBytes(value: unknown): Uint8Array {
 }
 
 function writeValue(value: unknown, out: string[]): void {
+  if (value === undefined) {
+    throw new ToiCanonicalizationError("Cannot canonicalize an undefined value");
+  }
   if (value === null) {
     out.push("null");
     return;
@@ -73,7 +78,6 @@ function writeValue(value: unknown, out: string[]): void {
       throw new ToiCanonicalizationError("Cannot canonicalize a bigint value");
     case "function":
     case "symbol":
-    case "undefined":
       throw new ToiCanonicalizationError(
         `Cannot canonicalize a value of type ${typeof value}`,
       );
@@ -92,6 +96,15 @@ function writeValue(value: unknown, out: string[]): void {
     }
     out.push("]");
     return;
+  }
+
+  // Only plain JSON objects are canonicalizable. Reject Map/Set/class instances
+  // rather than silently emitting their (often empty) enumerable properties.
+  const proto = Object.getPrototypeOf(value);
+  if (proto !== null && proto !== Object.prototype) {
+    throw new ToiCanonicalizationError(
+      "Cannot canonicalize a non-plain object (e.g. Map, Set, or class instance)",
+    );
   }
 
   const obj = value as Record<string, unknown>;

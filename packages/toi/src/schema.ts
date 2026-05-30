@@ -51,10 +51,13 @@ const uuidV4 = z
  * Detached Ed25519 signature envelope. The signed payload is the RFC 8785
  * canonical form of the document with this `$signature` field removed.
  */
+/** SPEC §11.1: signature material is unpadded base64url — no `=` padding, no whitespace. */
+const unpaddedBase64Url = z.string().regex(/^[A-Za-z0-9_-]+$/, "must be unpadded base64url");
+
 export const toiSignatureSchema = z.looseObject({
   alg: z.literal("ed25519"),
-  public_key: z.string().min(1),
-  value: z.string().min(1),
+  public_key: unpaddedBase64Url,
+  value: unpaddedBase64Url,
 });
 
 /** Who authored the preferences. The author field is mandatory. */

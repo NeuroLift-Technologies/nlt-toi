@@ -69,4 +69,11 @@ describe("tier precedence (§5)", () => {
   it("throws on empty input", () => {
     expect(() => resolveToi([])).toThrow();
   });
+
+  it("drops unknown reserved ($-prefixed) keys from the effective view", () => {
+    const eff = resolveToi([{ ...personal, $futureReserved: "leak" } as ToiDocument]) as Record<string, unknown>;
+    expect(eff["$futureReserved"]).toBeUndefined();
+    expect(eff.$tier).toBe("personal");
+    expect(eff.$toi).toBe("1.0.0");
+  });
 });

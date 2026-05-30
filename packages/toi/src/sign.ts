@@ -56,6 +56,9 @@ export function isSigned(doc: unknown): boolean {
  * input is validated first, so signing a malformed document throws.
  *
  * @throws {ToiValidationError} if `doc` is not a valid `.toi` document.
+ * @throws {ToiCanonicalizationError} if `doc` holds values that are not
+ *   representable as canonical JSON (a non-finite number, or a non-plain object
+ *   such as a Map or class instance).
  * @throws {ToiSignatureError} if the cryptographic operation fails.
  */
 export function signToi(doc: ToiDocument, privateKey: Uint8Array): ToiDocument {
@@ -104,11 +107,12 @@ export function verifyToi(doc: ToiDocument): boolean {
     return false;
   }
 
-  const payload = canonicalizeToBytes(withoutSignature(doc));
   try {
+    const payload = canonicalizeToBytes(withoutSignature(doc));
     return ed.verify(signature, payload, publicKey);
   } catch {
-    // Wrong-length key/signature bytes are simply not verifiable.
+    // Un-canonicalizable content or wrong-length key/signature bytes are
+    // simply not verifiable — verifyToi never raises out of this path.
     return false;
   }
 }

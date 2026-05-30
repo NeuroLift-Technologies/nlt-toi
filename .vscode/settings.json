@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.toi": "json"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": ["*.toi"],
+      "url": "./packages/toi/schema/toi-1.0.0.schema.json"
+    }
+  ]
+}

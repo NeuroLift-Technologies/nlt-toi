@@ -100,4 +100,12 @@ describe("ed25519 signing", () => {
     expect(verifyToi(padded)).toBe(false);
     expect(verifyToi(spaced)).toBe(false);
   });
+
+  it("returns false (never throws) when the document cannot be canonicalized", () => {
+    const { privateKey } = generateKeyPair();
+    const signed = signToi(loadValid("minimal.toi"), privateKey);
+    const broken = { ...signed, custom: { bad: Number.POSITIVE_INFINITY } };
+    expect(() => verifyToi(broken as never)).not.toThrow();
+    expect(verifyToi(broken as never)).toBe(false);
+  });
 });
