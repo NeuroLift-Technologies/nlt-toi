@@ -1,13 +1,12 @@
 
-## Architecture Decision: Public vs. Private Governance
+## Architecture Decision: Governance Layers
 
-| Layer | Repo | Audience | Purpose |
+| Layer | Location | Audience | Purpose |
 |---|---|---|---|
-| **Public governance identity** | `NeuroLift-Technologies/nlt-toi` | All agents, public | Solidarity Framework principles, HAIEF attribution, org profile |
-| **Private operational governance** | `NeuroLift-Technologies/nlt-toi` | Internal coding agents only | TOI-OTOI contracts, internal procedures, escalation templates, agent registration |
-| **Repo-level stubs** | Each NLT repo | That repo's agents | Thin pointers to both repos above |
+| **Governance identity & operations** | `NeuroLift-Technologies/nlt-toi` | All NLT agents | Solidarity Framework principles, HAIEF attribution, org profile, TOI-OTOI contracts, internal procedures, escalation templates, agent registration |
+| **Repo-level stubs** | Each NLT repo | That repo's agents | Thin pointers to `nlt-toi` |
 
-The key insight: the **principles** are public (Solidarity Framework is open-source). The **operational machinery** — who escalates what, how agents register, internal handoff formats, credential procedures — is private.
+The key insight: both the **principles** (Solidarity Framework is open-source) and the **operational machinery** — who escalates what, how agents register, internal handoff formats, credential procedures — live together in the single `nlt-toi` repository, with each NLT repo carrying a thin stub that points back to it.
 
 ---
 

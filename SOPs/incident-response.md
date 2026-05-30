@@ -187,7 +187,7 @@ repository (this template already exists inside `nlt-toi`). This catches secrets
 they are ever committed:
 
 ```bash
-# Run from the root of the .github-repository
+# Run from the root of the nlt-toi repository
 cp -r agents-templates/hooks/secrets-scanner .github/hooks/
 chmod +x .github/hooks/secrets-scanner/scan-secrets.sh
 ```
