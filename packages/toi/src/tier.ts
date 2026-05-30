@@ -10,7 +10,7 @@
  * agent mesh honors that view) is out of scope here — that is the `.otoi`
  * layer's job.
  */
-import { TIER_RANK, type ToiTier } from "./constants.js";
+import { TIER_RANK, TOI_RESERVED_PREFIX, type ToiTier } from "./constants.js";
 import { ToiTierError } from "./errors.js";
 import type { ToiDocument } from "./types.js";
 
@@ -29,16 +29,6 @@ export interface ResolveOptions {
   /** Lowest-precedence fallback values, applied only where nothing else set a field. */
   platformDefaults?: Record<string, unknown>;
 }
-
-const RESERVED_KEYS = new Set([
-  "$toi",
-  "$tier",
-  "$created",
-  "$updated",
-  "$id",
-  "$license",
-  "$signature",
-]);
 
 /**
  * Fold one or more single-tier documents into one effective document.
@@ -77,7 +67,9 @@ export function resolveToi(documents: readonly ToiDocument[], options: ResolveOp
 function stripReserved(doc: Record<string, unknown>): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const key of Object.keys(doc)) {
-    if (!RESERVED_KEYS.has(key)) out[key] = doc[key];
+    // Exclude the whole reserved namespace ($-prefixed) — including unknown
+    // future reserved keys — so per-file metadata never leaks into the view.
+    if (!key.startsWith(TOI_RESERVED_PREFIX)) out[key] = doc[key];
   }
   return out;
 }

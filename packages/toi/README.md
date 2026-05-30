@@ -181,4 +181,4 @@ Conformance fixtures live in [`test/fixtures/`](./test/fixtures): valid document
 
 ## License
 
-Apache-2.0 © 2026 NeuroLift Technologies, LLC. See [`LICENSE`](./LICENSE).
+Apache-2.0 © 2026 NeuroLift Technologies, LLC. SPDX-License-Identifier: `Apache-2.0`.

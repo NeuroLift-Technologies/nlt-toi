@@ -40,7 +40,12 @@ export function bytesToBase64Url(bytes: Uint8Array): string {
   return out;
 }
 
-/** Decode a base64url string (padding and surrounding whitespace tolerated). */
+/**
+ * Decode a base64url string. Surrounding whitespace and `=` padding are
+ * tolerated, but the significant characters MUST form a canonical encoding:
+ * a dangling single character (length ≡ 1 mod 4) and non-zero trailing padding
+ * bits are rejected as malformed rather than silently truncated.
+ */
 export function base64UrlToBytes(input: string): Uint8Array {
   const out: number[] = [];
   let value = 0;
@@ -61,6 +66,14 @@ export function base64UrlToBytes(input: string): Uint8Array {
       bits -= 8;
       out.push((value >>> bits) & 0xff);
     }
+  }
+  // A leftover group of 6 bits is a dangling character that cannot form a byte.
+  if (bits >= 6) {
+    throw new Error("Invalid base64url: dangling characters");
+  }
+  // Any trailing padding bits left by a partial group MUST be zero.
+  if (bits > 0 && (value & ((1 << bits) - 1)) !== 0) {
+    throw new Error("Invalid base64url: non-zero padding bits");
   }
   return Uint8Array.from(out);
 }

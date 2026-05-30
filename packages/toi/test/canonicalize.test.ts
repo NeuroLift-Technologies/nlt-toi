@@ -55,4 +55,12 @@ describe("RFC 8785 canonicalization", () => {
     expect(canonicalize(new Date(iso))).toBe(JSON.stringify(iso));
     expect(canonicalize({ when: new Date(iso) })).toBe(`{"when":${JSON.stringify(iso)}}`);
   });
+
+  it("rejects non-plain objects (Map, class instances)", () => {
+    expect(() => canonicalize(new Map([["a", 1]]))).toThrow(ToiCanonicalizationError);
+    class Tagged {
+      kind = "x";
+    }
+    expect(() => canonicalize({ nested: new Tagged() })).toThrow(ToiCanonicalizationError);
+  });
 });
