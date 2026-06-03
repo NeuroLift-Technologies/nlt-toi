@@ -7,7 +7,7 @@ name = "nlt-toi"
 version = "0.2.0"
 description = "NeuroLift TOI Framework — Terms of Interaction generator, parser, and validator"
 readme = "README.md"
-license = {text = "MIT"}
+license = {text = "Apache-2.0"}
 requires-python = ">=3.8"
 keywords = ["toi", "neurodivergent", "privacy", "accessibility", "ai-governance"]
 dependencies = [

@@ -1,0 +1,42 @@
+{
+  "handoff_record": {
+    "session_id": "2026-05-31-readme-update",
+    "agent_name": "Codex / GPT-5.3-Codex",
+    "date": "2026-05-31T23:55:00Z",
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "repo": "NeuroLift-Technologies/nlt-toi",
+    "branch": "work",
+    "work_completed": [
+      "Read required governance and context files before README.md",
+      "Surveyed repository files, docs, Python generator, TypeScript .toi package, and demo runtime before editing README.md",
+      "Updated README.md with current repository orientation, quick starts, docs map, validation commands, privacy notes, and Apache-2.0 license references",
+      "Aligned pyproject.toml license metadata with the Apache-2.0 root LICENSE"
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Documented the GitHub Pages assistant as a provider-specific demo rather than a production provider commitment to preserve no-lock-in guidance",
+      "Kept the README focused on repository orientation instead of changing runtime architecture"
+    ],
+    "decisions_pending": [
+      "Joshua must approve any production deployment, external service provider selection, or runtime architecture change"
+    ],
+    "escalations": [],
+    "next_agent_notes": "If additional README work is requested, verify whether package-specific README files should be added for packages/toi before changing npm package files.",
+    "files_modified": [
+      "README.md",
+      "pyproject.toml",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-05-31-codex-readme-update.json",
+      "docs/agent-log/handoffs/2026-05-31-codex-readme-update.json"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "pytest tests/test_generator.py -v",
+      "cd packages/toi && npm test && npm run build",
+      "bash .nltotoi/scripts/validate-governance.sh && pytest tests/test_generator.py -v && npm test && npm run build (failed at root npm step because root package.json does not exist; corrected with package-scoped npm command)"
+    ],
+    "tests_passing": true,
+    "pr_url": "pending"
+  }
+}
