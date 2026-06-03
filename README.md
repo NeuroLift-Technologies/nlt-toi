@@ -179,7 +179,7 @@ Notes:
 - The governance validation script reports missing or stale required governance
   files; resolve failures before merging governance-related changes.
 - The Python generator depends on `jsonschema`; YAML input support requires the
-  optional `PyYAML` dependency included in the `dev` extra.
+  optional `PyYAML` dependency, which can be installed via the `yaml` extra (e.g., `pip install ".[yaml]"`).
 - The TypeScript package requires Node.js 18 or newer.
 
 ## Contributing
