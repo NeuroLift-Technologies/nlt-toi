@@ -1,8 +1,8 @@
-# CLAUDE.md - AI Assistant Guide for nlt-otoi Repository
+# CLAUDE.md - AI Assistant Guide for nlt-toi Repository
 
-**Repository**: JDUB1216/nlt-otoi
-**Purpose**: NeuroLift OTOI Framework - Open standard for user-controlled AI interaction
-**Last Updated**: 2025-11-27
+**Repository**: NeuroLift-Technologies/nlt-toi
+**Purpose**: NeuroLift TOI Framework - Open standard for user-controlled AI interaction
+**Last Updated**: 2026-05-30
 **Intended Audience**: Claude, Claude Code, and other AI assistants working with this codebase
 
 ---
@@ -16,7 +16,7 @@ When governance scope, architecture, deployment, or policy amendments are unclea
 
 ## EXECUTIVE SUMMARY
 
-You are working in the **NeuroLift OTOI (Orchestrated Terms of Interaction) Framework** repository. This is an open-source project that defines standards for neurodivergent-friendly, privacy-first, user-controlled AI interactions. The repository contains JSON schemas, documentation, templates, and reference implementations for the TOI-OTOI governance framework.
+You are working in the **NeuroLift TOI (Terms of Interaction) Framework** repository. This is an open-source project that defines standards for neurodivergent-friendly, privacy-first, user-controlled AI interactions. The repository contains JSON schemas, documentation, templates, and reference implementations for the TOI layer of the Solidarity Framework.
 
 **Mission**: Enable users (especially neurodivergent individuals) to define exactly how AI systems should interact with them, ensuring respectful, accessible, and privacy-preserving AI collaboration.
 
@@ -33,7 +33,7 @@ You are working in the **NeuroLift OTOI (Orchestrated Terms of Interaction) Fram
 ## REPOSITORY STRUCTURE
 
 ```
-nlt-otoi/
+nlt-toi/
 ├── schemas/                          # JSON Schema definitions (JSON Schema draft 2020-12)
 │   ├── personal-toi.schema.json     # Individual user interaction preferences
 │   └── collaborative-charter.schema.json  # Group/team interaction protocols
@@ -82,7 +82,7 @@ nlt-otoi/
 ├── GEMINI_TOPOGRAPHY.py            # Repository navigation and structure guide
 ├── README.md                        # Project overview and quick start
 ├── CONTRIBUTING.md                  # Contribution guidelines
-├── LICENSE                          # MIT License
+├── LICENSE                          # Apache-2.0 License
 └── .gitignore                       # Git ignore patterns
 ```
 
@@ -191,7 +191,7 @@ No external dependencies in core schemas - intentionally minimal for broad adopt
 ### Validation Standards
 
 - **JSON Schema Version**: `https://json-schema.org/draft/2020-12/schema`
-- **Schema ID Format**: `https://github.com/JDUB1216/nlt-otoi/schemas/{schema-name}.schema.json`
+- **Schema ID Format**: `https://github.com/NeuroLift-Technologies/nlt-toi/schemas/{schema-name}.schema.json`
 - **Versioning**: Semantic versioning (MAJOR.MINOR.PATCH) in schema version fields
 
 ---
@@ -617,7 +617,7 @@ Closes #XX
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JDUB1216/nlt-otoi/schemas/personal-toi.schema.json",
+  "$id": "https://github.com/NeuroLift-Technologies/nlt-toi/schemas/personal-toi.schema.json",
   "title": "Personal Terms of Interaction (TOI)",
   "description": "Schema for defining individual user preferences for AI interaction",
   "type": "object",
@@ -1013,7 +1013,7 @@ Thank you for being part of this mission.
 ---
 
 **Prepared by**: Claude Code (AI Assistant)
-**For**: NeuroLift OTOI Framework Repository
-**Repository**: https://github.com/JDUB1216/nlt-otoi
-**Last Updated**: 2025-11-27
+**For**: NeuroLift TOI Framework Repository
+**Repository**: https://github.com/NeuroLift-Technologies/nlt-toi
+**Last Updated**: 2026-05-30
 **Next Review**: Quarterly or after major framework updates
