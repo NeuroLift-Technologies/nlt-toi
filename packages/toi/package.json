@@ -34,7 +34,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
     "build": "tsc -p tsconfig.json",
     "build:schema": "tsx scripts/build-schema.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
