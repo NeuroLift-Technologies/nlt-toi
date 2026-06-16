@@ -23,7 +23,7 @@ This repo currently carries three closely related tracks:
 1. **Personal TOI generator and legacy schemas** — Python tooling in `nlt_toi/`
    that creates, validates, and renders Personal TOI documents against
    `schemas/personal-toi.schema.json`.
-2. **`.toi` file-format package** — the `@neurolift/toi` TypeScript reference
+2. **`.toi` file-format package** — the `@neurolift-technologies/toi` TypeScript reference
    implementation in `packages/toi/`, including the stable `1.0.0` specification,
    JSON Schema artifact, canonicalization, tier precedence, and Ed25519 signing.
 3. **TOI-governed agent experiments** — Python and GitHub Pages examples in
@@ -197,5 +197,5 @@ record for significant sessions.
 
 ## License
 
-Apache-2.0 (see [LICENSE](LICENSE)). The `@neurolift/toi` package also ships its
+Apache-2.0 (see [LICENSE](LICENSE)). The `@neurolift-technologies/toi` package also ships its
 own Apache-2.0 license copy at `packages/toi/LICENSE`.

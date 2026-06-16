@@ -16,7 +16,7 @@
 ## 1. Status of this document
 
 This is the normative specification for version `1.0.0` of the `.toi` format.
-The reference implementation is the [`@neurolift/toi`](./README.md) TypeScript
+The reference implementation is the [`@neurolift-technologies/toi`](./README.md) TypeScript
 library; where this prose and the implementation disagree, that is a defect in
 one of them and SHOULD be reported.
 

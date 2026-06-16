@@ -1,4 +1,4 @@
-# @neurolift/toi
+# @neurolift-technologies/toi
 
 Reference implementation of the **`.toi`** (Terms of Interaction) standard file type — part of the NeuroLift Solidarity Framework.
 
@@ -17,7 +17,7 @@ This package is the TypeScript reference library: types, validator, parser/seria
 ## Install
 
 ```sh
-npm install @neurolift/toi
+npm install @neurolift-technologies/toi
 ```
 
 Requires Node.js ≥ 18. Ships as ESM with type declarations.
@@ -33,7 +33,7 @@ import {
   generateKeyPair,
   signToi,
   verifyToi,
-} from "@neurolift/toi";
+} from "@neurolift-technologies/toi";
 
 // Parse + validate (accepts a JSON string or an already-parsed object).
 const doc = parseToi(await readFile("me.toi", "utf8"));
@@ -88,7 +88,7 @@ A `.toi` file is a single UTF-8 JSON object. Reserved keys use a `$` prefix; eve
 A person may carry several `.toi` documents at different tiers. Precedence is **`personal` > `community` > `project` > platform defaults**, and `personal` is *terminal*: lower tiers only fill gaps the higher tiers left unset. They never override a value the user set.
 
 ```ts
-import { resolveToi } from "@neurolift/toi";
+import { resolveToi } from "@neurolift-technologies/toi";
 
 const effective = resolveToi([projectDoc, communityDoc, personalDoc], {
   platformDefaults: { communication: { verbosity: "concise" } },
@@ -105,7 +105,7 @@ const effective = resolveToi([projectDoc, communityDoc, personalDoc], {
 Signatures bind a document's **content** to a key. The payload is the RFC 8785 (JCS) canonical UTF-8 serialization of the document with `$signature` removed, so a signature survives reformatting and key reordering.
 
 ```ts
-import { canonicalize, signingPayload, signToi, verifyToi } from "@neurolift/toi";
+import { canonicalize, signingPayload, signToi, verifyToi } from "@neurolift-technologies/toi";
 
 canonicalize({ b: 1, a: 2 }); // => '{"a":2,"b":1}'  (sorted, minimal)
 

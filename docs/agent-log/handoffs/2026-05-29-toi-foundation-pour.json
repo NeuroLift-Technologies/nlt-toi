@@ -12,7 +12,7 @@
     "work_completed": [
       "Mandatory reconciliation pass: inventoried existing repo, diffed against canonical §4 schema, confirmed via git history (--diff-filter=A) that no prior TypeScript / RFC 8785 / Ed25519 / .toi code ever existed",
       "Authored normative SPEC.md (RFC 2119 conformance language; file format, reserved $-namespace, content sections, forward-compat, tier precedence, RFC 8785 canonicalization, Ed25519 signatures, security/privacy)",
-      "Built @neurolift/toi TypeScript reference library driven by a single Zod schema (source of truth): types, parser/serializer, validator, RFC 8785 (JCS) canonicalizer, Ed25519 sign/verify, tier precedence resolver, error taxonomy, stable public API (index)",
+      "Built @neurolift-technologies/toi TypeScript reference library driven by a single Zod schema (source of truth): types, parser/serializer, validator, RFC 8785 (JCS) canonicalizer, Ed25519 sign/verify, tier precedence resolver, error taxonomy, stable public API (index)",
       "Generated JSON Schema (draft 2020-12) artifact from the Zod schema: schema/toi-1.0.0.schema.json",
       "Conformance suite: 51 tests across 5 files, all passing — valid + invalid fixtures, RFC 8785 known-answer tests, deterministic Ed25519 known-answer vector (signed.toi)",
       "Drafted Josh's personal .toi (test/fixtures/valid/josh-personal.toi) for his approval",
@@ -25,7 +25,7 @@
     "blockers": [
       ".vscode/ is gitignored (.gitignore:21) — the editor association will NOT ship to other clones unless a .gitignore exception (!.vscode/settings.json) is added. Surfaced as a decision; not changed unilaterally.",
       "Package LICENSE files were skipped per Josh's explicit instruction this session — packages/toi/package.json declares \"Apache-2.0\" but no LICENSE text file is present in the package. Needs resolution before publish.",
-      "'Bump to v1.1.0' target is ambiguous — the @neurolift/toi package is a net-new initial release where 1.0.0 is semantically correct; the bump most likely applies to the external NLT-HND-2026-004 directive artifact (not in-repo). Confirm intended target."
+      "'Bump to v1.1.0' target is ambiguous — the @neurolift-technologies/toi package is a net-new initial release where 1.0.0 is semantically correct; the bump most likely applies to the external NLT-HND-2026-004 directive artifact (not in-repo). Confirm intended target."
     ],
     "decisions_made": [
       "Implementation language: TypeScript + Zod (Josh)",

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://neurolift.tech/schemas/toi-1.0.0.schema.json",
   "title": "Terms of Interaction (.toi) v1.0.0",
-  "description": "Canonical JSON Schema for the .toi standard file type (media type application/toi+json). Derived from the @neurolift/toi Zod schema; do not edit by hand.",
+  "description": "Canonical JSON Schema for the .toi standard file type (media type application/toi+json). Derived from the @neurolift-technologies/toi Zod schema; do not edit by hand.",
   "type": "object",
   "properties": {
     "$toi": {
