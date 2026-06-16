@@ -21,7 +21,7 @@ const artifact = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
   $id: `https://neurolift.tech/schemas/toi-${TOI_FORMAT_VERSION}.schema.json`,
   title: `Terms of Interaction (.toi) v${TOI_FORMAT_VERSION}`,
-  description: `Canonical JSON Schema for the .toi standard file type (media type ${TOI_MEDIA_TYPE}). Derived from the @neurolift/toi Zod schema; do not edit by hand.`,
+  description: `Canonical JSON Schema for the .toi standard file type (media type ${TOI_MEDIA_TYPE}). Derived from the @neurolift-technologies/toi Zod schema; do not edit by hand.`,
   ...generated,
 };
 

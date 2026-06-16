@@ -1,5 +1,5 @@
 /**
- * `@neurolift/toi` — reference implementation of the `.toi` (Terms of
+ * `@neurolift-technologies/toi` — reference implementation of the `.toi` (Terms of
  * Interaction) standard file type.
  *
  * This module is the stable public API. Everything re-exported here is covered
@@ -7,7 +7,7 @@
  *
  * @example
  * ```ts
- * import { parseToi, signToi, verifyToi, generateKeyPair } from "@neurolift/toi";
+ * import { parseToi, signToi, verifyToi, generateKeyPair } from "@neurolift-technologies/toi";
  *
  * const doc = parseToi(await readFile("me.toi", "utf8"));
  * const { privateKey } = generateKeyPair();
