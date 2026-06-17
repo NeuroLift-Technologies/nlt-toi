@@ -1,9 +1,9 @@
 # NLT-DEV-OTOI — nlt-toi Developer Orchestrated Terms of Interaction
 
-**Document ID:** ORG-DEV-OTOI-1.0.2
-**Scope:** Repository-specific (NeuroLift-Technologies/nlt-toi)
-**Repository:** `NeuroLift-Technologies/nlt-toi`
-**Maintained by:** Joshua W. Dorsey, Sr. — Final authority on all architectural, deployment, and strategic decisions
+**Document ID:** ORG-DEV-OTOI-1.0.2  
+**Scope:** Repository-specific (NeuroLift-Technologies/nlt-toi)  
+**Repository:** `NeuroLift-Technologies/nlt-toi`  
+**Maintained by:** Joshua W. Dorsey, Sr. — Final authority on all architectural, deployment, and strategic decisions  
 **Governed by:** Solidarity Framework | HAIEF | https://elevaitionfoundation.org
 
 ---
