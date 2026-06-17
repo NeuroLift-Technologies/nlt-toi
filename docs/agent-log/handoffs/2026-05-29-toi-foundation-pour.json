@@ -7,7 +7,7 @@
     "date": "2026-05-29",
     "repo": "NeuroLift-Technologies/nlt-toi",
     "branch": "main",
-    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
     "directive": "NLT-HND-2026-004 — establish .toi as a real standard file type (foundation pour)",
     "work_completed": [
       "Mandatory reconciliation pass: inventoried existing repo, diffed against canonical §4 schema, confirmed via git history (--diff-filter=A) that no prior TypeScript / RFC 8785 / Ed25519 / .toi code ever existed",
