@@ -289,7 +289,7 @@ Agents may not self-amend this document.
 |---|---|---|---|
 | ORG-DEV-OTOI-1.0.2 | 2026-06-01 | Joshua W. Dorsey, Sr. | Corrected full-name expansion of TOI and OTOI across all governance documents. TOI = "Terms of Interaction"; OTOI = "Orchestrated Terms of Interaction". Previous incorrect expansion ("Developer Operations & Team Orientation Index") removed from document title and all downstream governance files. Implemented by Claude Code acting on behalf of Joshua W. Dorsey, Sr. |
 | ORG-DEV-OTOI-1.0.1 | 2026-05-28 | Joshua W. Dorsey, Sr. | Added PR-only workflow guardrail (Section 4.4), updated Session Start Protocol to require feature branch (Section 4.1 step 6), clarified commit format to explicitly require PR delivery (Section 4.2). |
-| ORG-DEV-OTOI-1.0.2 | 2026-03-31 | Joshua W. Dorsey, Sr. | Initial release of org-wide governance contract. |
+| ORG-DEV-OTOI-1.0.0 | 2026-03-31 | Joshua W. Dorsey, Sr. | Initial release of org-wide governance contract. |
 
 ---
 
