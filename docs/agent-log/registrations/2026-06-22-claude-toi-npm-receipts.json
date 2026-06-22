@@ -1,0 +1,23 @@
+{
+  "agent_registration": {
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "platform": "Claude Code",
+    "version": "claude-opus-4-8",
+    "session_id": "2026-06-22-claude-toi-npm-receipts",
+    "entry_date": "2026-06-22",
+    "entry_point": "User (Joshua W. Dorsey, Sr.) request: reconcile the local nlt-toi clone with GitHub and keep the orphaned npm-receipt README notes via a PR.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/nlt-toi",
+    "working_branch": "docs/toi-npm-receipts",
+    "capabilities_self_reported": [
+      "Git reconciliation (stash, fast-forward, branch)",
+      "Read and write files",
+      "Create GitHub pull requests"
+    ],
+    "known_limitations": [
+      "The npm-receipt notes were sanitized for this PUBLIC repo: internal valuation-evidence references (E4 / Memo v1.1 / 'public-access pending') were dropped per Joshua's choice, keeping only public-facing facts."
+    ],
+    "preferred_handoff_format": "JSON handoff record per OTOI Section 5"
+  }
+}
