@@ -22,6 +22,8 @@ npm install @neurolift-technologies/toi
 
 Requires Node.js ≥ 18. Ships as ESM with type declarations.
 
+Published on npm as `@neurolift-technologies/toi` (version `1.0.0`, `Apache-2.0`).
+
 ---
 
 ## Quick start
