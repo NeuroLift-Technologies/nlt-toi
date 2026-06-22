@@ -1,6 +1,6 @@
 # Agent Log
 
-This directory stores ORG-DEV-OTOI-1.0.0 governance records.
+This directory contains agent governance records for sessions in this repository.
 
 - `registrations/` contains agent registration records.
 - `handoffs/` contains handoff record files.

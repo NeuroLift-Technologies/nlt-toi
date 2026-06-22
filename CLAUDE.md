@@ -9,7 +9,7 @@
 
 ## GOVERNANCE AUTHORITY
 
-This repository operates under **ORG-DEV-OTOI-1.0.0** (`NLT-DEV-OTOI.md`) governance requirements.
+This repository operates under **ORG-DEV-OTOI-1.0.2** (`NLT-DEV-OTOI.md`) governance requirements.
 When governance scope, architecture, deployment, or policy amendments are unclear, escalate to **Joshua W. Dorsey, Sr.** (`info@neuroliftsolutions.com`) before proceeding.
 
 ---
