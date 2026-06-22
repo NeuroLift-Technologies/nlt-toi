@@ -30,6 +30,6 @@
       "git diff --stat (2 README files, sanitized additions only)"
     ],
     "tests_passing": true,
-    "pr_url": "pending-open"
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/17"
   }
 }
