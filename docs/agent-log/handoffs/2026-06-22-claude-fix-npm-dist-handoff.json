@@ -1,0 +1,55 @@
+{
+  "handoff_record": {
+    "session_id": "claude-code-local-2026-06-22-fix-npm-dist",
+    "agent_name": "Claude Code (Opus 4.8)",
+    "date": "2026-06-22",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/nlt-toi",
+    "branch": "claude/fix-npm-ship-dist-1.0.1",
+    "work_completed": [
+      "Diagnosed that the published @neurolift-technologies/toi@1.0.0 tarball contains no dist/ (only LICENSE/README/SPEC/package.json/schema), so its main/types/exports point at nonexistent files and the package is non-functional on install",
+      "Confirmed the same defect in @neurolift-technologies/otoi@1.0.0 (npm pack shows only package.json), and that otoi imports toi values at runtime — so toi must ship dist before otoi can build/publish",
+      "Bumped packages/toi/package.json to 1.0.1 and recorded the packaging fix under CHANGELOG [Unreleased] > Fixed",
+      "Verified locally: tsc build produces dist/index.js + dist/index.d.ts; vitest 65/65 pass; `npm publish --dry-run` confirms dist/ is included in the 1.0.1 tarball via the prepack build",
+      "Addressed PR #18 review feedback: synced packages/toi/package-lock.json root version 1.0.0 -> 1.0.1 (flagged by Codex), and added publishConfig.access=public to packages/toi/package.json so this scoped package publishes publicly by default (Gemini Code Assist + Codex)"
+    ],
+    "work_in_progress": [
+      "PR #18 open — merge to land the 1.0.1 bump in main"
+    ],
+    "blockers": [],
+    "resolution": [
+      "Maintainer supplied 2FA OTPs. @neurolift-technologies/toi@1.0.1 published (Apache-2.0, tarball includes dist/index.js + dist/index.d.ts).",
+      "@neurolift-technologies/otoi@1.1.0 then built against toi@1.0.1 and published (Apache-2.0, ships LICENSE + dist).",
+      "End-to-end verified: clean `npm install @neurolift-technologies/otoi@1.1.0` resolves otoi + toi with dist, and an ESM import loads successfully."
+    ],
+    "decisions_made": [
+      "Patch bump (1.0.1) — packaging fix only, no API change",
+      "Recorded the fix under CHANGELOG [Unreleased] > Fixed rather than a [1.0.1] section, because this repo's CHANGELOG version line (0.8.0/Unreleased) tracks the framework, separate from the npm package version line"
+    ],
+    "decisions_pending": [
+      "Merge PR #18 to land the 1.0.1 bump in main (publishes are already done)",
+      "Optional: npm deprecate the broken 1.0.0 versions of both packages (needs a 2FA OTP)"
+    ],
+    "escalations": [
+      "Escalated the broken-dist discovery to Joshua, who chose 'fix & publish both'; resolved — both packages published with his 2FA OTPs"
+    ],
+    "next_agent_notes": "Status: both packages published and verified end-to-end; PR #18 is MERGEABLE/CLEAN and ready to merge. PR review (checked inline review comments + reviews + issue comments — not just issue comments): Gemini Code Assist requested publishConfig.access=public, and Codex (posting as JDUB1216) flagged the stale lockfile version; both addressed on this branch. CodeRabbit itself was rate-limited (no review); re-trigger with `@coderabbitai review` if wanted. For future NLT npm publishes: confirm dist/ ships via `npm publish --dry-run`, expect a maintainer 2FA OTP (npm EOTP), and verify with a clean install+import. Optional cleanup: `npm deprecate @neurolift-technologies/toi@1.0.0` and `...otoi@1.0.0` (broken: missing dist). Consider an npm automation token to avoid OTP friction on future publishes.",
+    "files_modified": [
+      "packages/toi/package.json",
+      "packages/toi/package-lock.json",
+      "CHANGELOG.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-22-claude-fix-npm-dist.json",
+      "docs/agent-log/handoffs/2026-06-22-claude-fix-npm-dist-handoff.json"
+    ],
+    "tests_run": [
+      "npm run build (tsc) in packages/toi — dist/index.js + dist/index.d.ts produced",
+      "npm test (vitest) in packages/toi — 65/65 passing",
+      "npm publish --dry-run --access public — tarball includes full dist/ (45 files, 35.1 kB)",
+      "Post-publish: npm view confirms toi@1.0.1 + otoi@1.1.0 (both Apache-2.0); clean `npm install @neurolift-technologies/otoi@1.1.0` + ESM import succeeds end-to-end",
+      "Reviewed ALL PR #18 comment types (inline review comments + reviews + issue comments): Gemini Code Assist (publishConfig.access) and Codex (stale lockfile version) — both addressed; CodeRabbit rate-limited (no review). PR MERGEABLE/CLEAN."
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/18"
+  }
+}
