@@ -1,0 +1,48 @@
+{
+  "handoff_record": {
+    "session_id": "claude-code-local-2026-06-22-fix-npm-dist",
+    "agent_name": "Claude Code (Opus 4.8)",
+    "date": "2026-06-22",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/nlt-toi",
+    "branch": "claude/fix-npm-ship-dist-1.0.1",
+    "work_completed": [
+      "Diagnosed that the published @neurolift-technologies/toi@1.0.0 tarball contains no dist/ (only LICENSE/README/SPEC/package.json/schema), so its main/types/exports point at nonexistent files and the package is non-functional on install",
+      "Confirmed the same defect in @neurolift-technologies/otoi@1.0.0 (npm pack shows only package.json), and that otoi imports toi values at runtime — so toi must ship dist before otoi can build/publish",
+      "Bumped packages/toi/package.json to 1.0.1 and recorded the packaging fix under CHANGELOG [Unreleased] > Fixed",
+      "Verified locally: tsc build produces dist/index.js + dist/index.d.ts; vitest 65/65 pass; `npm publish --dry-run` confirms dist/ is included in the 1.0.1 tarball via the prepack build"
+    ],
+    "work_in_progress": [
+      "npm publish of toi@1.0.1 is BLOCKED on maintainer 2FA (npm EOTP). Registry still shows 1.0.0.",
+      "After toi@1.0.1 is live: build + publish @neurolift-technologies/otoi@1.1.0 (already merged to nlt-otoi main via PR #40, Apache-2.0)"
+    ],
+    "blockers": [
+      "npm publish requires a one-time password (2FA) held by the maintainer (npm user: neurolift-tech). Claude cannot complete the publish."
+    ],
+    "decisions_made": [
+      "Patch bump (1.0.1) — packaging fix only, no API change",
+      "Recorded the fix under CHANGELOG [Unreleased] > Fixed rather than a [1.0.1] section, because this repo's CHANGELOG version line (0.8.0/Unreleased) tracks the framework, separate from the npm package version line"
+    ],
+    "decisions_pending": [
+      "Maintainer to run the OTP-gated publishes for toi@1.0.1 and otoi@1.1.0"
+    ],
+    "escalations": [
+      "Escalated the broken-dist discovery to Joshua, who chose 'fix & publish both'; publish now awaits his 2FA OTP"
+    ],
+    "next_agent_notes": "Publish steps (maintainer, with 2FA): (1) cd nlt-toi/packages/toi && npm publish --access public --otp=<code>; verify `npm view @neurolift-technologies/toi version` -> 1.0.1. (2) In nlt-otoi (main, otoi@1.1.0): cd packages/otoi && rm -rf node_modules && npm install && npm run build && npm publish --access public --otp=<code>; verify `npm view @neurolift-technologies/otoi version license` -> 1.1.0 / Apache-2.0. Optionally `npm deprecate` the broken 1.0.0 versions of both packages. Consider an npm automation token to avoid OTP friction on future publishes.",
+    "files_modified": [
+      "packages/toi/package.json",
+      "CHANGELOG.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-22-claude-fix-npm-dist.json",
+      "docs/agent-log/handoffs/2026-06-22-claude-fix-npm-dist-handoff.json"
+    ],
+    "tests_run": [
+      "npm run build (tsc) in packages/toi — dist/index.js + dist/index.d.ts produced",
+      "npm test (vitest) in packages/toi — 65/65 passing",
+      "npm publish --dry-run --access public — tarball includes full dist/ (45 files, 35.1 kB)"
+    ],
+    "tests_passing": true,
+    "pr_url": ""
+  }
+}

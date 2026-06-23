@@ -29,7 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - N/A
 
 ### Fixed
-- N/A
+- `@neurolift-technologies/toi` npm package republished as **1.0.1** to include the
+  compiled `dist/` (JS + type declarations). The `1.0.0` tarball shipped without
+  `dist/`, so its `main`/`types`/`exports` entry points did not resolve on install;
+  `1.0.1` ships `dist/` via the `prepack` build. This also unblocks
+  `@neurolift-technologies/otoi`, which imports this package at runtime.
 
 ---
 

@@ -1,5 +1,14 @@
 # Active Threads
 
+### Thread: TOI-NPM-DIST-FIX
+**Status:** in review (publish pending maintainer 2FA)
+**Owner:** Claude (Claude Code)
+**Started:** 2026-06-22
+**Last updated:** 2026-06-22
+**Summary:** The published `@neurolift-technologies/toi@1.0.0` tarball shipped without its compiled `dist/`, so its `main`/`types`/`exports` entry points did not resolve on install — the package was non-functional (and it blocked building/publishing `@neurolift-technologies/otoi`, which imports it at runtime). Bumped `packages/toi/package.json` to `1.0.1`; verified the build (tsc), tests (65 passing), and a publish dry-run that confirms `dist/` now ships via the `prepack` build. Delivered via PR off `origin/main`.
+**Blockers:** `npm publish` requires the maintainer's one-time password (2FA, `EOTP`); the actual republish of `toi@1.0.1` must be run by Joshua.
+**Next action:** Maintainer publishes `toi@1.0.1` (`cd packages/toi && npm publish --access public --otp=<code>`), then `@neurolift-technologies/otoi@1.1.0` can be built and published (it consumes `toi` at runtime).
+
 ### Thread: TOI-LICENSE-PKG
 **Status:** resolved
 **Owner:** GHCPT (GitHub Copilot agent)

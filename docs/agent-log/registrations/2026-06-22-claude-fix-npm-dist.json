@@ -1,0 +1,24 @@
+{
+  "agent_registration": {
+    "agent_name": "Claude Code (Opus 4.8)",
+    "platform": "Claude Code CLI",
+    "version": "claude-opus-4-8 (1M context)",
+    "session_id": "claude-code-local-2026-06-22-fix-npm-dist",
+    "entry_date": "2026-06-22",
+    "entry_point": "Spillover from the nlt-otoi Apache-2.0 relicense (PR #40): publishing otoi@1.1.0 surfaced that toi@1.0.0 shipped to npm without dist/. Joshua authorized fixing and republishing both packages.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/nlt-toi",
+    "working_branch": "claude/fix-npm-ship-dist-1.0.1",
+    "capabilities_self_reported": [
+      "npm package build/test/publish diagnostics",
+      "source-verified repository inspection",
+      "git and pull-request workflow automation"
+    ],
+    "known_limitations": [
+      "cannot complete npm publish: account 2FA requires a maintainer one-time password (EOTP)",
+      "no legal interpretation; package-metadata and build changes only"
+    ],
+    "preferred_handoff_format": "structured JSON handoff plus concise PR summary"
+  }
+}
