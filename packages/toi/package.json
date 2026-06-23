@@ -1,6 +1,9 @@
 {
   "name": "@neurolift-technologies/toi",
   "version": "1.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Reference implementation of the .toi (Terms of Interaction) standard file type — NeuroLift Solidarity Framework.",
   "keywords": [
     "toi",
