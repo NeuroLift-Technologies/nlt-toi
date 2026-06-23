@@ -43,6 +43,6 @@
       "npm publish --dry-run --access public — tarball includes full dist/ (45 files, 35.1 kB)"
     ],
     "tests_passing": true,
-    "pr_url": ""
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/18"
   }
 }
