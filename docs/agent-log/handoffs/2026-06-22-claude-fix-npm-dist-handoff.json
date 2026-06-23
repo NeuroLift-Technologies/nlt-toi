@@ -13,11 +13,13 @@
       "Verified locally: tsc build produces dist/index.js + dist/index.d.ts; vitest 65/65 pass; `npm publish --dry-run` confirms dist/ is included in the 1.0.1 tarball via the prepack build"
     ],
     "work_in_progress": [
-      "npm publish of toi@1.0.1 is BLOCKED on maintainer 2FA (npm EOTP). Registry still shows 1.0.0.",
-      "After toi@1.0.1 is live: build + publish @neurolift-technologies/otoi@1.1.0 (already merged to nlt-otoi main via PR #40, Apache-2.0)"
+      "PR #18 open — merge to land the 1.0.1 bump in main"
     ],
-    "blockers": [
-      "npm publish requires a one-time password (2FA) held by the maintainer (npm user: neurolift-tech). Claude cannot complete the publish."
+    "blockers": [],
+    "resolution": [
+      "Maintainer supplied 2FA OTPs. @neurolift-technologies/toi@1.0.1 published (Apache-2.0, tarball includes dist/index.js + dist/index.d.ts).",
+      "@neurolift-technologies/otoi@1.1.0 then built against toi@1.0.1 and published (Apache-2.0, ships LICENSE + dist).",
+      "End-to-end verified: clean `npm install @neurolift-technologies/otoi@1.1.0` resolves otoi + toi with dist, and an ESM import loads successfully."
     ],
     "decisions_made": [
       "Patch bump (1.0.1) — packaging fix only, no API change",

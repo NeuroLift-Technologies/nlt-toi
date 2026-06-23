@@ -1,13 +1,13 @@
 # Active Threads
 
 ### Thread: TOI-NPM-DIST-FIX
-**Status:** in review (publish pending maintainer 2FA)
+**Status:** published — PR in review for merge
 **Owner:** Claude (Claude Code)
 **Started:** 2026-06-22
 **Last updated:** 2026-06-22
-**Summary:** The published `@neurolift-technologies/toi@1.0.0` tarball shipped without its compiled `dist/`, so its `main`/`types`/`exports` entry points did not resolve on install — the package was non-functional (and it blocked building/publishing `@neurolift-technologies/otoi`, which imports it at runtime). Bumped `packages/toi/package.json` to `1.0.1`; verified the build (tsc), tests (65 passing), and a publish dry-run that confirms `dist/` now ships via the `prepack` build. Delivered via PR off `origin/main`.
-**Blockers:** `npm publish` requires the maintainer's one-time password (2FA, `EOTP`); the actual republish of `toi@1.0.1` must be run by Joshua.
-**Next action:** Maintainer publishes `toi@1.0.1` (`cd packages/toi && npm publish --access public --otp=<code>`), then `@neurolift-technologies/otoi@1.1.0` can be built and published (it consumes `toi` at runtime).
+**Summary:** The published `@neurolift-technologies/toi@1.0.0` tarball shipped without its compiled `dist/`, so its `main`/`types`/`exports` entry points did not resolve on install — the package was non-functional (and it blocked building/publishing `@neurolift-technologies/otoi`, which imports it at runtime). Bumped `packages/toi/package.json` to `1.0.1`; verified the build (tsc), tests (65 passing), and a publish dry-run confirming `dist/` ships via the `prepack` build. **`@neurolift-technologies/toi@1.0.1` is now published** (Apache-2.0, tarball includes `dist/`), which unblocked **`@neurolift-technologies/otoi@1.1.0`** — also built and published (Apache-2.0). A clean `npm install @neurolift-technologies/otoi@1.1.0` + ESM import was verified end-to-end. Delivered via PR off `origin/main`.
+**Blockers:** None — both packages published (the maintainer supplied the 2FA OTPs).
+**Next action:** Merge this PR (#18) to land the `1.0.1` bump in `main`. Optional follow-up: `npm deprecate` the broken `toi@1.0.0` and `otoi@1.0.0` so they warn on install (needs an OTP).
 
 ### Thread: TOI-LICENSE-PKG
 **Status:** resolved
