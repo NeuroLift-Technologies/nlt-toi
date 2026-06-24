@@ -1,0 +1,35 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-22-claude-toi-npm-receipts",
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "date": "2026-06-22",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/nlt-toi",
+    "branch": "docs/toi-npm-receipts",
+    "work_completed": [
+      "Reconciled a stale + dirty local clone: local main was 4 commits behind origin/main (the OTOI 1.0.0 -> 1.0.2 governance upgrade, PR #15) and carried uncommitted README edits. Fast-forwarded main to origin/main and moved the edits onto branch docs/toi-npm-receipts.",
+      "Kept the npm distribution-receipt notes, sanitized for this PUBLIC repo: README.md gains an 'npm distribution' subsection and packages/toi/README.md a one-line publication note, stating @neurolift-technologies/toi is on npm at 1.0.0 (Apache-2.0) and @neurolift-technologies/asfdk is not yet published.",
+      "Removed internal valuation-evidence framing (E4, 'Memo v1.1 language', 'public-access pending') that the original draft would have published publicly."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Per Joshua, sanitized the notes rather than committing them verbatim, since nlt-toi is public and the draft referenced the confidential 2026-06-19 valuation evidence pass.",
+      "Delivered via PR off the now-current main (OTOI 1.0.2)."
+    ],
+    "decisions_pending": [],
+    "escalations": [],
+    "next_agent_notes": "Content-only docs change. nlt-toi has an accessibility-check workflow that has flaked on docs PRs in sibling repos (nlt-otoi); if it fails here it is likely the same non-content issue, not these edits. The local clone is now in sync with origin/main (OTOI 1.0.2).",
+    "files_modified": [
+      "README.md",
+      "packages/toi/README.md",
+      "docs/agent-log/registrations/2026-06-22-claude-toi-npm-receipts.json",
+      "docs/agent-log/handoffs/2026-06-22-claude-toi-npm-receipts.json"
+    ],
+    "tests_run": [
+      "git diff --stat (2 README files, sanitized additions only)"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/17"
+  }
+}

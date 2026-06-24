@@ -45,3 +45,12 @@
 **Summary:** Renamed the npm package scope `@neurolift` → `@neurolift-technologies` (to match the GitHub org) across current/canonical references: `packages/toi` `package.json` + lockfile name, `src/index.ts` header/example import, `scripts/build-schema.ts` description, `schema/toi-1.0.0.schema.json` description, package README/SPEC, and the root README. Historical records (the resolved threads above and the dated agent-log handoffs) were intentionally left referencing `@neurolift/toi`. Coordinated with sibling renames in nlt-otoi (`@neurolift-technologies/otoi`) and nlt-redteam (connector deps + OTOI contracts).
 **Blockers:** None in-repo. Publishing `@neurolift-technologies/{toi,otoi}` to npm/GitHub Packages remains a maintainer-owned prerequisite before downstream `npm install`/CI can resolve them.
 **Next action:** Publish the renamed packages under the new scope, then keep package metadata, imports, and docs aligned on future releases.
+
+### Thread: TOI-NPM-RECEIPTS-DOC
+**Status:** resolved
+**Owner:** Claude (Claude Code)
+**Started:** 2026-06-22
+**Last updated:** 2026-06-22
+**Summary:** Documented npm publication status in the READMEs — root README gained an "npm distribution" subsection and `packages/toi/README.md` a one-line note stating `@neurolift-technologies/toi` is published on npm at `1.0.0` (Apache-2.0) and `@neurolift-technologies/asfdk` is not yet published. Recovered from orphaned local edits left over from a 2026-06-19 verification pass; sanitized of internal evidence references since this repo is public. Delivered via PR #17 (branch `docs/toi-npm-receipts`) after fast-forwarding the local clone to current `main` (OTOI 1.0.2).
+**Blockers:** None.
+**Next action:** Keep the npm publication notes accurate as packages are (re)published; update the ASFDK note once it is on npm.

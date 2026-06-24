@@ -129,6 +129,11 @@ Primary references:
 - Source exports: `packages/toi/src/index.ts`
 - Conformance fixtures: `packages/toi/test/fixtures/`
 
+### npm distribution
+
+- `@neurolift-technologies/toi` is published on npm at version `1.0.0` under `Apache-2.0`.
+- `@neurolift-technologies/asfdk` is not yet published to npm.
+
 ## TOI-governed agent demo
 
 The GitHub Pages demo in `docs/` shows one possible TOI-governed assistant UI:
