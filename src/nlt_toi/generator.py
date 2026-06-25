@@ -17,6 +17,7 @@ Neurodivergent-friendly design principles applied here:
 """
 from __future__ import annotations
 
+import importlib.resources
 import json
 from copy import deepcopy
 from dataclasses import dataclass, field, asdict
@@ -37,9 +38,43 @@ try:
 except ImportError:  # pragma: no cover
     _YAML_AVAILABLE = False
 
-# Path to the canonical schema shipped with this repository.
-_REPO_ROOT = Path(__file__).parent.parent
-_DEFAULT_SCHEMA_PATH = _REPO_ROOT / "schemas" / "personal-toi.schema.json"
+# ---------------------------------------------------------------------------
+# Canonical JSON Schema location
+# ---------------------------------------------------------------------------
+# Schemas ship *inside* the installed package (``nlt_toi/schemas/``) — the build
+# backend force-includes the repo-root ``schemas/`` directory there (see
+# pyproject.toml).  When running from a source checkout (src/ layout, where the
+# schemas live at the repo root rather than inside the package), we fall back to
+# that location so the library works without an install.
+_DEFAULT_SCHEMA_NAME = "personal-toi.schema.json"
+
+
+def _read_bundled_schema(filename: str) -> str:
+    """Return the text of a bundled JSON Schema by *filename*.
+
+    Resolution order:
+      1. Package data (``nlt_toi/schemas/<filename>``) — how the schema ships
+         when installed from a wheel or sdist.
+      2. Repo-root ``schemas/<filename>`` — source-checkout fallback so the
+         library works without an install (e.g. ``pytest`` via ``pythonpath``).
+
+    Raises:
+        FileNotFoundError: if the schema cannot be located in either place.
+    """
+    try:
+        ref = importlib.resources.files(__package__) / "schemas" / filename
+        if ref.is_file():
+            return ref.read_text(encoding="utf-8")
+    except (FileNotFoundError, ModuleNotFoundError, NotADirectoryError):
+        pass
+    # Source checkout: src/nlt_toi/generator.py -> parents[2] == repo root.
+    fallback = Path(__file__).resolve().parents[2] / "schemas" / filename
+    if fallback.is_file():
+        return fallback.read_text(encoding="utf-8")
+    raise FileNotFoundError(
+        f"Bundled schema {filename!r} could not be located in package data "
+        f"or at {fallback}."
+    )
 
 # ---------------------------------------------------------------------------
 # Privacy-first, neurodivergent-friendly defaults
@@ -152,7 +187,9 @@ class TOIDocumentGenerator:
         schema_path: Optional[Path] = None,
     ) -> None:
         self._toi = toi
-        self._schema_path = schema_path or _DEFAULT_SCHEMA_PATH
+        # ``None`` means "use the bundled personal-TOI schema"; a caller-supplied
+        # path (``--schema`` / ``from_file(schema_path=...)``) overrides it.
+        self._schema_path = schema_path
         self._schema: Optional[Dict[str, Any]] = None
 
     # ------------------------------------------------------------------
@@ -281,8 +318,11 @@ class TOIDocumentGenerator:
     def _load_schema(self) -> Dict[str, Any]:
         """Load the JSON Schema (cached after first call)."""
         if self._schema is None:
-            with open(self._schema_path, "r", encoding="utf-8") as fh:
-                self._schema = json.load(fh)
+            if self._schema_path is not None:
+                with open(self._schema_path, "r", encoding="utf-8") as fh:
+                    self._schema = json.load(fh)
+            else:
+                self._schema = json.loads(_read_bundled_schema(_DEFAULT_SCHEMA_NAME))
         return self._schema
 
     def validate(self) -> None:
