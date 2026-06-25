@@ -1,0 +1,8 @@
+{
+  "$toi": "1.0.0",
+  "$tier": "personal",
+  "$id": "not-a-valid-uuid",
+  "identity": {
+    "author": "bad id"
+  }
+}

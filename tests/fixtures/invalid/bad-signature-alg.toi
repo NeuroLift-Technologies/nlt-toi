@@ -1,0 +1,12 @@
+{
+  "$toi": "1.0.0",
+  "$tier": "personal",
+  "identity": {
+    "author": "unsupported signature algorithm"
+  },
+  "$signature": {
+    "alg": "rsa-2048",
+    "public_key": "AAAA",
+    "value": "BBBB"
+  }
+}
