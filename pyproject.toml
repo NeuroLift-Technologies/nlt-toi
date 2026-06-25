@@ -1,15 +1,29 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
 
 [project]
 name = "nlt-toi"
 version = "0.2.0"
 description = "NeuroLift TOI Framework — Terms of Interaction generator, parser, and validator"
 readme = "README.md"
-license = {text = "Apache-2.0"}
-requires-python = ">=3.8"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Joshua W. Dorsey, Sr." }]
 keywords = ["toi", "neurodivergent", "privacy", "accessibility", "ai-governance"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+]
 dependencies = [
     "jsonschema>=4.0.0",
 ]
@@ -25,9 +39,37 @@ dev = [
 [project.scripts]
 toi-generator = "nlt_toi.cli:main"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["nlt_toi*", "src*"]
+[project.urls]
+Homepage = "https://github.com/NeuroLift-Technologies/nlt-toi"
+Repository = "https://github.com/NeuroLift-Technologies/nlt-toi"
+Issues = "https://github.com/NeuroLift-Technologies/nlt-toi/issues"
 
-[tool.setuptools.package-data]
-"*" = ["schemas/*.json", "schemas/**/*.json"]
+# --- Build backend (Hatchling) -------------------------------------------------
+# src/ layout: the importable package is src/nlt_toi, published as ``nlt_toi``.
+[tool.hatch.build.targets.wheel]
+packages = ["src/nlt_toi"]
+
+# The JSON Schemas live at the repo root (the CI workflows glob ``schemas/**``),
+# so we force-include them *inside* the wheel as ``nlt_toi/schemas/`` — that is
+# where ``generator._read_bundled_schema`` looks at runtime once installed.
+[tool.hatch.build.targets.wheel.force-include]
+"schemas" = "nlt_toi/schemas"
+
+# Keep the sdist lean: ship ONLY what the package needs, not the sibling
+# TypeScript package (packages/), the nested nlt-otoi/ copy, docs, or CI config.
+# ``only-include`` is restrictive (unlike ``include``, which is additive to
+# Hatchling's default "whole project tree").
+[tool.hatch.build.targets.sdist]
+only-include = [
+    "src",
+    "schemas",
+    "tests",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+]
+
+# --- Test config ---------------------------------------------------------------
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
