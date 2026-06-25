@@ -4,17 +4,27 @@ build-backend = "hatchling.build"
 
 [project]
 name = "nlt-toi"
-version = "0.2.0"
-description = "NeuroLift TOI Framework — Terms of Interaction generator, parser, and validator"
+version = "1.0.0"
+description = "Python reference implementation of the .toi (Terms of Interaction) standard — parse, validate, RFC 8785 canonicalize, and Ed25519 sign/verify."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-authors = [{ name = "Joshua W. Dorsey, Sr." }]
-keywords = ["toi", "neurodivergent", "privacy", "accessibility", "ai-governance"]
+authors = [{ name = "NeuroLift Technologies, LLC" }]
+keywords = [
+    "toi",
+    "terms-of-interaction",
+    "neurodivergent",
+    "ai-governance",
+    "user-agency",
+    "ed25519",
+    "rfc8785",
+    "solidarity-framework",
+]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -22,22 +32,19 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Topic :: Security :: Cryptography",
     "Topic :: Software Development :: Libraries",
 ]
 dependencies = [
-    "jsonschema>=4.0.0",
+    "jsonschema>=4.18.0",
+    "cryptography>=41.0.0",
 ]
 
 [project.optional-dependencies]
-yaml = ["PyYAML>=6.0"]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
-    "PyYAML>=6.0",
 ]
-
-[project.scripts]
-toi-generator = "nlt_toi.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/NeuroLift-Technologies/nlt-toi"
@@ -46,28 +53,14 @@ Issues = "https://github.com/NeuroLift-Technologies/nlt-toi/issues"
 
 # --- Build backend (Hatchling) -------------------------------------------------
 # src/ layout: the importable package is src/nlt_toi, published as ``nlt_toi``.
+# The canonical JSON Schema lives inside the package (src/nlt_toi/schemas/), so it
+# is bundled automatically — no force-include needed.
 [tool.hatch.build.targets.wheel]
 packages = ["src/nlt_toi"]
 
-# The JSON Schemas live at the repo root (the CI workflows glob ``schemas/**``),
-# so we force-include them *inside* the wheel as ``nlt_toi/schemas/`` — that is
-# where ``generator._read_bundled_schema`` looks at runtime once installed.
-[tool.hatch.build.targets.wheel.force-include]
-"schemas" = "nlt_toi/schemas"
-
-# Keep the sdist lean: ship ONLY what the package needs, not the sibling
-# TypeScript package (packages/), the nested nlt-otoi/ copy, docs, or CI config.
-# ``only-include`` is restrictive (unlike ``include``, which is additive to
-# Hatchling's default "whole project tree").
+# Lean sdist: only what the package and its conformance suite need.
 [tool.hatch.build.targets.sdist]
-only-include = [
-    "src",
-    "schemas",
-    "tests",
-    "README.md",
-    "CHANGELOG.md",
-    "LICENSE",
-]
+only-include = ["src", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
 
 # --- Test config ---------------------------------------------------------------
 [tool.pytest.ini_options]

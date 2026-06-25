@@ -1,0 +1,19 @@
+{
+  "$toi": "1.0.0",
+  "$tier": "personal",
+  "$created": "2026-05-29",
+  "$id": "6ba7b810-9dad-41d1-80b4-00c04fd430c8",
+  "$license": "Apache-2.0",
+  "$signature": {
+    "alg": "ed25519",
+    "public_key": "ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ",
+    "value": "9_YgHkljt8dPLYBmuvHjcRHlSaxS0DK06qvJDu2NM3s7tsiqL8zAQjtN-yiwlN5PN7nAFkr_Iz1kMUtrubBAAA"
+  },
+  "identity": {
+    "author": "signed conformance fixture"
+  },
+  "communication": {
+    "tone": "direct",
+    "verbosity": "concise"
+  }
+}

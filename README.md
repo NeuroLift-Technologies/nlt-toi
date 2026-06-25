@@ -8,151 +8,115 @@ ai_assistant_directive:
   required_file: "NLT-DEV-OTOI.md"
 ```
 
-**Terms of Interaction (TOI)** is the NeuroLift standard for user-controlled,
-neurodivergent-friendly, privacy-first AI collaboration.
+**Terms of Interaction (`.toi`)** is the NeuroLift standard for user-controlled,
+neurodivergent-friendly, privacy-first AI collaboration — a small, portable,
+human-editable JSON file that states how AI systems should interact with a person.
 
-This repository is the **TOI layer** of the Solidarity Framework. It contains the
-human-facing templates, machine-readable schemas, reference tools, agent runtime
-experiments, and governance records that let a person state how AI systems should
-interact with them while preserving user agency and data dignity.
+This repository is the **TOI layer** of the Solidarity Framework. It ships two
+**reference implementations of the same `.toi` v1.0.0 standard** — one in Python
+(`nlt-toi`) and one in TypeScript (`@neurolift-technologies/toi`) — plus the
+human-facing templates, governance records, and runtime experiments.
+
+> The Python library is a faithful port of the TypeScript reference: the on-disk
+> format, RFC 8785 canonicalization, and Ed25519 signature envelope are identical,
+> so **a document signed by one implementation verifies in the other.**
 
 ## Repository orientation
 
-This repo currently carries three closely related tracks:
-
-1. **Personal TOI generator and legacy schemas** — Python tooling in `nlt_toi/`
-   that creates, validates, and renders Personal TOI documents against
-   `schemas/personal-toi.schema.json`.
-2. **`.toi` file-format package** — the `@neurolift-technologies/toi` TypeScript reference
-   implementation in `packages/toi/`, including the stable `1.0.0` specification,
-   JSON Schema artifact, canonicalization, tier precedence, and Ed25519 signing.
+1. **`.toi` Python reference library** — `nlt_toi/` (`src/nlt_toi/`): parse,
+   validate, RFC 8785 canonicalize, tier-precedence resolve, and Ed25519
+   sign/verify. Published to PyPI as `nlt-toi`.
+2. **`.toi` TypeScript reference library** — `packages/toi/`: the normative
+   reference, the `1.0.0` specification (`SPEC.md`), the JSON Schema artifact, and
+   the conformance fixtures. Published to npm as `@neurolift-technologies/toi`.
 3. **TOI-governed agent experiments** — Python and GitHub Pages examples in
-   `src/fusion/` and `docs/` that demonstrate how TOI can be applied as runtime
-   context for an assistant.
+   `src/fusion/` and `docs/` demonstrating TOI as runtime context for an assistant.
 
 The governance files at the repository root (`AGENTS.md`, `NLT-DEV-OTOI.md`,
 `nltotoi.json`, and `docs/active-threads.md`) are part of the working system, not
-incidental documentation. Coding agents must follow them before changing code or
-docs.
+incidental documentation. Coding agents must follow them before changing code or docs.
 
 ## What is included
 
 | Area | Paths | Purpose |
 | --- | --- | --- |
 | Governance | `AGENTS.md`, `NLT-DEV-OTOI.md`, `nltotoi.json`, `.nltotoi/`, `SOPs/`, `templates/` | Agent operating rules, escalation paths, handoff templates, and governance validation. |
-| Personal TOI schemas/templates | `schemas/`, `templates/`, `examples/` | JSON Schemas, Markdown templates, and example TOI/charter documents. |
-| Python generator | `nlt_toi/`, `tests/`, `pyproject.toml` | `toi-generator` CLI and library for generating, rendering, and validating Personal TOI documents. |
-| Fusion runtime examples | `src/fusion/`, `docs/` | TOI parser, privacy guardian, OTOI orchestrator, Agent Solidarity Kit prototype, and browser demo. |
-| `.toi` TypeScript package | `packages/toi/` | Stable `.toi` specification, TypeScript parser/schema/types, canonicalization, signing, and conformance tests. |
-| Contributor docs | `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CHANGELOG.md`, `docs/development-process.md` | Community expectations, security reporting, changelog, and CI runbooks. |
-| Historical/nested materials | `nlt-otoi/` | Earlier OTOI project structure retained for templates, guides, validators, and reference context. |
+| `.toi` Python library | `src/nlt_toi/`, `tests/`, `pyproject.toml` | Python reference implementation: parse/validate/canonicalize/sign/verify/resolve, with the npm conformance fixtures. |
+| `.toi` TypeScript library | `packages/toi/` | Normative reference: `.toi` specification, parser/schema/types, canonicalization, signing, and conformance tests. |
+| Schemas / templates | `schemas/`, `templates/`, `examples/` | JSON Schemas, Markdown templates, and example documents. |
+| Fusion runtime examples | `src/fusion/`, `docs/` | TOI parser, privacy guardian, OTOI orchestrator prototype, and browser demo. |
+| Contributor docs | `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CHANGELOG.md` | Community expectations, security reporting, changelog, and CI runbooks. |
 
-## Quick start: Python Personal TOI generator
-
-Install the development package from the repository root:
+## Quick start: `nlt-toi` (Python)
 
 ```bash
-pip install -e ".[dev]"
+pip install nlt-toi
 ```
-
-Generate a TOI with defaults and print Markdown to stdout:
-
-```bash
-toi-generator --author "alice" --description "My daily coding TOI"
-```
-
-Answer accessible prompts and write Markdown to a file:
-
-```bash
-toi-generator --interactive --output my-toi.md
-```
-
-Load preferences from JSON or YAML and render another format:
-
-```bash
-toi-generator --input preferences.json --format json --output my-toi.json
-toi-generator --input preferences.yaml --output my-toi.md
-```
-
-Validate an existing Personal TOI document against the bundled schema:
-
-```bash
-toi-generator --input my-toi.json --validate
-```
-
-### Python library usage
 
 ```python
-from nlt_toi import TOIDocumentGenerator
+from nlt_toi import (
+    parse_toi, safe_parse_toi, serialize_toi,
+    canonicalize, generate_key_pair, sign_toi, verify_toi,
+    resolve_toi,
+)
 
-# Generate from privacy-first defaults.
-gen = TOIDocumentGenerator.from_defaults(author="alice")
-print(gen.to_markdown())
+# Parse + validate (accepts a JSON string or an already-parsed dict).
+doc = parse_toi('''
+{
+  "$toi": "1.0.0",
+  "$tier": "personal",
+  "identity": { "author": "alice" },
+  "communication": { "tone": "direct", "verbosity": "concise" }
+}
+''')
 
-# Generate from a dict. Required fields can be provided while defaults fill the rest.
-gen = TOIDocumentGenerator.from_dict({
-    "version": "1.0.0",
-    "metadata": {"created": "...", "updated": "...", "author": "bob"},
-    "communication": {"style": "friendly", "directness": "direct"},
-    "cognitive": {"processing_time": "flexible", "information_structure": "bullet-points"},
-    "privacy": {"data_retention": "session-only", "sharing_consent": "never"},
-})
-gen.validate()  # raises jsonschema.ValidationError if invalid
-print(gen.to_json())
+# Sign and verify. The Ed25519 signature is detached over the canonical payload
+# (the document with $signature removed) and carried back in the $signature key.
+keys = generate_key_pair()
+signed = sign_toi(doc, keys.private_key)
+assert verify_toi(signed) is True
 
-# Load from a file and save as Markdown.
-gen = TOIDocumentGenerator.from_file("preferences.json")
-gen.save("my-toi.md", fmt="markdown")
+# RFC 8785 canonical form — the exact bytes that get signed.
+print(canonicalize(doc))
+
+# Resolve precedence: personal > community > project > platform defaults.
+project_doc = parse_toi('{"$toi":"1.0.0","$tier":"project","identity":{"author":"acme"}}')
+community_doc = parse_toi('{"$toi":"1.0.0","$tier":"community","identity":{"author":"team"}}')
+personal_doc = doc  # the personal-tier document above
+effective = resolve_toi([project_doc, community_doc, personal_doc])
 ```
 
-## Quick start: `.toi` TypeScript reference package
+Non-throwing parsing is available via `safe_parse_toi`, which returns a
+`SafeParseResult` (`.success`, `.data`, `.error`) instead of raising.
 
-The `packages/toi/` workspace is the normative reference implementation for the
-stable `.toi` file format.
+The public API mirrors `@neurolift-technologies/toi` (in `snake_case`):
+`parse_toi`/`safe_parse_toi`/`is_toi`/`serialize_toi`, `canonicalize`/
+`canonicalize_to_bytes`, `generate_key_pair`/`sign_toi`/`verify_toi`/`is_signed`/
+`signing_payload`, and `resolve_toi`/`sort_by_precedence`/`compare_tier`.
+
+## Quick start: `@neurolift-technologies/toi` (TypeScript)
 
 ```bash
 cd packages/toi
-npm install
-npm test
-npm run build
+npm install && npm test && npm run build
 ```
 
-Use it to parse and validate `.toi` files, preserve forward-compatible unknown
-keys, apply tier precedence (`personal`, `community`, `project`), canonicalize
-JSON with RFC 8785 semantics, and sign/verify documents with detached Ed25519
-signatures.
-
-Primary references:
+Primary references for the standard:
 
 - Specification: `packages/toi/SPEC.md`
 - Generated JSON Schema: `packages/toi/schema/toi-1.0.0.schema.json`
 - Source exports: `packages/toi/src/index.ts`
-- Conformance fixtures: `packages/toi/test/fixtures/`
-
-### npm distribution
-
-- `@neurolift-technologies/toi` is published on npm at version `1.0.0` under `Apache-2.0`.
-- `@neurolift-technologies/asfdk` is not yet published to npm.
+- Conformance fixtures: `packages/toi/test/fixtures/` (the Python library is tested
+  against this same fixture set)
 
 ## TOI-governed agent demo
 
-The GitHub Pages demo in `docs/` shows one possible TOI-governed assistant UI:
-
-1. Provide a TOI JSON document.
-2. Provide a model access token for the demo provider.
-3. Send a prompt.
-4. The page injects the TOI as system context and displays the response.
-
-The current demo code is intentionally small and provider-specific so it is easy
-to inspect. It is **not** a production deployment pattern and should not be read
-as a provider commitment. External service choices, production deployment, and
-architecture decisions require explicit approval under `NLT-DEV-OTOI.md`.
-
-Privacy expectations for the demo:
-
-- Personal tokens and TOI data should never be committed to this repository.
-- Browser sessions should be treated as sensitive when testing personal TOI data.
-- Production use needs a human-reviewed privacy, security, and provider plan.
+The GitHub Pages demo in `docs/` shows one possible TOI-governed assistant UI: it
+injects a TOI JSON document as system context for a prompt. The demo code is
+intentionally small and provider-specific so it is easy to inspect. It is **not** a
+production deployment pattern. External service choices, production deployment, and
+architecture decisions require explicit approval under `NLT-DEV-OTOI.md`. Personal
+tokens and TOI data must never be committed to this repository.
 
 ## Documentation map
 
@@ -161,18 +125,14 @@ Privacy expectations for the demo:
 - Best practices: `docs/best-practices.md`
 - NeuroLift multi-agent integration playbook: `docs/neurolift-integration.md`
 - Development process and CI runbooks: `docs/development-process.md`
-- Accessibility context: `nlt-otoi/docs/accessibility/neurodivergent-support.md`
-- Platform integration examples: `nlt-otoi/docs/guides/platform-integration.md`
 
 ## Development and validation
 
-Run the checks relevant to the area you changed:
-
 ```bash
-# Python generator tests
-pytest tests/test_generator.py -v
+# Python .toi library tests (uses the npm conformance fixtures)
+pytest
 
-# TypeScript package tests
+# TypeScript reference tests
 cd packages/toi && npm test && npm run build
 
 # Governance file validation
@@ -181,26 +141,20 @@ bash .nltotoi/scripts/validate-governance.sh
 
 Notes:
 
+- The Python library depends on `jsonschema` (validation) and `cryptography`
+  (Ed25519). It targets Python 3.9+.
 - The governance validation script reports missing or stale required governance
   files; resolve failures before merging governance-related changes.
-- The Python generator depends on `jsonschema`; YAML input support requires the
-  optional `PyYAML` dependency, which can be installed via the `yaml` extra (e.g., `pip install ".[yaml]"`).
 - The TypeScript package requires Node.js 18 or newer.
 
 ## Contributing
 
-Start with `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md`.
-
-Coding agents must additionally read, in order:
-
-1. `NLT-DEV-OTOI.md`
-2. `CLAUDE.md`
-3. `docs/active-threads.md`
-
-Then self-register, avoid overwriting active peer work, and leave a handoff
-record for significant sessions.
+Start with `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md`. Coding agents
+must additionally read, in order: `NLT-DEV-OTOI.md`, `CLAUDE.md`,
+`docs/active-threads.md`, then self-register and leave a handoff record for
+significant sessions.
 
 ## License
 
-Apache-2.0 (see [LICENSE](LICENSE)). The `@neurolift-technologies/toi` package also ships its
-own Apache-2.0 license copy at `packages/toi/LICENSE`.
+Apache-2.0 (see [LICENSE](LICENSE)). The `@neurolift-technologies/toi` package also
+ships its own Apache-2.0 license copy at `packages/toi/LICENSE`.
