@@ -18,14 +18,22 @@ from .errors import ToiTierError
 from .parse import ToiDocument
 
 
+def _tier_rank(tier: str) -> int:
+    """Numeric rank for *tier*, raising the library's own error for unknown tiers."""
+    try:
+        return TIER_RANK[tier]
+    except KeyError as exc:
+        raise ToiTierError(f"Unknown tier: {tier!r}") from exc
+
+
 def compare_tier(a: str, b: str) -> int:
     """Compare two tiers by precedence. Negative means *a* outranks *b*."""
-    return TIER_RANK[a] - TIER_RANK[b]
+    return _tier_rank(a) - _tier_rank(b)
 
 
 def sort_by_precedence(documents: Sequence[ToiDocument]) -> List[ToiDocument]:
     """Return a copy of *documents* ordered highest-precedence first."""
-    return sorted(documents, key=lambda d: TIER_RANK[d["$tier"]])
+    return sorted(documents, key=lambda d: _tier_rank(d["$tier"]))
 
 
 def resolve_toi(
@@ -66,12 +74,16 @@ def _strip_reserved(doc: Mapping[str, Any]) -> Dict[str, Any]:
 
 
 def _fill_into(target: Dict[str, Any], source: Mapping[str, Any]) -> None:
-    """Copy keys from *source* into *target* without overwriting set leaves."""
+    """Copy keys from *source* into *target* without overwriting set leaves.
+
+    JSON ``null`` (Python ``None``) is a *set leaf*, not "missing": the reference
+    implementation only skips JS ``undefined`` (which has no Python equivalent —
+    an unset field is simply an absent key). So a higher tier that sets a field to
+    ``null`` keeps it, and a present key is never refilled by a lower tier.
+    """
     for key, source_value in source.items():
-        if source_value is None:
-            continue
         target_value = target.get(key)
         if isinstance(target_value, dict) and isinstance(source_value, dict):
             _fill_into(target_value, source_value)
-        elif key not in target or target[key] is None:
+        elif key not in target:
             target[key] = copy.deepcopy(source_value)

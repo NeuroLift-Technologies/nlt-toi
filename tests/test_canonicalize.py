@@ -47,6 +47,20 @@ def test_matches_ecmascript_number_serialization():
     assert canonicalize(100) == "100"
 
 
+def test_ecmascript_decimal_formatting_for_signed_payloads():
+    # JCS/ECMAScript decimal form (NOT Python repr's "1e-06" / zero-padded exps).
+    # These must match the TypeScript reference byte-for-byte, or signatures over
+    # numeric `custom` values would not interoperate.
+    assert canonicalize(0.000001) == "0.000001"   # repr would give "1e-06"
+    assert canonicalize(1e-7) == "1e-7"           # repr would give "1e-07"
+    assert canonicalize(1e-6) == "0.000001"
+    assert canonicalize(123.456) == "123.456"
+    assert canonicalize(1e20) == "100000000000000000000"
+    assert canonicalize(-1.5e-8) == "-1.5e-8"
+    # Inside a custom object, as a real .toi would carry it.
+    assert canonicalize({"custom": {"threshold": 0.000001}}) == '{"custom":{"threshold":0.000001}}'
+
+
 def test_emits_utf8_bytes():
     text = '{"ä":1}'
     data = canonicalize_to_bytes({"ä": 1})

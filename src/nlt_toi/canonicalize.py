@@ -15,20 +15,24 @@ Rules implemented (mirroring the reference TypeScript implementation):
     primitives are canonicalizable; anything else (``set``, ``bytes``, class
     instances, …) is rejected.
 
-Note: ``.toi`` documents contain no numeric fields, so number formatting is
-exercised only by unit tests; the implementation matches ECMAScript for the
-integer and common float cases the format and its conformance suite cover.
+Note: the schema's named fields are non-numeric, but the open ``custom`` section
+may hold arbitrary JSON numbers, so number formatting must (and does) match
+ECMAScript ``Number::toString`` for byte-for-byte signature parity with the
+TypeScript reference.
 """
 from __future__ import annotations
 
 import json
 import math
+from decimal import Decimal
 from typing import Any, List, Mapping, Sequence, Union
 
 from .errors import ToiCanonicalizationError
 
 #: A JSON value accepted by the canonicalizer.
 JsonValue = Union[None, bool, int, float, str, Sequence["JsonValue"], Mapping[str, "JsonValue"]]
+
+__all__ = ["JsonValue", "canonicalize", "canonicalize_to_bytes"]
 
 
 def canonicalize(value: Any) -> str:
@@ -101,16 +105,31 @@ def _utf16_code_units(s: str) -> bytes:
 
 
 def _format_number(value: float) -> str:
-    """ECMAScript ``Number::toString`` form for a finite float."""
+    """Serialize a finite float in the ECMAScript ``Number::toString`` form.
+
+    RFC 8785 §3.2.2.3 mandates this exact serialization, so it must match the
+    TypeScript reference byte-for-byte — Python's ``repr`` does not (it renders
+    ``0.000001`` as ``"1e-06"`` and zero-pads exponents). Implemented from
+    ECMA-262 ``Number::toString`` using the shortest round-tripping digits.
+    """
     if not math.isfinite(value):
         raise ToiCanonicalizationError(f"Cannot canonicalize non-finite number: {value}")
     if value == 0:
         return "0"  # collapses -0.0 to "0", as ECMAScript does
-    if value.is_integer() and abs(value) < 1e21:
-        return str(int(value))
-    text = repr(value)
-    if "e" in text:
-        mantissa, exponent = text.split("e")
-        exp = int(exponent)
-        text = f"{mantissa}e{'+' if exp >= 0 else '-'}{abs(exp)}"
-    return text
+    sign = "-" if value < 0 else ""
+    # Shortest decimal that round-trips, decomposed into significant digits + exponent.
+    digits_tuple, exponent = Decimal(repr(abs(value))).normalize().as_tuple()[1:]
+    digits = "".join(str(d) for d in digits_tuple)
+    k = len(digits)          # number of significant digits
+    n = exponent + k         # position of the decimal point (ECMA-262 §6.1.6.1.20)
+    if k <= n <= 21:
+        return sign + digits + "0" * (n - k)
+    if 0 < n <= 21:
+        return sign + digits[:n] + "." + digits[n:]
+    if -6 < n <= 0:
+        return sign + "0." + "0" * (-n) + digits
+    # Exponential form.
+    exp = n - 1
+    exp_sign = "+" if exp >= 0 else "-"
+    mantissa = digits if k == 1 else digits[0] + "." + digits[1:]
+    return f"{sign}{mantissa}e{exp_sign}{abs(exp)}"

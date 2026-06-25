@@ -70,7 +70,8 @@ doc = parse_toi('''
 }
 ''')
 
-# Sign and verify with a detached Ed25519 signature.
+# Sign and verify. The Ed25519 signature is detached over the canonical payload
+# (the document with $signature removed) and carried back in the $signature key.
 keys = generate_key_pair()
 signed = sign_toi(doc, keys.private_key)
 assert verify_toi(signed) is True
@@ -79,6 +80,9 @@ assert verify_toi(signed) is True
 print(canonicalize(doc))
 
 # Resolve precedence: personal > community > project > platform defaults.
+project_doc = parse_toi('{"$toi":"1.0.0","$tier":"project","identity":{"author":"acme"}}')
+community_doc = parse_toi('{"$toi":"1.0.0","$tier":"community","identity":{"author":"team"}}')
+personal_doc = doc  # the personal-tier document above
 effective = resolve_toi([project_doc, community_doc, personal_doc])
 ```
 

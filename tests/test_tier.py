@@ -71,6 +71,24 @@ def test_throws_on_empty_input():
         resolve_toi([])
 
 
+def test_unknown_tier_raises_tier_error():
+    with pytest.raises(ToiTierError):
+        compare_tier("personal", "bogus")
+
+
+def test_explicit_null_is_a_terminal_leaf_not_missing():
+    # A higher tier setting a field to JSON null must win; a lower tier must NOT
+    # refill it (only an absent key is gap-filled). Mirrors the TS reference,
+    # which skips `undefined` but preserves `null`.
+    personal = {"$toi": "1.0.0", "$tier": "personal", "identity": {"author": "a"}, "custom": {"x": None}}
+    project = {"$toi": "1.0.0", "$tier": "project", "identity": {"author": "p"}, "custom": {"x": "fallback"}}
+    eff = resolve_toi([project, personal])
+    assert eff["custom"]["x"] is None  # personal's explicit null is terminal
+    # platform defaults likewise must not overwrite the explicit null
+    eff2 = resolve_toi([personal], platform_defaults={"custom": {"x": "default"}})
+    assert eff2["custom"]["x"] is None
+
+
 def test_drops_unknown_reserved_keys_from_effective_view():
     eff = resolve_toi([{**PERSONAL, "$futureReserved": "leak"}])
     assert "$futureReserved" not in eff
