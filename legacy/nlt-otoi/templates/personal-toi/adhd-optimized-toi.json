@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "version": "v1.0",
+    "created_date": "2025-01-06T00:00:00Z",
+    "last_updated": "2025-01-06T00:00:00Z",
+    "user_id": "adhd-user-template",
+    "tags": ["adhd", "neurodivergent", "optimized", "template"]
+  },
+  "user_profile": {
+    "cognitive_patterns": {
+      "attention_patterns": {
+        "hyperfocus_capability": true,
+        "context_switching_cost": "high",
+        "interest_driven": true,
+        "multi_threading": true
+      },
+      "processing_speeds": {
+        "variable_speed": true,
+        "default_speed": "medium",
+        "acceleration_triggers": [
+          "high_interest_topics",
+          "visual_organization",
+          "clear_structure",
+          "immediate_feedback",
+          "practical_examples"
+        ]
+      },
+      "memory_preferences": {
+        "external_memory": true,
+        "visual_organization": true,
+        "structured_approach": true
+      }
+    },
+    "communication_style": {
+      "directness": "direct",
+      "detail_level": "moderate",
+      "format_preferences": ["text", "visual"]
+    }
+  },
+  "interaction_preferences": {
+    "response_style": {
+      "tone": "encouraging",
+      "length": "moderate",
+      "structure": {
+        "use_headings": true,
+        "use_bullets": true,
+        "use_examples": true,
+        "use_visuals": true
+      }
+    },
+    "task_management": {
+      "break_down_tasks": true,
+      "provide_progress_tracking": true,
+      "suggest_priorities": true,
+      "remind_about_deadlines": true,
+      "adapt_to_energy_levels": true
+    },
+    "learning_support": {
+      "explain_concepts": true,
+      "provide_context": true,
+      "use_analogies": true,
+      "repeat_important_points": true
+    }
+  },
+  "data_governance": {
+    "data_retention": {
+      "conversation_history": "7_days",
+      "personal_information": "session_only",
+      "learning_data": "30_days"
+    },
+    "data_usage": {
+      "improve_responses": true,
+      "personalize_experience": true,
+      "share_with_other_ais": false,
+      "analytics_and_research": false
+    },
+    "privacy_level": "high"
+  },
+  "accessibility_needs": {
+    "cognitive_accessibility": {
+      "reduce_cognitive_load": true,
+      "provide_structure": true,
+      "use_clear_language": true,
+      "provide_multiple_formats": true
+    },
+    "sensory_accessibility": {
+      "visual_preferences": {
+        "high_contrast": false,
+        "large_text": false,
+        "minimal_visual_clutter": true
+      },
+      "auditory_preferences": {
+        "audio_descriptions": false,
+        "text_to_speech": false
+      }
+    },
+    "motor_accessibility": {
+      "keyboard_navigation": true,
+      "voice_commands": false,
+      "gesture_alternatives": true
+    }
+  },
+  "ai_agent_preferences": {
+    "claude": {
+      "use_for": [
+        "complex_problem_solving",
+        "ethical_reasoning",
+        "long_form_writing",
+        "research_synthesis",
+        "framework_development"
+      ],
+      "avoid_for": [
+        "quick_coding_tasks",
+        "rapid_prototyping",
+        "visual_design"
+      ],
+      "custom_instructions": "Focus on providing comprehensive, well-structured responses that support ADHD cognitive patterns. Use clear headings, bullet points, and practical examples. Break down complex concepts into manageable steps. Provide context and explain the 'why' behind recommendations. Be encouraging and supportive of different thinking patterns."
+    },
+    "chatgpt": {
+      "use_for": [
+        "quick_ideation",
+        "rapid_prototyping",
+        "technical_validation",
+        "brainstorming",
+        "quick_coding_snippets"
+      ],
+      "avoid_for": [
+        "complex_ethical_dilemmas",
+        "long_form_documentation",
+        "framework_architecture"
+      ],
+      "custom_instructions": "Provide quick, focused responses that respect ADHD attention patterns. Use clear structure with headings and bullets. Give practical, actionable advice. Be concise but complete. Support interest-driven learning by connecting topics to user interests when possible."
+    },
+    "cursor": {
+      "use_for": [
+        "code_implementation",
+        "repository_management",
+        "technical_documentation",
+        "debugging",
+        "refactoring",
+        "testing"
+      ],
+      "avoid_for": [
+        "high_level_strategy",
+        "business_decisions",
+        "user_research"
+      ],
+      "custom_instructions": "Support ADHD development patterns with clear code organization, comprehensive comments, and external memory systems. Break down complex tasks into smaller, manageable steps. Provide progress tracking and completion indicators. Use descriptive naming and clear structure. Minimize cognitive load with automated repetitive tasks."
+    },
+    "gemini": {
+      "use_for": [
+        "visual_design",
+        "ui_ux_mockups",
+        "google_ecosystem_integration",
+        "visual_documentation",
+        "presentation_materials"
+      ],
+      "avoid_for": [
+        "complex_coding",
+        "ethical_reasoning",
+        "research_validation"
+      ],
+      "custom_instructions": "Create visually organized, ADHD-friendly designs with clear structure and minimal clutter. Use visual hierarchy to guide attention. Provide multiple visual formats for different learning styles. Support external memory with clear visual organization."
+    },
+    "perplexity": {
+      "use_for": [
+        "real_time_research",
+        "fact_checking",
+        "market_intelligence",
+        "current_events",
+        "validation_of_claims"
+      ],
+      "avoid_for": [
+        "creative_writing",
+        "personal_advice",
+        "complex_problem_solving"
+      ],
+      "custom_instructions": "Provide well-sourced, current information in a structured format that supports ADHD attention patterns. Use clear headings and bullet points. Cite sources clearly. Focus on accuracy and relevance. Present information in digestible chunks."
+    }
+  },
+  "emergency_protocols": {
+    "safety_keywords": [
+      "overwhelmed",
+      "stuck",
+      "confused",
+      "frustrated",
+      "help"
+    ],
+    "emergency_contacts": [
+      {
+        "name": "Primary Support",
+        "contact_method": "email",
+        "priority": "primary"
+      }
+    ],
+    "escalation_procedures": {
+      "technical_issues": "Escalate to technical support with clear problem description",
+      "safety_concerns": "Immediately notify user and provide support resources",
+      "privacy_breaches": "Immediately stop data processing and notify user"
+    }
+  }
+}

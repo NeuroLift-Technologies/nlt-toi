@@ -1,0 +1,52 @@
+name: Schema Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'schemas/**'
+      - 'tools/validators/**'
+      - 'templates/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'schemas/**'
+      - 'tools/validators/**'
+      - 'templates/**'
+
+jobs:
+  validate-schemas:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Validate Personal TOI Schema
+      run: |
+        python tools/validators/toi-validator.py schemas/v1.0/personal-toi-v1.json
+    
+    - name: Validate Collaborative Charter Schema
+      run: |
+        python tools/validators/toi-validator.py schemas/v1.0/collaborative-charter-v1.json
+    
+    - name: Validate Template Files
+      run: |
+        python tools/validators/toi-validator.py templates/personal-toi/*.json
+    
+    - name: Test Schema Validators
+      run: |
+        python -m pytest tools/validators/ -v
+    
+    - name: Generate Test Instructions
+      run: |
+        python tools/generators/toi-generator.py templates/personal-toi/adhd-optimized-toi.json --platform claude cursor

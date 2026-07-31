@@ -1,0 +1,104 @@
+name: Feature Request
+description: Suggest an idea for the OTOI Framework
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a new feature! We especially welcome suggestions that improve accessibility for neurodivergent users.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: A clear and concise description of the feature you'd like to see.
+      placeholder: Describe the feature here...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: What problem are you trying to solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see implemented.
+      placeholder: How would you like this to work?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative-solutions
+    attributes:
+      label: Alternative Solutions
+      description: Describe any alternative solutions or workarounds you've considered.
+      placeholder: What other approaches have you considered?
+
+  - type: dropdown
+    id: user-type
+    attributes:
+      label: User Type
+      description: What type of user would benefit from this feature?
+      options:
+        - End User
+        - Developer
+        - Administrator
+        - Researcher
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: accessibility-benefit
+    attributes:
+      label: Accessibility Benefit
+      description: How would this feature benefit neurodivergent users?
+      options:
+        - No specific benefit
+        - Minor accessibility improvement
+        - Significant accessibility improvement
+        - Critical accessibility need
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: Provide specific use cases for this feature.
+      placeholder: |
+        1. As a [user type], I want to [goal] so that [benefit]
+        2. As a [user type], I want to [goal] so that [benefit]
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-ideas
+    attributes:
+      label: Implementation Ideas
+      description: Do you have any ideas about how this could be implemented?
+      placeholder: Any technical or design ideas you have...
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, or examples about the feature request here.
+      placeholder: Any additional information that might be helpful...
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

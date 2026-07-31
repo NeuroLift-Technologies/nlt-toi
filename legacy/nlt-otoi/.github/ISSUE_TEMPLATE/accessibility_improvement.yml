@@ -1,0 +1,109 @@
+name: Accessibility Improvement
+description: Suggest improvements for neurodivergent accessibility
+title: "[Accessibility]: "
+labels: ["accessibility", "neurodivergent", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping us improve accessibility! We're committed to making OTOI work well for neurodivergent users.
+
+  - type: textarea
+    id: accessibility-issue
+    attributes:
+      label: Accessibility Issue
+      description: Describe the accessibility barrier or issue you've encountered.
+      placeholder: What accessibility issue are you experiencing?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: cognitive-pattern
+    attributes:
+      label: Cognitive Pattern
+      description: Which cognitive pattern does this affect?
+      options:
+        - ADHD
+        - Autism
+        - Dyslexia
+        - General Neurodivergent
+        - Other
+        - Multiple
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-experience
+    attributes:
+      label: Current Experience
+      description: How does this currently affect your experience?
+      placeholder: Describe how this impacts your ability to use OTOI effectively...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-improvement
+    attributes:
+      label: Suggested Improvement
+      description: How could we improve this?
+      placeholder: What changes would make this more accessible for you?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this improvement?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve experience
+        - High - Significantly impacts usability
+        - Critical - Prevents effective use
+    validations:
+      required: true
+
+  - type: textarea
+    id: specific-needs
+    attributes:
+      label: Specific Needs
+      description: What specific accessibility needs should we consider?
+      placeholder: |
+        - Attention patterns (hyperfocus, context switching, etc.)
+        - Processing preferences (visual, auditory, etc.)
+        - Memory support needs
+        - Communication preferences
+        - Other specific needs
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples
+      description: Provide examples of how this could work better.
+      placeholder: |
+        - Screenshots or mockups
+        - Links to good examples
+        - Specific implementation ideas
+
+  - type: textarea
+    id: testing-suggestions
+    attributes:
+      label: Testing Suggestions
+      description: How could we test this improvement?
+      placeholder: What testing approaches would help validate this improvement?
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that would help us understand and implement this improvement.
+      placeholder: Any additional context or considerations...
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

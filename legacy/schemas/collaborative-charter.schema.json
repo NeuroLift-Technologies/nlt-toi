@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JDUB1216/nlt-otoi/schemas/collaborative-charter.schema.json",
+  "title": "Collaborative Charter",
+  "description": "Schema for defining team or group interaction protocols with AI systems",
+  "type": "object",
+  "required": ["version", "metadata", "governance", "integration", "protocols"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Version of the OTOI schema",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "examples": ["1.0.0"]
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["created", "updated", "organization"],
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this charter was created"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        },
+        "organization": {
+          "type": "string",
+          "description": "Organization or group name"
+        },
+        "scope": {
+          "type": "string",
+          "description": "Scope of this charter (project, team, organization)"
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "role"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Participant identifier"
+              },
+              "role": {
+                "type": "string",
+                "enum": ["admin", "member", "contributor", "observer"]
+              },
+              "toi_reference": {
+                "type": "string",
+                "description": "Reference to participant's personal TOI"
+              }
+            }
+          }
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "description": "Decision-making and governance structure",
+      "required": ["decision_model", "authority_levels"],
+      "properties": {
+        "decision_model": {
+          "type": "string",
+          "enum": ["consensus", "majority", "hierarchy", "delegated", "hybrid"],
+          "description": "How group decisions are made"
+        },
+        "authority_levels": {
+          "type": "object",
+          "description": "Authority structure for different types of decisions",
+          "properties": {
+            "ai_configuration": {
+              "type": "string",
+              "enum": ["admin-only", "member-vote", "consensus", "individual"],
+              "description": "Who can configure AI behavior"
+            },
+            "data_access": {
+              "type": "string",
+              "enum": ["admin-only", "member-vote", "consensus", "individual"],
+              "description": "Who can access group data"
+            },
+            "protocol_changes": {
+              "type": "string",
+              "enum": ["admin-only", "member-vote", "consensus", "individual"],
+              "description": "Who can change interaction protocols"
+            }
+          }
+        },
+        "conflict_resolution": {
+          "type": "object",
+          "properties": {
+            "process": {
+              "type": "string",
+              "enum": ["mediation", "voting", "escalation", "expert-arbitration"],
+              "description": "Process for resolving conflicts"
+            },
+            "escalation_path": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Ordered list of escalation steps"
+            },
+            "timeout_policy": {
+              "type": "string",
+              "description": "What happens when conflicts can't be resolved"
+            }
+          }
+        }
+      }
+    },
+    "integration": {
+      "type": "object",
+      "description": "How individual TOIs integrate with group protocols",
+      "required": ["toi_priority", "override_policy"],
+      "properties": {
+        "toi_priority": {
+          "type": "string",
+          "enum": ["individual-first", "group-first", "balanced", "context-dependent"],
+          "description": "Priority when individual TOI conflicts with group charter"
+        },
+        "override_policy": {
+          "type": "object",
+          "properties": {
+            "emergency_override": {
+              "type": "boolean",
+              "description": "Whether group protocols can override individual TOI in emergencies"
+            },
+            "consent_required": {
+              "type": "boolean",
+              "description": "Whether individual consent is required for overrides"
+            },
+            "notification_required": {
+              "type": "boolean",
+              "description": "Whether individuals must be notified of overrides"
+            }
+          }
+        },
+        "accommodation_process": {
+          "type": "object",
+          "description": "How to handle accommodation requests",
+          "properties": {
+            "request_method": {
+              "type": "string",
+              "enum": ["automatic", "formal-request", "discussion", "admin-review"],
+              "description": "How accommodations are requested"
+            },
+            "response_time": {
+              "type": "string",
+              "description": "Expected response time for accommodation requests"
+            },
+            "appeal_process": {
+              "type": "string",
+              "description": "Process for appealing accommodation decisions"
+            }
+          }
+        }
+      }
+    },
+    "protocols": {
+      "type": "object",
+      "description": "Shared interaction protocols",
+      "required": ["communication", "collaboration"],
+      "properties": {
+        "communication": {
+          "type": "object",
+          "properties": {
+            "default_style": {
+              "type": "string",
+              "enum": ["formal", "casual", "professional", "adaptive"],
+              "description": "Default communication style for the group"
+            },
+            "announcement_channels": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Channels for group announcements"
+            },
+            "feedback_mechanisms": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["real-time", "periodic-summary", "on-request", "anonymous"]
+              },
+              "description": "How feedback is collected and shared"
+            },
+            "language_preferences": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Supported languages in order of preference"
+            }
+          }
+        },
+        "collaboration": {
+          "type": "object",
+          "properties": {
+            "workflow_integration": {
+              "type": "string",
+              "enum": ["seamless", "explicit-handoffs", "isolated", "hybrid"],
+              "description": "How AI integrates with existing workflows"
+            },
+            "task_distribution": {
+              "type": "string",
+              "enum": ["ai-suggests", "human-assigns", "hybrid", "autonomous"],
+              "description": "How tasks are distributed among participants"
+            },
+            "coordination_method": {
+              "type": "string",
+              "enum": ["centralized", "peer-to-peer", "hierarchical", "dynamic"],
+              "description": "How group coordination is managed"
+            },
+            "progress_tracking": {
+              "type": "object",
+              "properties": {
+                "frequency": {
+                  "type": "string",
+                  "enum": ["real-time", "daily", "weekly", "milestone-based"]
+                },
+                "visibility": {
+                  "type": "string",
+                  "enum": ["public", "team-only", "admin-only", "individual"]
+                },
+                "format": {
+                  "type": "string",
+                  "enum": ["dashboard", "reports", "notifications", "meetings"]
+                }
+              }
+            }
+          }
+        },
+        "ai_behavior": {
+          "type": "object",
+          "properties": {
+            "agent_coordination": {
+              "type": "string",
+              "enum": ["single-agent", "multi-agent-coordinated", "multi-agent-independent"],
+              "description": "How AI agents coordinate in group settings"
+            },
+            "context_sharing": {
+              "type": "string",
+              "enum": ["full-sharing", "limited-sharing", "no-sharing", "user-controlled"],
+              "description": "How context is shared between AI agents"
+            },
+            "learning_approach": {
+              "type": "string",
+              "enum": ["group-learning", "individual-learning", "no-learning", "hybrid"],
+              "description": "How AI systems learn from group interactions"
+            }
+          }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "description": "Group privacy and data handling policies",
+      "required": ["data_governance", "sharing_policies"],
+      "properties": {
+        "data_governance": {
+          "type": "object",
+          "properties": {
+            "retention_policy": {
+              "type": "string",
+              "enum": ["shortest-individual", "longest-individual", "group-decision", "admin-controlled"],
+              "description": "How group data retention is determined"
+            },
+            "access_controls": {
+              "type": "object",
+              "properties": {
+                "member_data": {
+                  "type": "string",
+                  "enum": ["individual-only", "team-visible", "admin-visible", "public"]
+                },
+                "group_analytics": {
+                  "type": "string",
+                  "enum": ["admin-only", "member-visible", "aggregate-only", "full-access"]
+                },
+                "audit_logs": {
+                  "type": "string",
+                  "enum": ["admin-only", "participant-visible", "third-party-audited", "public"]
+                }
+              }
+            }
+          }
+        },
+        "sharing_policies": {
+          "type": "object",
+          "properties": {
+            "internal_sharing": {
+              "type": "string",
+              "enum": ["opt-in", "opt-out", "automatic", "prohibited"],
+              "description": "How data is shared within the group"
+            },
+            "external_sharing": {
+              "type": "string",
+              "enum": ["prohibited", "explicit-consent", "aggregate-only", "anonymized-only"],
+              "description": "How data may be shared outside the group"
+            },
+            "research_participation": {
+              "type": "string",
+              "enum": ["prohibited", "opt-in", "opt-out", "automatic"],
+              "description": "Participation in research studies"
+            }
+          }
+        }
+      }
+    },
+    "compliance": {
+      "type": "object",
+      "description": "Compliance and regulatory requirements",
+      "properties": {
+        "regulatory_frameworks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["GDPR", "CCPA", "HIPAA", "FERPA", "SOX", "custom"]
+          },
+          "description": "Applicable regulatory frameworks"
+        },
+        "audit_requirements": {
+          "type": "object",
+          "properties": {
+            "frequency": {
+              "type": "string",
+              "enum": ["continuous", "monthly", "quarterly", "annually", "on-demand"]
+            },
+            "scope": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["data-handling", "ai-decisions", "access-controls", "compliance"]
+              }
+            },
+            "external_auditor": {
+              "type": "boolean",
+              "description": "Whether external auditors are required"
+            }
+          }
+        }
+      }
+    }
+  }
+}
