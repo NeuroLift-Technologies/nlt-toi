@@ -1,0 +1,7 @@
+{
+  "$toi": "1.0.0",
+  "$tier": "global",
+  "identity": {
+    "author": "tier not in enum"
+  }
+}

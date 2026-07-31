@@ -1,0 +1,720 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.otoi.framework/collaborative-charter/v1.0",
+  "title": "Collaborative Charter v1.0",
+  "description": "Multi-agent coordination protocols for enforcing Personal TOI across AI clusters",
+  "type": "object",
+  "required": [
+    "metadata",
+    "charter_scope",
+    "agent_roles",
+    "handoff_protocols",
+    "compliance_requirements"
+  ],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Charter metadata and version information",
+      "required": ["version", "created_date", "last_updated"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^v\\d+\\.\\d+$",
+          "description": "Charter version (e.g., v1.0)"
+        },
+        "created_date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when charter was created"
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when charter was last modified"
+        },
+        "charter_id": {
+          "type": "string",
+          "description": "Unique identifier for this charter"
+        },
+        "organization": {
+          "type": "string",
+          "description": "Organization or team using this charter"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Charter categorization tags"
+        }
+      }
+    },
+    "charter_scope": {
+      "type": "object",
+      "description": "Scope and boundaries of the collaborative charter",
+      "required": ["purpose", "scope"],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "description": "Primary purpose of this collaborative charter"
+        },
+        "scope": {
+          "type": "object",
+          "description": "What this charter covers",
+          "properties": {
+            "included_agents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "AI agents included in this charter"
+            },
+            "excluded_agents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "AI agents explicitly excluded from this charter"
+            },
+            "use_cases": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Specific use cases covered by this charter"
+            },
+            "geographical_scope": {
+              "type": "string",
+              "description": "Geographical scope of the charter"
+            },
+            "temporal_scope": {
+              "type": "object",
+              "properties": {
+                "start_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "end_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "duration": {
+                  "type": "string",
+                  "description": "Duration of the charter (e.g., '6 months', 'indefinite')"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "agent_roles": {
+      "type": "object",
+      "description": "Definition of roles and responsibilities for each AI agent",
+      "properties": {
+        "claude": {
+          "type": "object",
+          "description": "Claude's role and responsibilities",
+          "properties": {
+            "primary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Primary functions Claude should handle"
+            },
+            "secondary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Secondary functions Claude can handle"
+            },
+            "excluded_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Functions Claude should avoid"
+            },
+            "handoff_triggers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "condition": {
+                    "type": "string",
+                    "description": "Condition that triggers handoff"
+                  },
+                  "target_agent": {
+                    "type": "string",
+                    "description": "Agent to hand off to"
+                  },
+                  "handoff_method": {
+                    "type": "string",
+                    "description": "How to perform the handoff"
+                  }
+                }
+              },
+              "description": "When Claude should hand off to other agents"
+            },
+            "special_instructions": {
+              "type": "string",
+              "description": "Special instructions for Claude's behavior"
+            }
+          }
+        },
+        "chatgpt": {
+          "type": "object",
+          "description": "ChatGPT's role and responsibilities",
+          "properties": {
+            "primary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Primary functions ChatGPT should handle"
+            },
+            "secondary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Secondary functions ChatGPT can handle"
+            },
+            "excluded_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Functions ChatGPT should avoid"
+            },
+            "handoff_triggers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "condition": {
+                    "type": "string",
+                    "description": "Condition that triggers handoff"
+                  },
+                  "target_agent": {
+                    "type": "string",
+                    "description": "Agent to hand off to"
+                  },
+                  "handoff_method": {
+                    "type": "string",
+                    "description": "How to perform the handoff"
+                  }
+                }
+              },
+              "description": "When ChatGPT should hand off to other agents"
+            },
+            "special_instructions": {
+              "type": "string",
+              "description": "Special instructions for ChatGPT's behavior"
+            }
+          }
+        },
+        "cursor": {
+          "type": "object",
+          "description": "Cursor's role and responsibilities",
+          "properties": {
+            "primary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Primary functions Cursor should handle"
+            },
+            "secondary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Secondary functions Cursor can handle"
+            },
+            "excluded_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Functions Cursor should avoid"
+            },
+            "handoff_triggers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "condition": {
+                    "type": "string",
+                    "description": "Condition that triggers handoff"
+                  },
+                  "target_agent": {
+                    "type": "string",
+                    "description": "Agent to hand off to"
+                  },
+                  "handoff_method": {
+                    "type": "string",
+                    "description": "How to perform the handoff"
+                  }
+                }
+              },
+              "description": "When Cursor should hand off to other agents"
+            },
+            "special_instructions": {
+              "type": "string",
+              "description": "Special instructions for Cursor's behavior"
+            }
+          }
+        },
+        "gemini": {
+          "type": "object",
+          "description": "Gemini's role and responsibilities",
+          "properties": {
+            "primary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Primary functions Gemini should handle"
+            },
+            "secondary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Secondary functions Gemini can handle"
+            },
+            "excluded_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Functions Gemini should avoid"
+            },
+            "handoff_triggers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "condition": {
+                    "type": "string",
+                    "description": "Condition that triggers handoff"
+                  },
+                  "target_agent": {
+                    "type": "string",
+                    "description": "Agent to hand off to"
+                  },
+                  "handoff_method": {
+                    "type": "string",
+                    "description": "How to perform the handoff"
+                  }
+                }
+              },
+              "description": "When Gemini should hand off to other agents"
+            },
+            "special_instructions": {
+              "type": "string",
+              "description": "Special instructions for Gemini's behavior"
+            }
+          }
+        },
+        "perplexity": {
+          "type": "object",
+          "description": "Perplexity's role and responsibilities",
+          "properties": {
+            "primary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Primary functions Perplexity should handle"
+            },
+            "secondary_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Secondary functions Perplexity can handle"
+            },
+            "excluded_functions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Functions Perplexity should avoid"
+            },
+            "handoff_triggers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "condition": {
+                    "type": "string",
+                    "description": "Condition that triggers handoff"
+                  },
+                  "target_agent": {
+                    "type": "string",
+                    "description": "Agent to hand off to"
+                  },
+                  "handoff_method": {
+                    "type": "string",
+                    "description": "How to perform the handoff"
+                  }
+                }
+              },
+              "description": "When Perplexity should hand off to other agents"
+            },
+            "special_instructions": {
+              "type": "string",
+              "description": "Special instructions for Perplexity's behavior"
+            }
+          }
+        }
+      }
+    },
+    "handoff_protocols": {
+      "type": "object",
+      "description": "Protocols for handing off between AI agents",
+      "required": ["handoff_methods", "context_preservation"],
+      "properties": {
+        "handoff_methods": {
+          "type": "object",
+          "description": "Different methods for handing off between agents",
+          "properties": {
+            "explicit_handoff": {
+              "type": "object",
+              "description": "Explicit handoff when user requests it",
+              "properties": {
+                "trigger": {
+                  "type": "string",
+                  "description": "What triggers an explicit handoff"
+                },
+                "process": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Steps in the explicit handoff process"
+                }
+              }
+            },
+            "automatic_handoff": {
+              "type": "object",
+              "description": "Automatic handoff based on conditions",
+              "properties": {
+                "triggers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "condition": {
+                        "type": "string"
+                      },
+                      "source_agent": {
+                        "type": "string"
+                      },
+                      "target_agent": {
+                        "type": "string"
+                      },
+                      "confidence_threshold": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    }
+                  },
+                  "description": "Conditions that trigger automatic handoffs"
+                }
+              }
+            },
+            "collaborative_handoff": {
+              "type": "object",
+              "description": "Collaborative handoff where multiple agents work together",
+              "properties": {
+                "coordination_method": {
+                  "type": "string",
+                  "description": "How agents coordinate during collaborative handoffs"
+                },
+                "responsibility_distribution": {
+                  "type": "object",
+                  "description": "How responsibilities are distributed among agents"
+                }
+              }
+            }
+          }
+        },
+        "context_preservation": {
+          "type": "object",
+          "description": "How to preserve context during handoffs",
+          "properties": {
+            "essential_context": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Essential context that must be preserved"
+            },
+            "context_format": {
+              "type": "string",
+              "enum": ["json", "markdown", "structured_text"],
+              "description": "Format for preserving context"
+            },
+            "context_validation": {
+              "type": "object",
+              "description": "How to validate that context was preserved correctly",
+              "properties": {
+                "required_fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "validation_rules": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "handoff_communication": {
+          "type": "object",
+          "description": "How agents communicate during handoffs",
+          "properties": {
+            "user_notification": {
+              "type": "boolean",
+              "description": "Whether to notify the user about handoffs"
+            },
+            "handoff_summary": {
+              "type": "boolean",
+              "description": "Whether to provide a summary of the handoff"
+            },
+            "continuity_assurance": {
+              "type": "boolean",
+              "description": "Whether to assure continuity of service"
+            }
+          }
+        }
+      }
+    },
+    "compliance_requirements": {
+      "type": "object",
+      "description": "Requirements for compliance with Personal TOI",
+      "required": ["toi_enforcement", "privacy_protection"],
+      "properties": {
+        "toi_enforcement": {
+          "type": "object",
+          "description": "How to enforce Personal TOI across all agents",
+          "properties": {
+            "mandatory_compliance": {
+              "type": "boolean",
+              "description": "Whether compliance with Personal TOI is mandatory"
+            },
+            "compliance_checks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "check_type": {
+                    "type": "string"
+                  },
+                  "frequency": {
+                    "type": "string"
+                  },
+                  "action_on_violation": {
+                    "type": "string"
+                  }
+                }
+              },
+              "description": "Regular compliance checks to perform"
+            },
+            "violation_handling": {
+              "type": "object",
+              "description": "How to handle TOI violations",
+              "properties": {
+                "immediate_action": {
+                  "type": "string",
+                  "description": "Immediate action to take on violation"
+                },
+                "escalation_procedure": {
+                  "type": "string",
+                  "description": "Procedure for escalating violations"
+                },
+                "remediation_process": {
+                  "type": "string",
+                  "description": "Process for remediating violations"
+                }
+              }
+            }
+          }
+        },
+        "privacy_protection": {
+          "type": "object",
+          "description": "Privacy protection requirements",
+          "properties": {
+            "data_minimization": {
+              "type": "boolean",
+              "description": "Minimize data collection and retention"
+            },
+            "consent_management": {
+              "type": "object",
+              "description": "How to manage user consent",
+              "properties": {
+                "explicit_consent": {
+                  "type": "boolean",
+                  "description": "Require explicit consent for data use"
+                },
+                "consent_withdrawal": {
+                  "type": "boolean",
+                  "description": "Allow easy consent withdrawal"
+                },
+                "consent_audit": {
+                  "type": "boolean",
+                  "description": "Audit consent decisions"
+                }
+              }
+            },
+            "data_security": {
+              "type": "object",
+              "description": "Data security requirements",
+              "properties": {
+                "encryption_required": {
+                  "type": "boolean",
+                  "description": "Require encryption for data transmission"
+                },
+                "access_controls": {
+                  "type": "boolean",
+                  "description": "Implement access controls"
+                },
+                "audit_logging": {
+                  "type": "boolean",
+                  "description": "Maintain audit logs"
+                }
+              }
+            }
+          }
+        },
+        "accessibility_requirements": {
+          "type": "object",
+          "description": "Accessibility requirements for all agents",
+          "properties": {
+            "neurodivergent_support": {
+              "type": "boolean",
+              "description": "Support neurodivergent users"
+            },
+            "cognitive_accessibility": {
+              "type": "boolean",
+              "description": "Ensure cognitive accessibility"
+            },
+            "sensory_accessibility": {
+              "type": "boolean",
+              "description": "Ensure sensory accessibility"
+            },
+            "motor_accessibility": {
+              "type": "boolean",
+              "description": "Ensure motor accessibility"
+            }
+          }
+        }
+      }
+    },
+    "monitoring_and_metrics": {
+      "type": "object",
+      "description": "Monitoring and metrics for charter compliance",
+      "properties": {
+        "performance_metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "metric_name": {
+                "type": "string"
+              },
+              "measurement_method": {
+                "type": "string"
+              },
+              "target_value": {
+                "type": "number"
+              },
+              "reporting_frequency": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Performance metrics to track"
+        },
+        "compliance_metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "metric_name": {
+                "type": "string"
+              },
+              "measurement_method": {
+                "type": "string"
+              },
+              "target_value": {
+                "type": "number"
+              },
+              "reporting_frequency": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Compliance metrics to track"
+        },
+        "user_satisfaction_metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "metric_name": {
+                "type": "string"
+              },
+              "measurement_method": {
+                "type": "string"
+              },
+              "target_value": {
+                "type": "number"
+              },
+              "reporting_frequency": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "User satisfaction metrics to track"
+        }
+      }
+    },
+    "dispute_resolution": {
+      "type": "object",
+      "description": "Process for resolving disputes and conflicts",
+      "properties": {
+        "escalation_hierarchy": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Hierarchy for escalating disputes"
+        },
+        "resolution_methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Methods for resolving disputes"
+        },
+        "arbitration_process": {
+          "type": "string",
+          "description": "Process for arbitration when needed"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

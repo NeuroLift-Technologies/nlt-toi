@@ -1,5 +1,14 @@
 # Active Threads
 
+### Thread: NLT-TOI-LEGACY-CLEANUP
+**Status:** in-progress
+**Owner:** SWE (OpenCode CTO Orchestrator)
+**Started:** 2026-07-31
+**Last updated:** 2026-07-31
+**Summary:** Archive/deprecate Python-era legacy files, rewrite stale docs to match published npm+PyPI APIs, clean untracked artifacts. Moved `src/fusion/`, `nlt-otoi/`, `examples/neuroLift/`, `schemas/`, `GEMINI_TOPOGRAPHY.py`, `mcp-config.yaml`, `toi-otoi-agents.md`, `templates/` (including nested `templates/templates/` duplicate), and stale `docs/*.md` files to `legacy/` with `DEPRECATED.md` index. Rewrote root `README.md` to describe both npm (`packages/toi` → `@neurolift-technologies/toi@1.0.1`) and PyPI (`src/nlt_toi` → `nlt-toi@1.0.0`) APIs; fixed version claim (1.0.0 → 1.0.1). Cleaned untracked artifacts: `.pytest_cache/`, `nlt_toi.egg-info/`, `__pycache__/` directories. Updated this thread record.
+**Blockers:** None.
+**Next action:** Commit and merge to `main`.
+
 ### Thread: TOI-NPM-DIST-FIX
 **Status:** published — PR in review for merge
 **Owner:** Claude (Claude Code)

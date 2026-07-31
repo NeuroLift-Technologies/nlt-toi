@@ -1,6 +1,7 @@
 # Changelog
 
-All notable changes to the OTOI Framework will be documented in this file.
+All notable changes to the `@neurolift-technologies/toi` package will be
+documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -16,10 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CODE_OF_CONDUCT.md` — community code of conduct with neurodivergent-inclusive practices
 - `SECURITY.md` — security policy and vulnerability reporting process
 - `CHANGELOG.md` — this changelog
-- `docs/development-process.md` — CI architecture, workflow runbooks, and troubleshooting steps
+- `docs/active-threads.md` — current work state and thread tracking
 
 ### Changed
-- `README.md` — repository structure now includes `docs/development-process.md`
+- `README.md` — repository structure updated to reflect current published packages
 - `CONTRIBUTING.md` — added CI and automation expectations for pull requests
 
 ### Deprecated
@@ -32,67 +33,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@neurolift-technologies/toi` npm package republished as **1.0.1** to include the
   compiled `dist/` (JS + type declarations). The `1.0.0` tarball shipped without
   `dist/`, so its `main`/`types`/`exports` entry points did not resolve on install;
-  `1.0.1` ships `dist/` via the `prepack` build. This also unblocks
+  `1.0.1` ships `dist/` via the `prepack` build. This also unblocked
   `@neurolift-technologies/otoi`, which imports this package at runtime.
+
+---
+
+## [1.0.0] — 2026-06-XX
+
+### Added
+- `packages/toi/` — TypeScript reference library for the `.toi` v1.0.0 standard
+  - `SPEC.md` — normative specification
+  - `src/index.ts` — full API: parse, serialize, canonicalize, sign, verify, resolve
+  - `schema/toi-1.0.0.schema.json` — generated JSON Schema (draft 2020-12)
+  - `test/fixtures/` — conformance fixtures (shared with Python library)
+- `packages/toi/package.json` — npm package `@neurolift-technologies/toi`
+- `README.md` — root README describing the `.toi` standard and both reference implementations
+- `AGENTS.md` — repo-local governance gateway for coding agents
+- `NLT-DEV-OTOI.md` — canonical governance contract for coding agents
+- `nltotoi.json` — discovery manifest and governance file registry
 
 ---
 
 ## [0.8.0] — 2026-03-XX
 
 ### Added
-- `CLAUDE.md` — comprehensive guide for AI assistants working with the OTOI Framework
-- `src/fusion/toi_parser.py` — parses and validates user TOI documents
-- `src/fusion/otoi_orchestrator.py` — multi-agent coordination with TOI policy enforcement
-- `src/fusion/privacy_guardian.py` — enforces privacy settings from TOI documents
-- `examples/neuroLift/` — NeuroLift-specific integration examples and patterns
+- `CLAUDE.md` — comprehensive guide for AI assistants working with the TOI Framework
 - `docs/framework-overview.md` — extracted TOI-OTOI Framework deep dive document
-
-### Changed
-- `README.md` — separated high-level introduction from technical framework definition
-
----
-
-## [0.7.0] — 2026-02-XX
-
-### Added
-- `nlt-otoi/.github/workflows/accessibility-check.yml`
-- `nlt-otoi/.github/workflows/schema-validation.yml`
-- `nlt-otoi/.github/workflows/security-scan.yml`
-- `nlt-otoi/.github/PULL_REQUEST_TEMPLATE.md`
-- `nlt-otoi/.github/ISSUE_TEMPLATE/` — bug, feature, and accessibility issue templates
-- `nlt-otoi/CODE_OF_CONDUCT.md`
-- `nlt-otoi/CHANGELOG.md`
-- `nlt-otoi/CONTRIBUTING.md`
-- `nlt-otoi/PROJECT_OVERVIEW.md`
-- `nlt-otoi/schemas/v1.0/collaborative-charter-v1.json`
-- `nlt-otoi/templates/personal-toi/adhd-optimized-toi.json`
-- `nlt-otoi/tools/validators/toi-validator.py`
-- `nlt-otoi/tools/generators/toi-generator.py`
-
----
-
-## [0.6.0] — 2026-01-XX
-
-### Added
-- `codex/design-multi-agent-ai-integration-architecture` — enhanced NeuroLift agent architecture
-  - `examples/neuroLift/context_capsule.py`
-  - `examples/neuroLift/intent_ledger.py`
-  - `examples/neuroLift/orchestrator_patterns.py`
-  - `examples/neuroLift/playbook_engine.py`
-
----
-
-## [0.5.0] — 2025-12-XX
-
-### Added
-- Initial GitHub issue templates (`.github/ISSUE_TEMPLATE/`)
-  - `bug_report.yml`
-  - `feature_request.yml`
-  - `accessibility.yml`
-  - `documentation.yml`
-  - `question.yml`
-- `README.md` — detailed TOI-OTOI framework description
-- `GEMINI_TOPOGRAPHY.py` — comprehensive Gemini AI analysis guide
 
 ---
 
@@ -100,22 +66,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial repository structure
-- `schemas/personal-toi.schema.json` — JSON Schema for personal TOI documents
-- `schemas/collaborative-charter.schema.json` — JSON Schema for team charters
-- `templates/personal-toi-template.md` — personal TOI template
-- `templates/collaborative-charter-template.md` — team charter template
-- `templates/quick-start-template.md` — simplified quick-start template
-- `docs/best-practices.md`
-- `docs/implementation-guide.md`
-- `docs/neurolift-integration.md`
+- `schemas/personal-toi.schema.json` — JSON Schema for personal TOI documents (now archived in `legacy/schemas/`)
+- `schemas/collaborative-charter.schema.json` — JSON Schema for team charters (now archived in `legacy/schemas/`)
+- `templates/personal-toi-template.md` — personal TOI template (now archived in `legacy/templates/`)
+- `templates/collaborative-charter-template.md` — team charter template (now archived in `legacy/templates/`)
+- `templates/quick-start-template.md` — simplified quick-start template (now archived in `legacy/templates/`)
+- `docs/best-practices.md` (now archived in `legacy/docs/`)
+- `docs/implementation-guide.md` (now archived in `legacy/docs/`)
+- `docs/neurolift-integration.md` (now archived in `legacy/docs/`)
 - `examples/neurodivergent-examples/adhd-student-example.json`
 - `examples/team-collaboration/remote-dev-team-charter.json`
 - `CONTRIBUTING.md`
 - `LICENSE` (MIT)
 
-[Unreleased]: https://github.com/NeuroLift-Technologies/nlt-otoi/compare/v0.8.0...HEAD
-[0.8.0]: https://github.com/NeuroLift-Technologies/nlt-otoi/compare/v0.7.0...v0.8.0
-[0.7.0]: https://github.com/NeuroLift-Technologies/nlt-otoi/compare/v0.6.0...v0.7.0
-[0.6.0]: https://github.com/NeuroLift-Technologies/nlt-otoi/compare/v0.5.0...v0.6.0
-[0.5.0]: https://github.com/NeuroLift-Technologies/nlt-otoi/compare/v0.1.0...v0.5.0
-[0.1.0]: https://github.com/NeuroLift-Technologies/nlt-otoi/releases/tag/v0.1.0
+[Unreleased]: https://github.com/NeuroLift-Technologies/nlt-toi/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/NeuroLift-Technologies/nlt-toi/releases/tag/v1.0.0
+[0.8.0]: https://github.com/NeuroLift-Technologies/nlt-toi/releases/tag/v0.8.0
+[0.1.0]: https://github.com/NeuroLift-Technologies/nlt-toi/releases/tag/v0.1.0

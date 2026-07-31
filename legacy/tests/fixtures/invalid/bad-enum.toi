@@ -1,0 +1,10 @@
+{
+  "$toi": "1.0.0",
+  "$tier": "personal",
+  "identity": {
+    "author": "bad enum value"
+  },
+  "communication": {
+    "tone": "sarcastic"
+  }
+}

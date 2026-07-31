@@ -1,0 +1,57 @@
+{
+  "$toi": "1.0.0",
+  "$tier": "community",
+  "$created": "2026-01-15T10:00:00Z",
+  "$updated": "2026-05-01T12:30:00-05:00",
+  "$id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "$license": "CC-BY-4.0",
+  "identity": {
+    "author": "Accessibility Working Group",
+    "handle": "a11y-wg",
+    "organization": "Example Community",
+    "pronouns": "they/them"
+  },
+  "cognitive_profile": {
+    "self_described": "Mixed-needs community baseline",
+    "processing_style": "variable",
+    "attention_model": "variable",
+    "scaffolding_preference": "step-by-step",
+    "energy_model": "spoon-limited",
+    "thread_support": true,
+    "hyperfocus_protection": false,
+    "executive_function_support": true
+  },
+  "privacy": {
+    "retention": "short-term",
+    "cross_platform_sharing": "explicit-only",
+    "training_use": "anonymized-only",
+    "analytics": "anonymized-only",
+    "override_rights": "delegated",
+    "data_requests": "honored-on-request"
+  },
+  "agency": {
+    "task_initiation": "user-initiated",
+    "ai_suggestions": "proactive",
+    "interruptibility": "always",
+    "action_confirmation": "always",
+    "override_authority": "shared"
+  },
+  "communication": {
+    "tone": "friendly",
+    "verbosity": "detailed",
+    "structure": "hierarchical",
+    "language": "en",
+    "jargon_tolerance": "low",
+    "pattern_highlighting": false,
+    "summary_on_return": true,
+    "thread_reconnection": "full-context"
+  },
+  "ethical_pillars": [
+    "accessibility-first",
+    "informed-consent"
+  ],
+  "custom": {
+    "x-community-policy-url": "https://example.org/policy",
+    "x-review-cadence-days": 90
+  }
+}
