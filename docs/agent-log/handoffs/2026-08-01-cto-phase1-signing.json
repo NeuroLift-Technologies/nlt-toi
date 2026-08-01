@@ -14,13 +14,14 @@
       "Signed payload is always canonicalize(document without $signature) as UTF-8 — identical semantics to TS/Python.",
       "Tests: 13 new Rust signing tests (30 total green) and 12 new Go signing tests (31 total green), mirroring sign.test.ts/test_sign.py including: round-trip, tamper detection, reformat/key-reorder stability, payload==canonicalize(doc), committed known-answer fixture, wrong-key rejection, malformed/padded/whitespaced base64url, wrong-length signature bytes, non-canonical trailing-bit rejection, and the deterministic vector.",
       "Cross-runtime proof: both Rust and Go verify the committed JS-produced signed.toi fixture byte-for-byte, and both produce identical envelope bytes for the shared deterministic vector (seed 1..=32, minimal payload): public_key ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ, signature ubQpn9BdJH6yVrX_XWUA2KhoSi3_hBzfD_5z_xISH6PV_UfKvvNfjuq8icQww79NUPlkNVaSGnQKbs6z04QHBg — matching the TS/Python reference output. The seed key matches the committed fixture's public key.",
-      "Applied nlt-code-reviewer feedback (APPROVE_WITH_NITS) from the phase-gate review: Go base64url now rejects non-canonical trailing padding bits via re-encode check (was lenient — the only conformance divergence from TS/Python/Rust); Rust sign_toi returns ToiError::InvalidDocument for non-object input instead of silently returning the unsigned copy; ToiKeyPair Debug now redacts the private seed; SignToi checks the object shape before canonicalizing; CHANGELOG vector wording tightened.",
+      "Phase-gate reviews: nlt-code-reviewer APPROVE_WITH_NITS (findings closed in c90ea15: Go base64url now rejects non-canonical trailing padding bits via re-encode check — was the only conformance divergence from TS/Python/Rust; Rust sign_toi returns ToiError::InvalidDocument for non-object input; ToiKeyPair Debug redacts the private seed; SignToi checks object shape before canonicalizing; CHANGELOG vector wording tightened) and Mistral Vibe Technical Assurance APPROVE via A2A task review-pr26-phase1-signing (0 critical / 0 important / 0 minor, review comment https://github.com/NeuroLift-Technologies/nlt-toi/pull/26#issuecomment-5153478435).",
+      "PR #26 squash-merged to main (commit 09a87b7) with branch deletion after both phase gates passed.",
       "Reference suites unaffected: TS vitest 65 passed, Python pytest 65 passed.",
       "Governance validation: bash .nltotoi/scripts/validate-governance.sh — 29 passed, 0 failed. gofmt clean; Rust builds warning-free.",
       "Updated CHANGELOG.md (Unreleased → Added) and docs/active-threads.md (new NLT-TOI-PHASE1-SIGNING thread)."
     ],
     "work_in_progress": [
-      "Phase 1 PR open for review/merge on GitHub (branch cto/phase1-ed25519-signing). Phase gate: run nlt-code-reviewer before merging."
+      "Phase 1 MERGED to main (09a87b7). Next: plan Phase 2 (schema/validation + resolve) for Rust/Go."
     ],
     "blockers": [],
     "decisions_made": [
@@ -33,7 +34,7 @@
       "Whether Phase 2 should re-model the typed ToiDocument to the canonical schema + add parse/schema validation and resolve() in Rust/Go."
     ],
     "escalations": [],
-    "next_agent_notes": "Run nlt-code-reviewer on the Phase 1 PR at the phase gate, then merge via squash with the validated commit convention. After merge, Phase 2 options per the port plan: typed schema validation (parse), ToiDocument schema re-model, and the resolve()/tier-precedence layer — cross-validated against packages/toi and src/nlt_toi. The deterministic vector constants and the signed.toi fixture are the canonical cross-runtime signing vectors to reuse for any future runtime port.",
+    "next_agent_notes": "Phase 1 is merged. Phase 2 options per the port plan: typed schema validation (parse), ToiDocument schema re-model, and the resolve()/tier-precedence layer — cross-validated against packages/toi and src/nlt_toi. Run nlt-code-reviewer and Mistral Vibe at each phase gate. The deterministic vector constants and the signed.toi fixture are the canonical cross-runtime signing vectors to reuse for any future runtime port.",
     "files_modified": [
       "crates/nlt-toi/Cargo.toml",
       "crates/nlt-toi/src/lib.rs",
