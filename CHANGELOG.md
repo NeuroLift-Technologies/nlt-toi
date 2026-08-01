@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `go/nlt-toi` — Go port of the RFC 8785 JCS canonicalizer (module `github.com/NeuroLift-Technologies/nlt-toi/go/nlt-toi`), byte-for-byte matching the TS/Python/Rust references: ECMA-262 `Number::toString` formatting, UTF-16BE key sorting, integer pass-through beyond 2^53, `CanonicalizeJCS`/`CanonicalizeToBytes`/`ContentHash`, plus the `ToiDocument`/`ToiTier`/tier-precedence surface. 19 tests green including 10 cross-runtime parity vectors.
 - `.github/PULL_REQUEST_TEMPLATE.md` — standard PR template for all contributors
 - `.github/workflows/accessibility-check.yml` — automated accessibility compliance checks
 - `.github/workflows/schema-validation.yml` — automated JSON schema validation
