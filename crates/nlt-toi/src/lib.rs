@@ -8,6 +8,8 @@
 //! for exact float-to-string conversion matching ECMAScript Number::toString
 //! and UTF-16BE code unit ordering for key sorting per RFC 8785 §3.2.3.
 
+use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
+use rand_core::RngCore;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -45,13 +47,15 @@ pub struct ToiDocument {
     pub signature: Option<ToiSignature>,
 }
 
-/// TOI signature envelope
+/// TOI signature envelope (SPEC §11) — a detached Ed25519 signature over the
+/// RFC 8785 canonical form of the document with `$signature` removed. Fields
+/// match `packages/toi/src/schema.ts` (`toiSignatureSchema`): unpadded base64url
+/// for both the raw 32-byte public point and the 64-byte signature.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ToiSignature {
     pub alg: String,
     pub public_key: String,
-    pub signature: String,
-    pub signed_at: String,
+    pub value: String,
 }
 
 /// TOI tier type
@@ -72,8 +76,14 @@ pub enum ToiError {
     Serialization(#[from] serde_json::Error),
     #[error("Invalid tier: {0}")]
     InvalidTier(String),
+    #[error("Invalid .toi document: {0}")]
+    InvalidDocument(String),
     #[error("Invalid signature: {0}")]
     InvalidSignature(String),
+    #[error("Base64url decoding failed: {0}")]
+    Base64Url(String),
+    #[error("Invalid Ed25519 key: {0}")]
+    InvalidKey(String),
 }
 
 /// ECMA-262 §6.1.6.1.20 Number::toString via ryu's shortest digits.
@@ -255,6 +265,214 @@ pub fn content_hash(value: &Value) -> Result<String, ToiError> {
     Ok(format!("{:x}", hasher.finalize()))
 }
 
+// ---------------------------------------------------------------------------
+// Ed25519 signing (SPEC §11) — mirrors packages/toi/src/sign.ts and
+// src/nlt_toi/sign.py exactly. The signed payload is always
+// `canonicalize(document without $signature)` as UTF-8.
+// ---------------------------------------------------------------------------
+
+const B64URL_ALPHABET: &[u8; 64] =
+    b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+/// An Ed25519 key pair. Keys are raw 32-byte seeds / public points.
+#[derive(Clone, PartialEq, Eq)]
+pub struct ToiKeyPair {
+    /// 32-byte Ed25519 private seed. Keep secret; never write it into a `.toi` file.
+    pub private_key: [u8; 32],
+    /// 32-byte Ed25519 public key.
+    pub public_key: [u8; 32],
+    /// The public key as base64url — the form stored in `$signature.public_key`.
+    pub public_key_base64url: String,
+}
+
+impl std::fmt::Debug for ToiKeyPair {
+    /// Redacts the private seed so accidental `{:?}` of a key pair never leaks it.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ToiKeyPair")
+            .field("private_key", &"[redacted]")
+            .field("public_key", &self.public_key)
+            .field("public_key_base64url", &self.public_key_base64url)
+            .finish()
+    }
+}
+
+/// Encode bytes as unpadded base64url (RFC 4648 §5) — no `=` padding.
+pub fn base64url_encode(bytes: &[u8]) -> String {
+    let mut out = String::with_capacity(bytes.len() / 3 * 4 + 4);
+    for chunk in bytes.chunks(3) {
+        let b0 = chunk[0] as u32;
+        let b1 = chunk.get(1).copied().unwrap_or(0) as u32;
+        let b2 = chunk.get(2).copied().unwrap_or(0) as u32;
+        let n = (b0 << 16) | (b1 << 8) | b2;
+        out.push(B64URL_ALPHABET[((n >> 18) & 63) as usize] as char);
+        out.push(B64URL_ALPHABET[((n >> 12) & 63) as usize] as char);
+        if chunk.len() > 1 {
+            out.push(B64URL_ALPHABET[((n >> 6) & 63) as usize] as char);
+        }
+        if chunk.len() > 2 {
+            out.push(B64URL_ALPHABET[(n & 63) as usize] as char);
+        }
+    }
+    out
+}
+
+/// Decode unpadded base64url. Rejects non-alphabet characters, a dangling
+/// trailing character (length ≡ 1 mod 4), and non-zero trailing padding bits —
+/// i.e. only canonical encodings decode, matching the reference `b64url`.
+pub fn base64url_decode(s: &str) -> Result<Vec<u8>, ToiError> {
+    let mut out = Vec::with_capacity(s.len() * 3 / 4);
+    let mut acc: u32 = 0;
+    let mut bits: u32 = 0;
+    for b in s.bytes() {
+        let six = match b {
+            b'A'..=b'Z' => b - b'A',
+            b'a'..=b'z' => b - b'a' + 26,
+            b'0'..=b'9' => b - b'0' + 52,
+            b'-' => 62,
+            b'_' => 63,
+            _ => return Err(ToiError::Base64Url(format!("invalid character in {s:?}"))),
+        };
+        acc = (acc << 6) | six as u32;
+        bits += 6;
+        if bits >= 8 {
+            bits -= 8;
+            out.push(((acc >> bits) & 0xff) as u8);
+            acc &= (1u32 << bits) - 1;
+        }
+    }
+    if bits >= 6 {
+        return Err(ToiError::Base64Url("dangling base64url character".into()));
+    }
+    if bits > 0 && (acc & ((1u32 << bits) - 1)) != 0 {
+        return Err(ToiError::Base64Url("non-zero trailing padding bits".into()));
+    }
+    Ok(out)
+}
+
+/// Generate a fresh Ed25519 key pair.
+pub fn generate_key_pair() -> ToiKeyPair {
+    let mut seed = [0u8; 32];
+    rand_core::OsRng.fill_bytes(&mut seed);
+    let signing = SigningKey::from_bytes(&seed);
+    let public_key = signing.verifying_key().to_bytes();
+    ToiKeyPair {
+        private_key: seed,
+        public_key,
+        public_key_base64url: base64url_encode(&public_key),
+    }
+}
+
+/// A copy of `value` with the top-level `$signature` key removed.
+fn without_signature(value: &Value) -> Value {
+    match value {
+        Value::Object(map) => {
+            let mut out = serde_json::Map::new();
+            for (k, v) in map {
+                if k != "$signature" {
+                    out.insert(k.clone(), v.clone());
+                }
+            }
+            Value::Object(out)
+        }
+        other => other.clone(),
+    }
+}
+
+/// The exact bytes that get signed: the canonical form with `$signature` removed.
+pub fn signing_payload(value: &Value) -> Result<Vec<u8>, ToiError> {
+    canonicalize_to_bytes(&without_signature(value))
+}
+
+/// Sign a document, returning a copy with a populated `$signature` field.
+///
+/// The signature is computed over the RFC 8785 canonical form of the document
+/// with `$signature` removed, so it survives reformatting and key reordering.
+pub fn sign_toi(value: &Value, private_key: &[u8]) -> Result<Value, ToiError> {
+    let seed: [u8; 32] = private_key
+        .try_into()
+        .map_err(|_| ToiError::InvalidKey("Ed25519 private key must be exactly 32 bytes".into()))?;
+    let unsigned = without_signature(value);
+    if !unsigned.is_object() {
+        return Err(ToiError::InvalidDocument(
+            "a .toi document must be a JSON object".into(),
+        ));
+    }
+    let signing = SigningKey::from_bytes(&seed);
+    let payload = canonicalize_to_bytes(&unsigned)?;
+    let signature = signing.sign(&payload);
+    let public_key = signing.verifying_key().to_bytes();
+    let envelope = serde_json::json!({
+        "alg": "ed25519",
+        "public_key": base64url_encode(&public_key),
+        "value": base64url_encode(&signature.to_bytes()),
+    });
+    let mut out = unsigned;
+    if let Value::Object(map) = &mut out {
+        map.insert("$signature".to_string(), envelope);
+    }
+    Ok(out)
+}
+
+/// `true` when `value` carries a `$signature` envelope (not a validity claim).
+pub fn is_signed(value: &Value) -> bool {
+    matches!(value.get("$signature"), Some(Value::Object(_)))
+}
+
+/// SPEC §11.1: signature fields are unpadded base64url — no `=` padding, no whitespace.
+fn is_unpadded_base64url(s: &str) -> bool {
+    !s.is_empty() && s.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')
+}
+
+/// Verify a document's embedded `$signature` against its canonical payload.
+///
+/// Fully defensive: returns `false` for a missing, malformed, undecodable, or
+/// non-matching signature, and never throws.
+pub fn verify_toi(value: &Value) -> bool {
+    let raw = match value.get("$signature") {
+        Some(Value::Object(m)) => m,
+        _ => return false,
+    };
+    if raw.get("alg").and_then(Value::as_str) != Some("ed25519") {
+        return false;
+    }
+    let public_key_b64 = match raw.get("public_key").and_then(Value::as_str) {
+        Some(s) => s,
+        None => return false,
+    };
+    let value_b64 = match raw.get("value").and_then(Value::as_str) {
+        Some(s) => s,
+        None => return false,
+    };
+    // SPEC §11.1: reject padded / whitespaced encodings instead of silently
+    // normalizing them, so non-conforming envelopes do not verify.
+    if !is_unpadded_base64url(public_key_b64) || !is_unpadded_base64url(value_b64) {
+        return false;
+    }
+    let public_key_bytes = match base64url_decode(public_key_b64) {
+        Ok(b) => b,
+        Err(_) => return false,
+    };
+    let signature_bytes = match base64url_decode(value_b64) {
+        Ok(b) => b,
+        Err(_) => return false,
+    };
+    let Ok(public_key) = <[u8; 32]>::try_from(public_key_bytes.as_slice()) else {
+        return false;
+    };
+    let Ok(signature_bytes) = <[u8; 64]>::try_from(signature_bytes.as_slice()) else {
+        return false;
+    };
+    let payload = match signing_payload(value) {
+        Ok(p) => p,
+        Err(_) => return false,
+    };
+    let Ok(verifying_key) = VerifyingKey::from_bytes(&public_key) else {
+        return false;
+    };
+    let signature = Signature::from_bytes(&signature_bytes);
+    verifying_key.verify(&payload, &signature).is_ok()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -398,6 +616,186 @@ mod tests {
             assert_eq!(String::from_utf8(bytes.clone()).unwrap(), text);
             // "ä" is one UTF-16 unit but two UTF-8 bytes (7 units -> 8 bytes).
             assert_eq!(bytes.len(), text.len());
+        }
+    }
+
+    /// Phase 1: Ed25519 sign / verify — mirrors packages/toi/test/sign.test.ts
+    /// and tests/test_sign.py, including the committed known-answer fixture.
+    mod signing {
+        use super::*;
+        use serde_json::json;
+
+        fn minimal() -> Value {
+            json!({
+                "$toi": "1.0.0",
+                "$tier": "personal",
+                "identity": { "author": "anonymous" }
+            })
+        }
+
+        /// The committed known-answer fixture (packages/toi/test/fixtures/valid/signed.toi).
+        /// Produced by the TypeScript reference — verifying it here is the
+        /// cross-implementation proof that a JS-signed document verifies in Rust
+        /// byte-for-byte (the Phase 1 gate).
+        fn signed_fixture() -> Value {
+            json!({
+                "$toi": "1.0.0",
+                "$tier": "personal",
+                "$created": "2026-05-29",
+                "$id": "6ba7b810-9dad-41d1-80b4-00c04fd430c8",
+                "$license": "Apache-2.0",
+                "$signature": {
+                    "alg": "ed25519",
+                    "public_key": "ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ",
+                    "value": "9_YgHkljt8dPLYBmuvHjcRHlSaxS0DK06qvJDu2NM3s7tsiqL8zAQjtN-yiwlN5PN7nAFkr_Iz1kMUtrubBAAA"
+                },
+                "identity": { "author": "signed conformance fixture" },
+                "communication": { "tone": "direct", "verbosity": "concise" }
+            })
+        }
+
+        /// Deterministic Ed25519 vector — seed bytes 1..=32. Shared with the Go
+        /// port (go/nlt-toi/sign_test.go); byte-parity across Rust and Go for
+        /// the same payload + seed proves the two new ports interoperate and
+        /// match the TS/Python references.
+        const FIXED_SEED: [u8; 32] = [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32,
+        ];
+        const EXPECTED_PUBLIC_KEY_B64: &str = "ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ";
+        const EXPECTED_SIGNATURE_B64: &str =
+            "ubQpn9BdJH6yVrX_XWUA2KhoSi3_hBzfD_5z_xISH6PV_UfKvvNfjuq8icQww79NUPlkNVaSGnQKbs6z04QHBg";
+        /// Canonical form of the full signed document for the deterministic vector.
+        const EXPECTED_SIGNED_CANONICAL: &str = "{\"$signature\":{\"alg\":\"ed25519\",\"public_key\":\"ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ\",\"value\":\"ubQpn9BdJH6yVrX_XWUA2KhoSi3_hBzfD_5z_xISH6PV_UfKvvNfjuq8icQww79NUPlkNVaSGnQKbs6z04QHBg\"},\"$tier\":\"personal\",\"$toi\":\"1.0.0\",\"identity\":{\"author\":\"anonymous\"}}";
+
+        #[test]
+        fn round_trips_sign_then_verify() {
+            let keys = generate_key_pair();
+            let signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            assert!(is_signed(&signed));
+            assert_eq!(signed["$signature"]["alg"], "ed25519");
+            assert!(verify_toi(&signed));
+        }
+
+        #[test]
+        fn detects_tampering_with_signed_content() {
+            let keys = generate_key_pair();
+            let mut signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            signed["identity"]["author"] = json!("someone else");
+            assert!(!verify_toi(&signed));
+        }
+
+        #[test]
+        fn is_stable_across_reformatting_and_key_reordering() {
+            let keys = generate_key_pair();
+            let signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            // Round-trip through the canonical string: reformatting + key
+            // reordering cannot change the payload the signature is over.
+            let reparsed: Value = serde_json::from_str(&canonicalize_jcs(&signed).unwrap()).unwrap();
+            assert!(verify_toi(&reparsed));
+        }
+
+        #[test]
+        fn signs_over_canonical_form_with_signature_removed() {
+            let keys = generate_key_pair();
+            let doc = minimal();
+            let signed = sign_toi(&doc, &keys.private_key).unwrap();
+            assert_eq!(
+                String::from_utf8(signing_payload(&signed).unwrap()).unwrap(),
+                canonicalize_jcs(&doc).unwrap()
+            );
+        }
+
+        #[test]
+        fn verifies_committed_known_answer_fixture() {
+            let signed = signed_fixture();
+            assert!(verify_toi(&signed));
+            assert_eq!(
+                signed["$signature"]["public_key"],
+                "ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ"
+            );
+        }
+
+        #[test]
+        fn treats_unsigned_documents_as_unverified_not_errors() {
+            let doc = minimal();
+            assert!(!is_signed(&doc));
+            assert!(!verify_toi(&doc));
+        }
+
+        #[test]
+        fn rejects_a_wrong_public_key() {
+            let keys = generate_key_pair();
+            let mut signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            let other = generate_key_pair();
+            signed["$signature"]["public_key"] = json!(other.public_key_base64url);
+            assert!(!verify_toi(&signed));
+        }
+
+        #[test]
+        fn returns_false_never_throws_for_malformed_base64url() {
+            let keys = generate_key_pair();
+            let mut signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            signed["$signature"]["value"] = json!("@@@");
+            assert!(!verify_toi(&signed));
+        }
+
+        #[test]
+        fn rejects_padded_or_whitespaced_base64url() {
+            let keys = generate_key_pair();
+            let signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            let mut padded = signed.clone();
+            padded["$signature"]["value"] =
+                json!(format!("{}=", signed["$signature"]["value"].as_str().unwrap()));
+            let mut spaced = signed.clone();
+            spaced["$signature"]["public_key"] = json!(format!(
+                " {}",
+                signed["$signature"]["public_key"].as_str().unwrap()
+            ));
+            assert!(!verify_toi(&padded));
+            assert!(!verify_toi(&spaced));
+        }
+
+        #[test]
+        fn rejects_wrong_length_signature_bytes() {
+            // A valid base64url string that decodes to the wrong byte count
+            // (32 bytes instead of 64) must not verify.
+            let keys = generate_key_pair();
+            let mut signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            signed["$signature"]["value"] =
+                json!(keys.public_key_base64url.clone());
+            assert!(!verify_toi(&signed));
+        }
+
+        #[test]
+        fn rejects_non_canonical_base64url_trailing_bits() {
+            // The ...ElmR variant decodes to the same 32 bytes as the canonical
+            // ...ElmQ public key but carries non-zero trailing padding bits.
+            // SPEC §11.1 requires canonical encodings, so it must NOT verify
+            // (matches TS/Python/Go).
+            assert!(base64url_decode("ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmR").is_err());
+            let keys = generate_key_pair();
+            let mut signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            signed["$signature"]["public_key"] =
+                json!("ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmR");
+            assert!(!verify_toi(&signed));
+        }
+
+        #[test]
+        fn debug_redacts_private_key() {
+            let keys = generate_key_pair();
+            let debug = format!("{keys:?}");
+            assert!(debug.contains("[redacted]"));
+            assert!(!debug.contains(&keys.private_key.iter().map(|b| format!("{b:02x}")).collect::<String>()));
+        }
+
+        #[test]
+        fn deterministic_vector_matches_reference_bytes() {
+            let signed = sign_toi(&minimal(), &FIXED_SEED).unwrap();
+            assert_eq!(signed["$signature"]["public_key"], EXPECTED_PUBLIC_KEY_B64);
+            assert_eq!(signed["$signature"]["value"], EXPECTED_SIGNATURE_B64);
+            assert_eq!(canonicalize_jcs(&signed).unwrap(), EXPECTED_SIGNED_CANONICAL);
+            assert!(verify_toi(&signed));
         }
     }
 }
