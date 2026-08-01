@@ -76,6 +76,8 @@ pub enum ToiError {
     Serialization(#[from] serde_json::Error),
     #[error("Invalid tier: {0}")]
     InvalidTier(String),
+    #[error("Invalid .toi document: {0}")]
+    InvalidDocument(String),
     #[error("Invalid signature: {0}")]
     InvalidSignature(String),
     #[error("Base64url decoding failed: {0}")]
@@ -273,7 +275,7 @@ const B64URL_ALPHABET: &[u8; 64] =
     b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
 /// An Ed25519 key pair. Keys are raw 32-byte seeds / public points.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct ToiKeyPair {
     /// 32-byte Ed25519 private seed. Keep secret; never write it into a `.toi` file.
     pub private_key: [u8; 32],
@@ -281,6 +283,17 @@ pub struct ToiKeyPair {
     pub public_key: [u8; 32],
     /// The public key as base64url — the form stored in `$signature.public_key`.
     pub public_key_base64url: String,
+}
+
+impl std::fmt::Debug for ToiKeyPair {
+    /// Redacts the private seed so accidental `{:?}` of a key pair never leaks it.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ToiKeyPair")
+            .field("private_key", &"[redacted]")
+            .field("public_key", &self.public_key)
+            .field("public_key_base64url", &self.public_key_base64url)
+            .finish()
+    }
 }
 
 /// Encode bytes as unpadded base64url (RFC 4648 §5) — no `=` padding.
@@ -378,8 +391,14 @@ pub fn sign_toi(value: &Value, private_key: &[u8]) -> Result<Value, ToiError> {
     let seed: [u8; 32] = private_key
         .try_into()
         .map_err(|_| ToiError::InvalidKey("Ed25519 private key must be exactly 32 bytes".into()))?;
+    let unsigned = without_signature(value);
+    if !unsigned.is_object() {
+        return Err(ToiError::InvalidDocument(
+            "a .toi document must be a JSON object".into(),
+        ));
+    }
     let signing = SigningKey::from_bytes(&seed);
-    let payload = signing_payload(value)?;
+    let payload = canonicalize_to_bytes(&unsigned)?;
     let signature = signing.sign(&payload);
     let public_key = signing.verifying_key().to_bytes();
     let envelope = serde_json::json!({
@@ -387,7 +406,7 @@ pub fn sign_toi(value: &Value, private_key: &[u8]) -> Result<Value, ToiError> {
         "public_key": base64url_encode(&public_key),
         "value": base64url_encode(&signature.to_bytes()),
     });
-    let mut out = without_signature(value);
+    let mut out = unsigned;
     if let Value::Object(map) = &mut out {
         map.insert("$signature".to_string(), envelope);
     }
@@ -746,6 +765,28 @@ mod tests {
             signed["$signature"]["value"] =
                 json!(keys.public_key_base64url.clone());
             assert!(!verify_toi(&signed));
+        }
+
+        #[test]
+        fn rejects_non_canonical_base64url_trailing_bits() {
+            // The ...ElmR variant decodes to the same 32 bytes as the canonical
+            // ...ElmQ public key but carries non-zero trailing padding bits.
+            // SPEC §11.1 requires canonical encodings, so it must NOT verify
+            // (matches TS/Python/Go).
+            assert!(base64url_decode("ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmR").is_err());
+            let keys = generate_key_pair();
+            let mut signed = sign_toi(&minimal(), &keys.private_key).unwrap();
+            signed["$signature"]["public_key"] =
+                json!("ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmR");
+            assert!(!verify_toi(&signed));
+        }
+
+        #[test]
+        fn debug_redacts_private_key() {
+            let keys = generate_key_pair();
+            let debug = format!("{keys:?}");
+            assert!(debug.contains("[redacted]"));
+            assert!(!debug.contains(&keys.private_key.iter().map(|b| format!("{b:02x}")).collect::<String>()));
         }
 
         #[test]

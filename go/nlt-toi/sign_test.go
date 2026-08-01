@@ -221,6 +221,25 @@ func TestReturnsFalseWhenDocumentCannotBeCanonicalized(t *testing.T) {
 	}
 }
 
+func TestRejectsNonCanonicalBase64UrlTrailingBits(t *testing.T) {
+	keys, err := GenerateKeyPair()
+	if err != nil {
+		t.Fatalf("generate key pair: %v", err)
+	}
+	signed, err := SignToi(mustParse(t, minimalDoc), keys.PrivateKey)
+	if err != nil {
+		t.Fatalf("sign: %v", err)
+	}
+	// The ...ElmR variant decodes to the same 32 bytes as the canonical ...ElmQ
+	// public key but carries non-zero trailing padding bits. SPEC §11.1 requires
+	// canonical encodings, so it must NOT verify (matches TS/Python/Rust).
+	env := signed.(map[string]interface{})["$signature"].(map[string]interface{})
+	env["public_key"] = "ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmR"
+	if VerifyToi(signed) {
+		t.Fatal("expected verifyToi == false for non-canonical base64url trailing bits")
+	}
+}
+
 func TestDeterministicVectorMatchesReferenceBytes(t *testing.T) {
 	signed, err := SignToi(mustParse(t, minimalDoc), fixedSeed)
 	if err != nil {

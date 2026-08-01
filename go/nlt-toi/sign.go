@@ -81,17 +81,17 @@ func SignToi(value interface{}, privateKey []byte) (interface{}, error) {
 	if len(privateKey) != ed25519.SeedSize {
 		return nil, fmt.Errorf("nlt-toi: Ed25519 private key must be exactly %d bytes", ed25519.SeedSize)
 	}
-	payload, err := SigningPayload(value)
+	out, ok := withoutSignature(value).(map[string]interface{})
+	if !ok {
+		return nil, fmt.Errorf("nlt-toi: a .toi document must be a JSON object")
+	}
+	payload, err := CanonicalizeToBytes(out)
 	if err != nil {
 		return nil, err
 	}
 	priv := ed25519.NewKeyFromSeed(privateKey)
 	sig := ed25519.Sign(priv, payload)
 	pub := priv.Public().(ed25519.PublicKey)
-	out, ok := withoutSignature(value).(map[string]interface{})
-	if !ok {
-		return nil, fmt.Errorf("nlt-toi: a .toi document must be a JSON object")
-	}
 	out["$signature"] = map[string]interface{}{
 		"alg":        "ed25519",
 		"public_key": base64.RawURLEncoding.EncodeToString(pub),
@@ -145,6 +145,13 @@ func VerifyToi(value interface{}) bool {
 	}
 	signature, err := base64.RawURLEncoding.DecodeString(signatureB64)
 	if err != nil {
+		return false
+	}
+	// base64.RawURLEncoding tolerates non-zero trailing padding bits (golang/go#18446);
+	// the TS/Python/Rust references reject them. Require the canonical re-encoding
+	// so only canonical encodings verify (SPEC §11.1).
+	if base64.RawURLEncoding.EncodeToString(publicKey) != publicKeyB64 ||
+		base64.RawURLEncoding.EncodeToString(signature) != signatureB64 {
 		return false
 	}
 	if len(publicKey) != ed25519.PublicKeySize || len(signature) != ed25519.SignatureSize {

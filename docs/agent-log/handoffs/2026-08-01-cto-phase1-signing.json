@@ -12,8 +12,9 @@
       "Go (go/nlt-toi/sign.go): added ToiKeyPair, GenerateKeyPair, SigningPayload, SignToi, VerifyToi, IsSigned on crypto/ed25519 + base64.RawURLEncoding.",
       "Corrected the ToiSignature envelope in both ports to {alg, public_key, value} per toiSignatureSchema (was signature/signed_at, which would have produced non-conformant envelopes). verify_toi/VerifyToi are fully defensive (never throw/panic), reject padded or whitespaced base64url per SPEC §11.1, and return false for un-canonicalizable input.",
       "Signed payload is always canonicalize(document without $signature) as UTF-8 — identical semantics to TS/Python.",
-      "Tests: 11 new Rust signing tests (28 total green) and 11 new Go signing tests (30 total green), mirroring sign.test.ts/test_sign.py including: round-trip, tamper detection, reformat/key-reorder stability, payload==canonicalize(doc), committed known-answer fixture, wrong-key rejection, malformed/padded/whitespaced base64url, wrong-length signature bytes, and the deterministic vector.",
+      "Tests: 13 new Rust signing tests (30 total green) and 12 new Go signing tests (31 total green), mirroring sign.test.ts/test_sign.py including: round-trip, tamper detection, reformat/key-reorder stability, payload==canonicalize(doc), committed known-answer fixture, wrong-key rejection, malformed/padded/whitespaced base64url, wrong-length signature bytes, non-canonical trailing-bit rejection, and the deterministic vector.",
       "Cross-runtime proof: both Rust and Go verify the committed JS-produced signed.toi fixture byte-for-byte, and both produce identical envelope bytes for the shared deterministic vector (seed 1..=32, minimal payload): public_key ebVWLo_mVPlAeLES6KmLp5AfhTrmlb7X4OORC60ElmQ, signature ubQpn9BdJH6yVrX_XWUA2KhoSi3_hBzfD_5z_xISH6PV_UfKvvNfjuq8icQww79NUPlkNVaSGnQKbs6z04QHBg — matching the TS/Python reference output. The seed key matches the committed fixture's public key.",
+      "Applied nlt-code-reviewer feedback (APPROVE_WITH_NITS) from the phase-gate review: Go base64url now rejects non-canonical trailing padding bits via re-encode check (was lenient — the only conformance divergence from TS/Python/Rust); Rust sign_toi returns ToiError::InvalidDocument for non-object input instead of silently returning the unsigned copy; ToiKeyPair Debug now redacts the private seed; SignToi checks the object shape before canonicalizing; CHANGELOG vector wording tightened.",
       "Reference suites unaffected: TS vitest 65 passed, Python pytest 65 passed.",
       "Governance validation: bash .nltotoi/scripts/validate-governance.sh — 29 passed, 0 failed. gofmt clean; Rust builds warning-free.",
       "Updated CHANGELOG.md (Unreleased → Added) and docs/active-threads.md (new NLT-TOI-PHASE1-SIGNING thread)."
@@ -44,14 +45,14 @@
       "docs/agent-log/handoffs/2026-08-01-cto-phase1-signing.json"
     ],
     "tests_run": [
-      "cargo test (28 passed) in crates/nlt-toi",
-      "go test ./... (30 passed) in go/nlt-toi",
+      "cargo test (30 passed) in crates/nlt-toi",
+      "go test ./... (31 passed) in go/nlt-toi",
       "vitest run (65 passed) in packages/toi",
       "python3 -m pytest -q (65 passed)",
       "bash .nltotoi/scripts/validate-governance.sh (29 passed)",
       "gofmt -l . (clean); cargo build (no warnings)"
     ],
     "tests_passing": true,
-    "pr_url": ""
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/26"
   }
 }
