@@ -1,0 +1,50 @@
+{
+  "handoff_record": {
+    "session_id": "2026-08-01-cto-go-jcs",
+    "agent_name": "OpenCode CTO Orchestrator (nemotron-3-ultra-free)",
+    "date": "2026-08-01",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/nlt-toi",
+    "branch": "go/nlt-toi-jcs-canonicalizer",
+    "work_completed": [
+      "Created Go module go/nlt-toi (module github.com/NeuroLift-Technologies/nlt-toi/go/nlt-toi) implementing RFC 8785 JCS canonicalization, mirroring the merged Rust crate crates/nlt-toi and the TS/Python references.",
+      "Implemented FormatNumber — ECMA-262 Number::toString (6.1.6.1.20) on top of strconv shortest digits: strconv 'e' shortest output decomposed into significant digits + decimal exponent, then ECMAScript decimal/exponent selection rules (42, 0.000001, 1e+21 with plus sign, 10000000 for 1e7).",
+      "CanonicalizeJCS round-trips input through encoding/json with json.Decoder.UseNumber so integer tokens pass through verbatim (preserving precision beyond 2^53, e.g. 9007199254740993 and 30-digit integers) while float tokens go through FormatNumber; -0.0 renders as 0.",
+      "UTF-16BE key sorting per RFC 8785 §3.2.3 (utf16.Encode into big-endian byte sequences) with ECMAScript-compatible string escaping (HTML escaping disabled, matching JSON.stringify).",
+      "Ported ToiDocument/ToiSignature/ToiTier, TOI constants, and TierRank to types.go; CanonicalizeToBytes and ContentHash (SHA-256 hex) for receipts.",
+      "Added 19 Go tests incl. 10 cross-runtime parity vectors ported verbatim from the Rust cross_runtime_parity module (same as TS packages/toi/test/canonicalize.test.ts and Python tests/test_canonicalize.py) — all green (go test).",
+      "Cross-runtime confirmation: Rust crate cargo test 17 passed; Python reference python3 -m pytest tests/test_canonicalize.py 10 passed.",
+      "Governance validation: bash .nltotoi/scripts/validate-governance.sh — 29 passed, 0 failed.",
+      "Updated CHANGELOG.md (Unreleased → Added) and docs/active-threads.md (Rust thread resolved, new NLT-TOI-GO-PORT thread)."
+    ],
+    "work_in_progress": [
+      "Go PR open for review/merge on GitHub (branch go/nlt-toi-jcs-canonicalizer)."
+    ],
+    "blockers": [],
+    "decisions_made": [
+      "Use strconv.FormatFloat(n, 'e', -1, 64) shortest scientific form as the digit source (Go's 'g' format is not JCS-conformant: renders 1e-06, 1e+07). Decompose into digits + decimal exponent and apply the same ECMA-262 selection rules as the Rust/Python references.",
+      "Use json.Decoder.UseNumber() during normalization so integer tokens remain integer-typed and pass through un-parsed, preserving precision beyond 2^53 — mirrors the Rust post_process_numbers integer pass-through.",
+      "Go package name nlt_toi (directory go/nlt-toi) following the Rust crates/nlt-toi placement convention."
+    ],
+    "decisions_pending": [],
+    "escalations": [],
+    "next_agent_notes": "Phase 0 JCS conformance is now green across TS, Python, Rust, and Go. Next is Phase 1: core types + Ed25519 sign/verify in both crates/nlt-toi and go/nlt-toi, cross-validated against the TS/Python references (a JS-signed document must verify in Rust and Go byte-for-byte). Run nlt-code-reviewer at the phase gate before merging.",
+    "files_modified": [
+      "go/nlt-toi/go.mod",
+      "go/nlt-toi/jcs.go",
+      "go/nlt-toi/types.go",
+      "go/nlt-toi/jcs_test.go",
+      "CHANGELOG.md",
+      "docs/active-threads.md",
+      "docs/agent-log/handoffs/2026-08-01-cto-go-jcs.json"
+    ],
+    "tests_run": [
+      "go test ./... (19 passed) in go/nlt-toi",
+      "cargo test (17 passed) in crates/nlt-toi",
+      "python3 -m pytest tests/test_canonicalize.py (10 passed)",
+      "bash .nltotoi/scripts/validate-governance.sh (29 passed)"
+    ],
+    "tests_passing": true,
+    "pr_url": ""
+  }
+}

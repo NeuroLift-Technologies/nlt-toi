@@ -1,13 +1,22 @@
 # Active Threads
 
 ### Thread: NLT-TOI-RUST-PORT (PHASE 0 — JCS)
-**Status:** in-progress — PR #24 open for review
+**Status:** resolved — PR #24 merged
 **Owner:** OpenCode CTO Orchestrator
 **Started:** 2026-08-01
 **Last updated:** 2026-08-01
-**Summary:** Rust port of the .toi reference library, Phase 0 (RFC 8785 JCS conformance). Created `crates/nlt-toi` with full ECMA-262 `Number::toString` number formatting on top of ryu, UTF-16BE key sorting, `canonicalize_to_bytes`, and `content_hash`. 17 tests green including 9 cross-runtime parity vectors matching TS + Python byte-for-byte. Delivered as PR #24 (`rust/nlt-toi-jcs-canonicalizer`).
+**Summary:** Rust port of the .toi reference library, Phase 0 (RFC 8785 JCS conformance). Created `crates/nlt-toi` with full ECMA-262 `Number::toString` number formatting on top of ryu, UTF-16BE key sorting, `canonicalize_to_bytes`, and `content_hash`. 17 tests green including 9 cross-runtime parity vectors matching TS + Python byte-for-byte. Merged via PR #24.
 **Blockers:** None.
-**Next action:** Merge PR #24; then build the Go JCS canonicalizer at `go/nlt-toi/` and cross-validate all runtimes against a shared vector corpus before Phase 1 (core types + Ed25519).
+**Next action:** None — Rust JCS conformance gate passed.
+
+### Thread: NLT-TOI-GO-PORT (PHASE 0 — JCS)
+**Status:** in-progress — PR open for review
+**Owner:** OpenCode CTO Orchestrator
+**Started:** 2026-08-01
+**Last updated:** 2026-08-01
+**Summary:** Go port of the RFC 8785 JCS canonicalizer at `go/nlt-toi/` (module `github.com/NeuroLift-Technologies/nlt-toi/go/nlt-toi`). Mirrors the Rust crate: ECMA-262 `Number::toString` on top of `strconv` shortest digits, UTF-16BE key sorting, integer pass-through beyond 2^53, `CanonicalizeJCS`/`CanonicalizeToBytes`/`ContentHash`, `ToiDocument`/`ToiTier`/tier precedence. 19 tests green including 10 cross-runtime parity vectors identical to TS/Python/Rust.
+**Blockers:** None.
+**Next action:** Merge the Go PR; then Phase 1 (core types + Ed25519 sign/verify) across Rust + Go, cross-validated against the TS/Python references.
 
 ### Thread: NLT-TOI-LEGACY-CLEANUP
 **Status:** in-progress
