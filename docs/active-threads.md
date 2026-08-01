@@ -10,13 +10,22 @@
 **Next action:** None — Rust JCS conformance gate passed.
 
 ### Thread: NLT-TOI-GO-PORT (PHASE 0 — JCS)
-**Status:** in-progress — PR open for review
+**Status:** resolved — PR #25 merged
 **Owner:** OpenCode CTO Orchestrator
 **Started:** 2026-08-01
 **Last updated:** 2026-08-01
 **Summary:** Go port of the RFC 8785 JCS canonicalizer at `go/nlt-toi/` (module `github.com/NeuroLift-Technologies/nlt-toi/go/nlt-toi`). Mirrors the Rust crate: ECMA-262 `Number::toString` on top of `strconv` shortest digits, UTF-16BE key sorting, integer pass-through beyond 2^53, `CanonicalizeJCS`/`CanonicalizeToBytes`/`ContentHash`, `ToiDocument`/`ToiTier`/tier precedence. 19 tests green including 10 cross-runtime parity vectors identical to TS/Python/Rust.
 **Blockers:** None.
-**Next action:** Merge the Go PR; then Phase 1 (core types + Ed25519 sign/verify) across Rust + Go, cross-validated against the TS/Python references.
+**Next action:** None — Go JCS conformance gate passed.
+
+### Thread: NLT-TOI-PHASE1-SIGNING (PHASE 1 — Core Types + Ed25519 sign/verify)
+**Status:** in-progress — implementation green, PR open for review
+**Owner:** OpenCode CTO Orchestrator
+**Started:** 2026-08-01
+**Last updated:** 2026-08-01
+**Summary:** Phase 1 (core types + Ed25519 sign/verify) across `crates/nlt-toi` and `go/nlt-toi`, cross-validated against the TS/Python references. Added `generate_key_pair`/`GenerateKeyPair`, `signing_payload`/`SigningPayload`, `sign_toi`/`SignToi`, `verify_toi`/`VerifyToi`, `is_signed`/`IsSigned` + a dependency-free unpadded base64url codec (Rust) and `crypto/ed25519` (Go). Signature envelope corrected to `{alg, public_key, value}` per `toiSignatureSchema`. Both ports verify the committed JS-produced `signed.toi` fixture byte-for-byte and share a deterministic vector (seed 1..=32) asserting identical envelope bytes across TS/Python/Rust/Go. 28 Rust tests and 30 Go tests green; TS (65) and Python (65) reference suites unchanged.
+**Blockers:** None.
+**Next action:** Run `nlt-code-reviewer` at the phase gate, then merge the PR; afterwards continue Phase 2 (schema/validation + resolve) or per the port plan.
 
 ### Thread: NLT-TOI-LEGACY-CLEANUP
 **Status:** in-progress

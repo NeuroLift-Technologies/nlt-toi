@@ -42,12 +42,15 @@ const (
 	ToiTierProject   ToiTier = "project"
 )
 
-// ToiSignature is the TOI signature envelope.
+// ToiSignature is the TOI signature envelope (SPEC §11) — a detached Ed25519
+// signature over the RFC 8785 canonical form of the document with `$signature`
+// removed. Fields match packages/toi/src/schema.ts (toiSignatureSchema):
+// unpadded base64url for both the raw 32-byte public point and the 64-byte
+// signature.
 type ToiSignature struct {
 	Alg       string `json:"alg"`
 	PublicKey string `json:"public_key"`
-	Signature string `json:"signature"`
-	SignedAt  string `json:"signed_at"`
+	Value     string `json:"value"`
 }
 
 // ToiDocument mirrors ToiDocument in crates/nlt-toi.
