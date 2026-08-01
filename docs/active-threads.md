@@ -1,5 +1,14 @@
 # Active Threads
 
+### Thread: NLT-TOI-RUST-PORT (PHASE 0 — JCS)
+**Status:** in-progress — PR #24 open for review
+**Owner:** OpenCode CTO Orchestrator
+**Started:** 2026-08-01
+**Last updated:** 2026-08-01
+**Summary:** Rust port of the .toi reference library, Phase 0 (RFC 8785 JCS conformance). Created `crates/nlt-toi` with full ECMA-262 `Number::toString` number formatting on top of ryu, UTF-16BE key sorting, `canonicalize_to_bytes`, and `content_hash`. 17 tests green including 9 cross-runtime parity vectors matching TS + Python byte-for-byte. Delivered as PR #24 (`rust/nlt-toi-jcs-canonicalizer`).
+**Blockers:** None.
+**Next action:** Merge PR #24; then build the Go JCS canonicalizer at `go/nlt-toi/` and cross-validate all runtimes against a shared vector corpus before Phase 1 (core types + Ed25519).
+
 ### Thread: NLT-TOI-LEGACY-CLEANUP
 **Status:** in-progress
 **Owner:** SWE (OpenCode CTO Orchestrator)

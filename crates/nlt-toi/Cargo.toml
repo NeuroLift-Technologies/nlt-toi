@@ -1,0 +1,21 @@
+[package]
+name = "nlt-toi"
+version = "1.0.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Rust port of @neurolift-technologies/toi — reference implementation of the .toi (Terms of Interaction) standard"
+repository = "https://github.com/NeuroLift-Technologies/nlt-toi"
+keywords = ["toi", "terms-of-interaction", "canonicalization", "rfc8785", "ed25519", "solidarity-framework"]
+categories = ["cryptography", "encoding", "data-structures"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+ed25519-dalek = "2.0"
+rand_core = "0.6"
+sha2 = "0.10"
+ryu = "1.0"
+
+[dev-dependencies]
+rand = "0.8"
