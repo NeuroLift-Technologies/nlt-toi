@@ -16,8 +16,8 @@
       "Committed [OpenCode CTO Orchestrator] feat(nlt-toi): Rust JCS canonicalizer (RFC 8785) and opened PR #24 on branch rust/nlt-toi-jcs-canonicalizer."
     ],
     "work_in_progress": [
-      "PR #24 awaiting review/merge on GitHub.",
-      "Go JCS canonicalizer (Phase 0 Task 2) not started — at go/nlt-toi/ per the port plan."
+      "MERGED to main via PR #24 (squash, merged 2026-08-01T19:09:25Z). Rust JCS canonicalizer delivered.",
+      "Go JCS canonicalizer (Phase 0 Task 2) completed and merged via PR #25."
     ],
     "blockers": [],
     "decisions_made": [
@@ -40,6 +40,9 @@
       "bash .nltotoi/scripts/validate-governance.sh (29 passed)"
     ],
     "tests_passing": true,
-    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/24"
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/24",
+    "amendment": {
+      "note": "Amended 2026-08-01 (handoff chain: Claude review NLT-HND-2026-004): work_in_progress updated to reflect PR #24 merged to main on 2026-08-01T19:09:25Z (squash), and Go JCS (PR #25) delivered. Provenance correction only — no code or test changes."
+    }
   }
 }

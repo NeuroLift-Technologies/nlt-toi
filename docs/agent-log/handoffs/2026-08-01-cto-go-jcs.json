@@ -18,7 +18,7 @@
       "Updated CHANGELOG.md (Unreleased → Added) and docs/active-threads.md (Rust thread resolved, new NLT-TOI-GO-PORT thread)."
     ],
     "work_in_progress": [
-      "Go PR open for review/merge on GitHub (branch go/nlt-toi-jcs-canonicalizer)."
+      "MERGED to main via PR #25 (squash, merged 2026-08-01T20:12:47Z). Go JCS canonicalizer delivered."
     ],
     "blockers": [],
     "decisions_made": [
@@ -45,6 +45,9 @@
       "bash .nltotoi/scripts/validate-governance.sh (29 passed)"
     ],
     "tests_passing": true,
-    "pr_url": ""
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/25",
+    "amendment": {
+      "note": "Amended 2026-08-01 (handoff chain: Claude review NLT-HND-2026-004): pr_url was empty at original handoff despite work_in_progress claiming a PR existed. Corrected to the actual PR #25, which had merged to main on 2026-08-01T20:12:47Z (squash). Provenance correction only — no code or test changes."
+    }
   }
 }
