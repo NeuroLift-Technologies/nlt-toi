@@ -1,0 +1,47 @@
+{
+  "handoff_record": {
+    "session_id": "nlt-toi-nl-extraction-2026-08-04",
+    "agent_name": "OpenCode CTO Orchestrator",
+    "date": "2026-08-04",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/nlt-toi",
+    "branch": "feat/toi-nl-extraction",
+    "work_completed": [
+      "Added packages/toi/src/extract.ts: extractToi(input, options) + ExtractOptions, deterministic regex/phrase NL->.toi extraction over SPEC §7 fields (identity, cognitive_profile, privacy, agency, communication, ethical_pillars). Confident-only matching; lossless via custom.freeform_terms and custom.x-extract.matched_fields; output guaranteed schema-valid through safeParseToi.",
+      "Exported extractToi and ExtractOptions from packages/toi/src/index.ts (semver-covered surface).",
+      "Added packages/toi/test/extract.test.ts: 26 tests covering rich declarations, ambiguous text (anonymous/no sections), confident-only guards, clause-boundary name capture, freeform/x-extract preservation, boolean gating, options/metadata, enum field mapping, tier validity.",
+      "Aligned extraction rules to templates/personal-toi-template.md vocabulary and added a filled-out-template integration test.",
+      "Review-fix commit (2074df1) per nlt-code-reviewer: closed the two Important false positives (call-me clause over-capture, bare 'shared' -> override_authority) and six Minor items (spoon qualifier, permanent context, bare 'direct', bare 'permitted', negation-aware boolean gates via positive(), self_described case/terminator). 8 regression tests added (34 extract tests / 99 total).",
+      "Fixed latent bugs: extractAuthor captured only pattern #1 (call-me never matched) and risked adjective-as-name; fallbackAuthor could emit empty author; rule gaps for natural phrasings (energy is steady, opt-in analytics, honor deletion immediately, full-context hyphen, context-sensitive, brief collision with attention option).",
+      "Typecheck, vitest (99 tests green), and tsc build all pass. Feature branch pushed, PR #28 opened. nlt-code-reviewer verdict: APPROVE_WITH_NITS (no blocking items)."
+    ],
+    "work_in_progress": [
+      "nlt-code-reviewer review of PR #28 pending."
+    ],
+    "blockers": [],
+    "decisions_made": [
+      "TypeScript-only scope (Rust/Go/Python ports untouched) per user approval.",
+      "Confident-only extraction: weak/unmatched text never populates a field; absence = no stated preference (SPEC §7).",
+      "Handle stored bare (no '@'); boolean fields set only on positive pattern match.",
+      "Bare 'brief'/'direct' tightened to verb forms to avoid cross-field leakage (e.g. 'Short Bursts (brief, focused interactions)').",
+      "Filled-out-template test uses the user's selected options (unchecked options omitted) to keep extraction deterministic."
+    ],
+    "decisions_pending": [],
+    "escalations": [],
+    "next_agent_notes": "PR #28 (branch feat/toi-nl-extraction) is APPROVE_WITH_NITS by nlt-code-reviewer. Run a final `cd packages/toi && npm test` sanity check (99 tests), squash-merge PR #28 to main, then update the TOI-NL-EXTRACTION thread in docs/active-threads.md to resolved. Remaining non-blocking follow-ups: x-namespace custom.freeform_terms, $id determinism option, UTC date nit, jargon-ok semantics, input-size bound (SPEC §13 SHOULD), session registration/intent-log.",
+    "files_modified": [
+      "packages/toi/src/extract.ts",
+      "packages/toi/src/index.ts",
+      "packages/toi/test/extract.test.ts",
+      "docs/active-threads.md",
+      "docs/agent-log/handoffs/2026-08-04-cto-nl-extraction.json"
+    ],
+    "tests_run": [
+      "cd packages/toi && npm run typecheck (tsc --noEmit)",
+      "cd packages/toi && npm test (vitest run, 99 passing: 65 existing + 34 extract)",
+      "cd packages/toi && npm run build (tsc -p tsconfig.json)"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/28"
+  }
+}
