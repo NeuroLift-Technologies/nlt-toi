@@ -227,4 +227,38 @@ My Identifier: Sam Smith
     });
     expect(doc.custom.freeform_terms).toContain("My Identifier: Sam Smith");
   });
+
+  it("does not capture a clause after 'call me'", () => {
+    expect(docOf("Call me Rio and keep it brief.").identity.author).toBe("Rio");
+  });
+
+  it("does not set override_authority from bare 'shared'", () => {
+    expect(docOf("I shared my screen with you.").agency?.override_authority).toBeUndefined();
+  });
+
+  it("does not set energy_model from eating with a spoon", () => {
+    expect(docOf("I eat with a spoon.").cognitive_profile?.energy_model).toBeUndefined();
+  });
+
+  it("does not set retention from 'delete my data permanently'", () => {
+    expect(docOf("Delete my data permanently.").privacy?.retention).toBeUndefined();
+  });
+
+  it("does not set tone from 'please direct me to the file'", () => {
+    expect(docOf("Please direct me to the file.").communication?.tone).toBeUndefined();
+  });
+
+  it("does not set training_use from bare 'permitted'", () => {
+    expect(docOf("I am permitted to enter the building.").privacy?.training_use).toBeUndefined();
+  });
+
+  it("does not set booleans from negated statements", () => {
+    const doc = docOf("Don't use multiple threads, don't summarize when I return.");
+    expect(doc.cognitive_profile?.thread_support).toBeUndefined();
+    expect(doc.communication?.summary_on_return).toBeUndefined();
+  });
+
+  it("preserves original casing in self_described", () => {
+    expect(docOf("I am Autistic and I need structure.").cognitive_profile?.self_described).toBe("I am Autistic");
+  });
 });

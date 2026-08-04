@@ -45,6 +45,21 @@ function matchRules<T>(text: string, rules: readonly Rule<T>[]): T | undefined {
   return undefined;
 }
 
+/** Negation tokens that flip a stated preference into its opposite. */
+const NEGATION = /\b(?:don'?t|do not|never|without|avoid)\b/i;
+
+/**
+ * True only when `pattern` matches AND no negation token precedes the match
+ * (within a short window). Keeps boolean fields from being set by negated
+ * statements like "don't use multiple threads".
+ */
+function positive(text: string, pattern: RegExp): boolean {
+  const match = pattern.exec(text);
+  if (!match) return false;
+  const before = text.slice(Math.max(0, match.index - 40), match.index);
+  return !NEGATION.test(before);
+}
+
 function capture(text: string, pattern: RegExp): string | undefined {
   const match = text.match(pattern);
   return match?.[1]?.trim();
@@ -65,7 +80,7 @@ function newId(): string {
 const AUTHOR_PATTERNS: ReadonlyArray<RegExp> = [
   /\bmy name is ([A-Z][A-Za-z .'-]+?)(?:\s+(?:and|with|from|who)\s+|[,.;]|\r?\n|$)/i,
   /\bmy identifier\s*(?:is\s+)?:?\s*([A-Z][A-Za-z .'-]+?)(?:[,.;]|\r?\n|$)/i,
-  /\bcall me ([A-Z][A-Za-z .'-]+)/i,
+  /\bcall me ([A-Z][A-Za-z]+(?:\s[A-Z][A-Za-z]+){0,2})(?:[,.;]|\s+(?:and|please|with|from|who)\b|$)/i,
 ];
 
 function extractAuthor(text: string): string | undefined {
@@ -120,7 +135,7 @@ const SCAFFOLDING_RULES: ReadonlyArray<Rule<string>> = [
 ];
 
 const ENERGY_RULES: ReadonlyArray<Rule<string>> = [
-  { pattern: /\bspoon(?:s)?[- ]?(?:limited|based)?\b|\blimited energy\b/i, value: "spoon-limited" },
+  { pattern: /\bspoon(?:s)? (?:limited|based|theory)\b|\b(?:limited|low) spoons?\b|\blimited energy\b/i, value: "spoon-limited" },
   { pattern: /\bbursts? of energy\b|\benergy bursts\b/i, value: "burst" },
   { pattern: /\bsteady (?:energy|pace)\b|\benergy (?:is|stays|remains) steady\b/i, value: "steady" },
   { pattern: /\benergy varies\b|\bdepends on (?:my )?energy(?: level)?\b/i, value: "variable" },
@@ -134,7 +149,7 @@ const RETENTION_RULES: ReadonlyArray<Rule<string>> = [
   { pattern: /\bsession[- ]only\b|\b(?:don'?t|do not) (?:remember|retain)\b|\bforget (?:it|everything) (?:after|when)\b/i, value: "session-only" },
   { pattern: /\bshort[- ]term\b|\bdelete (?:it|data) (?:soon|after a while)\b/i, value: "short-term" },
   { pattern: /\blong[- ]term\b|\bremember (?:it|data) (?:long[- ]term|over time)\b/i, value: "long-term" },
-  { pattern: /\bpermanent(?:ly)?\b|\bremember everything forever\b|\bnever delete\b/i, value: "permanent" },
+  { pattern: /\b(?:keep|store|retain).{0,15}permanent(?:ly)?\b|\byou can keep it\b|\bremember everything forever\b|\bnever delete\b/i, value: "permanent" },
   { pattern: /\buser[- ]controlled\b|\byou decide\b|\bask me\b|\blet me control\b/i, value: "user-controlled" },
 ];
 
@@ -149,7 +164,7 @@ const TRAINING_RULES: ReadonlyArray<Rule<string>> = [
   { pattern: /\bnever train\b|\bdon'?t train\b|\bno training\b/i, value: "prohibited" },
   { pattern: /\bask (?:me|first) before (?:training|you train)\b|\bexplicit[- ]only\b/i, value: "explicit-only" },
   { pattern: /\banonymized[- ]only\b|\b(?:train|training) (?:on )?anonymized\b/i, value: "anonymized-only" },
-  { pattern: /\b(?:can|may) train\b|\btraining (?:is )?permitted\b|\bpermitted\b/i, value: "permitted" },
+  { pattern: /\b(?:can|may) train\b|\btraining (?:is )?permitted\b/i, value: "permitted" },
 ];
 
 const ANALYTICS_RULES: ReadonlyArray<Rule<string>> = [
@@ -201,7 +216,7 @@ const CONFIRMATION_RULES: ReadonlyArray<Rule<string>> = [
 
 const OVERRIDE_AUTHORITY_RULES: ReadonlyArray<Rule<string>> = [
   { pattern: /\bmy word is final\b|\buser[- ]final\b|\b(?:i|the user) (?:have|has) (?:the )?final say\b|\bi decide what to do\b/i, value: "user-final" },
-  { pattern: /\bshared (?:authority|decision)\b|\bshared\b/i, value: "shared" },
+  { pattern: /\bshared (?:authority|decision|control)\b/i, value: "shared" },
   { pattern: /\byou decide\b|\bai[- ]advisory\b|\byour call\b/i, value: "ai-advisory" },
 ];
 
@@ -214,7 +229,7 @@ const TONE_RULES: ReadonlyArray<Rule<string>> = [
   { pattern: /\bcasual\b/i, value: "casual" },
   { pattern: /\bprofessional\b/i, value: "professional" },
   { pattern: /\bfriendly\b/i, value: "friendly" },
-  { pattern: /\bdirect\b/i, value: "direct" },
+  { pattern: /\bvery direct\b|\bbe direct\b|\bstraight to the point\b/i, value: "direct" },
   { pattern: /\badaptive\b|\bcontext[- ]sensitive\b|\badapt(?:ing)? based on\b/i, value: "adaptive" },
 ];
 
@@ -287,9 +302,9 @@ const PILLAR_RULES: ReadonlyArray<Rule<string>> = [
 // document assembly
 // ---------------------------------------------------------------------------
 
-function collectCognitiveProfile(text: string, matches: string[]): Record<string, unknown> {
+function collectCognitiveProfile(text: string, raw: string, matches: string[]): Record<string, unknown> {
   const profile: Record<string, unknown> = {};
-  const selfDescribed = capture(text, /\b(i (?:am|'m) .{0,120}?(?:neurodivergent|adhd|autistic|add|dyslexic|autism|dyslexia)).{0,60}?[.!]/i);
+  const selfDescribed = capture(raw, /\b(i (?:am|'m) .{0,120}?(?:neurodivergent|adhd|autistic|add|dyslexic|autism|dyslexia)).{0,60}?(?:[.!]|$)/i);
   if (selfDescribed) {
     profile.self_described = selfDescribed.trim();
     matches.push("cognitive_profile.self_described");
@@ -306,7 +321,7 @@ function collectCognitiveProfile(text: string, matches: string[]): Record<string
   set("energy_model", matchRules(text, ENERGY_RULES));
   set(
     "thread_support",
-    /\b(?:several|multiple|many) threads?\b|\bparallel threads?\b|\bjuggle (?:multiple|several)\b/i.test(text)
+    positive(text, /\b(?:several|multiple|many) threads?\b|\bparallel threads?\b|\bjuggle (?:multiple|several)\b/i)
       ? true
       : undefined,
   );
@@ -318,7 +333,7 @@ function collectCognitiveProfile(text: string, matches: string[]): Record<string
   );
   set(
     "executive_function_support",
-    /\b(?:help me|help) (?:get started|start tasks|stay on task|plan)\b|\bexecutive function support\b/i.test(text)
+    positive(text, /\b(?:help me|help) (?:get started|start tasks|stay on task|plan)\b|\bexecutive function support\b/i)
       ? true
       : undefined,
   );
@@ -374,13 +389,16 @@ function collectCommunication(text: string, matches: string[]): Record<string, u
   set("jargon_tolerance", matchRules(text, JARGON_RULES));
   set(
     "pattern_highlighting",
-    /\b(?:point out|surface|highlight) (?:patterns|connections|links)\b|\bpattern highlighting\b/i.test(text)
+    positive(text, /\b(?:point out|surface|highlight) (?:patterns|connections|links)\b|\bpattern highlighting\b/i)
       ? true
       : undefined,
   );
   set(
     "summary_on_return",
-    /\b(?:summarize|summary) (?:when|whenever) (?:i (?:come|return)|i'?m back)\b|\bsummary on return\b|\b(?:remind me|recap) where we were\b|\bsummary (?:at the end|when we'?re done)\b|\bsummarize at the end\b/i.test(text)
+    positive(
+      text,
+      /\b(?:summarize|summary) (?:when|whenever) (?:i (?:come|return)|i'?m back)\b|\bsummary on return\b|\b(?:remind me|recap) where we were\b|\bsummary (?:at the end|when we'?re done)\b|\bsummarize at the end\b/i,
+    )
       ? true
       : undefined,
   );
@@ -431,7 +449,7 @@ export function extractToi(input: string, options: ExtractOptions = {}): SafePar
     matches.push("identity.pronouns");
   }
 
-  const cognitive_profile = collectCognitiveProfile(lower, matches);
+  const cognitive_profile = collectCognitiveProfile(lower, text, matches);
   const privacy = collectPrivacy(lower, matches);
   const agency = collectAgency(lower, matches);
   const communication = collectCommunication(lower, matches);
