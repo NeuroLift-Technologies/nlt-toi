@@ -3,13 +3,13 @@
 ## Thread Records
 
 ### Thread: TOI-NL-EXTRACTION
-**Status:** in-progress — review-fix push `14d4c08` addresses Pool/CodeQL/CodeRabbit items; awaiting user's Pool review
+**Status:** resolved — merged to `main` via PR #28 (squash `6e9214c`)
 **Owner:** OpenCode CTO Orchestrator
 **Started:** 2026-08-04
 **Last updated:** 2026-08-04
-**Summary:** Added Natural-Language→`.toi` extraction to the TypeScript reference library (`@neurolift-technologies/toi`). New `packages/toi/src/extract.ts` (`extractToi`, `ExtractOptions`) maps confident phrase matches onto SPEC §7 fields (identity, cognitive_profile, privacy, agency, communication, ethical_pillars) deterministically — no LLM, no provider. Confident-only: weak/unmatched text never populates a field; absence = "no stated preference" (SPEC §7). Lossless: original text (whitespace preserved) under `custom.freeform_terms`, extraction metadata under `custom.x-extract`. Output guaranteed conforming via `safeParseToi`. Exported through `packages/toi/src/index.ts` (semver-covered surface). Rules aligned to `templates/personal-toi-template.md` vocabulary (identifier, session-only, anonymize, research case-by-case, focused sessions, context-sensitive, etc.). 36 new tests (101 total green), `tsc --noEmit` + `vitest run` + build clean. **nlt-code-reviewer: APPROVE_WITH_NITS** (2074df1). **Pool: Request Changes** → resolved in `14d4c08`: ReDoS-safe regexes (lookahead terminators, manual trailing-strip), negation-aware author capture, `identity.author` in matched_fields only when extracted, raw freeform preservation, active-threads H2 heading.
+**Summary:** Added Natural-Language→`.toi` extraction to the TypeScript reference library (`@neurolift-technologies/toi`). New `packages/toi/src/extract.ts` (`extractToi`, `ExtractOptions`) maps confident phrase matches onto SPEC §7 fields (identity, cognitive_profile, privacy, agency, communication, ethical_pillars) deterministically — no LLM, no provider. Confident-only: weak/unmatched text never populates a field; absence = "no stated preference" (SPEC §7). Lossless: original text (whitespace preserved) under `custom.freeform_terms`, extraction metadata under `custom.x-extract`. Output guaranteed conforming via `safeParseToi`. Exported through `packages/toi/src/index.ts` (semver-covered surface). Rules aligned to `templates/personal-toi-template.md` vocabulary (identifier, session-only, anonymize, research case-by-case, focused sessions, context-sensitive, etc.). 37 new tests (102 total green), `tsc --noEmit` + `vitest run` + build clean. **nlt-code-reviewer: APPROVE_WITH_NITS** (2074df1). **Pool: Request Changes** → resolved across `14d4c08` + `2a630bf`: ReDoS-safe regexes (lookahead terminators, manual trailing-strip, bounded token-scan author extraction), negation-aware author capture, `identity.author` in matched_fields only when extracted, raw freeform preservation, active-threads H2 heading. **All checks green on final commit (incl. CodeQL)** before merge.
 **Blockers:** None.
-**Next action:** Await user's Pool review re-check of PR #28; then squash-merge to `main` and close this thread.
+**Next action:** None — merged via PR #28 (`6e9214c`), feature branch deleted.
 
 ### Thread: NLT-TOI-RUST-PORT (PHASE 0 — JCS)
 **Status:** resolved — PR #24 merged
