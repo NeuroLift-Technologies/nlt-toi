@@ -246,6 +246,12 @@ My Identifier: Sam Smith
     expect(docOf("Call me Rio and keep it brief.").identity.author).toBe("Rio");
   });
 
+  it("handles pathological whitespace-heavy input without over-capturing (ReDoS guard)", () => {
+    expect(docOf("My name is Sam" + " ".repeat(50_000)).identity.author).toBe("Sam");
+    expect(docOf("My identifier:" + " ".repeat(50_000) + "Rio").identity.author).toBe("Rio");
+    expect(docOf("Call me" + " ".repeat(50_000)).identity.author).toBe("anonymous");
+  });
+
   it("does not set override_authority from bare 'shared'", () => {
     expect(docOf("I shared my screen with you.").agency?.override_authority).toBeUndefined();
   });

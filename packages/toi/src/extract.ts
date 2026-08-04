@@ -87,21 +87,46 @@ function newId(): string {
 // identity (§7.1)
 // ---------------------------------------------------------------------------
 
-const AUTHOR_PATTERNS: ReadonlyArray<RegExp> = [
-  /\bmy name is ([A-Z][A-Za-z .'-]+?)(?=\s+(?:and|with|from|who)\s+|[,.;]|\r?\n|$)/i,
-  /\bmy identifier\s*(?:is\s+)?:?\s*([A-Z][A-Za-z .'-]+?)(?=[,.;]|\r?\n|$)/i,
-  /\bcall me ([A-Z][A-Za-z]+(?: [A-Z][A-Za-z]+){0,2})(?=[,.;]|\s+(?:and|please|with|from|who)\b|\s*$)/i,
-];
+/** Declaration prefixes that introduce a stated name. */
+const AUTHOR_PREFIX = /\b(?:my name is|my identifier is|my identifier|call me)\b/i;
 
+/** A name-like word: starts with a letter, may contain apostrophes or hyphens. */
+const NAME_WORD = /^[A-Za-z][A-Za-z]*(?:['-][A-Za-z]+)*/;
+
+/** Conjunctions/prepositions that terminate a name declaration. */
+const NAME_CLAUSE_END = /^(?:and|with|from|who|please|or|but|when|if|so|then|that|because)\b/i;
+
+function skipInlineWs(text: string, start: number): number {
+  let i = start;
+  while (i < text.length && " \t".includes(text.charAt(i))) i += 1;
+  return i;
+}
+
+/**
+ * Extract a stated name by scanning the tokens that follow a declaration prefix.
+ * The scan is bounded (max 3 words), stops at clause boundaries and newlines,
+ * and uses no space-heavy regexes — ReDoS-free on arbitrarily large input.
+ */
 function extractAuthor(text: string): string | undefined {
-  for (const pattern of AUTHOR_PATTERNS) {
-    const match = text.match(pattern);
-    if (match?.[1]) {
-      const name = stripTrailingDelimiters(match[1].trim());
-      if (!NEGATED_NAME.test(name)) return name;
-    }
+  const decl = AUTHOR_PREFIX.exec(text);
+  if (!decl) return undefined;
+  const rest = text.slice(decl.index + decl[0].length);
+  const words: string[] = [];
+  let at = 0;
+  if (rest.charAt(at) === ":") at += 1;
+  while (words.length < 3 && at < rest.length) {
+    at = skipInlineWs(rest, at);
+    if (at >= rest.length) break;
+    const ch = rest.charAt(at);
+    if (ch === "\n" || ch === "\r") break;
+    if (NAME_CLAUSE_END.test(rest.slice(at))) break;
+    const word = NAME_WORD.exec(rest.slice(at));
+    if (!word) break;
+    words.push(word[0]);
+    at += word[0].length;
   }
-  return undefined;
+  const name = stripTrailingDelimiters(words.join(" "));
+  return name && !NEGATED_NAME.test(name) ? name : undefined;
 }
 
 function extractHandle(text: string): string | undefined {
