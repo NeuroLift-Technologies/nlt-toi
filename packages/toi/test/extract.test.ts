@@ -68,10 +68,24 @@ describe("extractToi", () => {
     expect(docOf("My name is Grace Hopper. I am a programmer.").identity.author).toBe("Grace Hopper");
   });
 
-  it("preserves the full original text under custom.freeform_terms", () => {
+  it("preserves the full original text (including whitespace) under custom.freeform_terms", () => {
     const text = "  My name is Sam, keep it concise.  ";
     const doc = docOf(text);
-    expect(doc.custom.freeform_terms).toBe("My name is Sam, keep it concise.");
+    expect(doc.custom.freeform_terms).toBe(text);
+  });
+
+  it("does not capture a negated or withheld name", () => {
+    expect(docOf("My name is not important.").identity.author).toBe("anonymous");
+    expect(docOf("Keep my name private.").identity.author).toBe("anonymous");
+    expect(docOf("My name is Sam.").identity.author).toBe("Sam");
+  });
+
+  it("records identity.author in matched_fields only for an extracted name", () => {
+    expect(docOf("My name is Sam.").custom["x-extract"].matched_fields).toContain("identity.author");
+    expect(docOf("Keep it brief.", { fallbackAuthor: "Rio" }).custom["x-extract"].matched_fields).not.toContain(
+      "identity.author",
+    );
+    expect(docOf("Keep it brief.").custom["x-extract"].matched_fields).not.toContain("identity.author");
   });
 
   it("records matched fields under custom.x-extract", () => {

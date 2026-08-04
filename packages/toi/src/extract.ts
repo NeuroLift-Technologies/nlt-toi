@@ -65,6 +65,16 @@ function capture(text: string, pattern: RegExp): string | undefined {
   return match?.[1]?.trim();
 }
 
+/** Remove trailing sentence delimiters without a regex (avoids ReDoS alerts). */
+function stripTrailingDelimiters(value: string): string {
+  let end = value.length;
+  while (end > 0 && ".,;".includes(value.charAt(end - 1))) end -= 1;
+  return value.slice(0, end);
+}
+
+/** Phrases that indicate the name is intentionally withheld, not stated. */
+const NEGATED_NAME = /\b(?:not|no one|no idea|who cares|doesn'?t matter|unimportant|irrelevant|redacted|private|secret)\b/i;
+
 function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -78,15 +88,18 @@ function newId(): string {
 // ---------------------------------------------------------------------------
 
 const AUTHOR_PATTERNS: ReadonlyArray<RegExp> = [
-  /\bmy name is ([A-Z][A-Za-z .'-]+?)(?:\s+(?:and|with|from|who)\s+|[,.;]|\r?\n|$)/i,
-  /\bmy identifier\s*(?:is\s+)?:?\s*([A-Z][A-Za-z .'-]+?)(?:[,.;]|\r?\n|$)/i,
-  /\bcall me ([A-Z][A-Za-z]+(?:\s[A-Z][A-Za-z]+){0,2})(?:[,.;]|\s+(?:and|please|with|from|who)\b|$)/i,
+  /\bmy name is ([A-Z][A-Za-z .'-]+?)(?=\s+(?:and|with|from|who)\s+|[,.;]|\r?\n|$)/i,
+  /\bmy identifier\s*(?:is\s+)?:?\s*([A-Z][A-Za-z .'-]+?)(?=[,.;]|\r?\n|$)/i,
+  /\bcall me ([A-Z][A-Za-z]+(?: [A-Z][A-Za-z]+){0,2})(?=[,.;]|\s+(?:and|please|with|from|who)\b|\s*$)/i,
 ];
 
 function extractAuthor(text: string): string | undefined {
   for (const pattern of AUTHOR_PATTERNS) {
     const match = text.match(pattern);
-    if (match?.[1]) return match[1].replace(/[.,;]+$/, "").trim();
+    if (match?.[1]) {
+      const name = stripTrailingDelimiters(match[1].trim());
+      if (!NEGATED_NAME.test(name)) return name;
+    }
   }
   return undefined;
 }
@@ -99,10 +112,8 @@ function extractHandle(text: string): string | undefined {
 }
 
 function extractOrganization(text: string): string | undefined {
-  return capture(text, /\b(?:i work (?:at|for)|my organization is|my company is) ([A-Za-z][A-Za-z .'&-]{2,60})/i)?.replace(
-    /[.,;]+$/,
-    "",
-  );
+  const value = capture(text, /\b(?:i work (?:at|for)|my (?:organization|company) is) ([A-Za-z][A-Za-z .'&-]{2,60})/i);
+  return value ? stripTrailingDelimiters(value.trim()) : undefined;
 }
 
 function extractPronouns(text: string): string | undefined {
@@ -427,12 +438,15 @@ function collectPillars(text: string, matches: string[]): string[] | undefined {
  * @param options See {@link ExtractOptions}.
  */
 export function extractToi(input: string, options: ExtractOptions = {}): SafeParseResult {
-  const text = input.trim();
+  const raw = input;
+  const text = raw.trim();
   const lower = text.toLowerCase();
   const matches: string[] = [];
 
-  const author = extractAuthor(text) ?? (options.fallbackAuthor?.trim() || "anonymous");
+  const extractedAuthor = extractAuthor(text);
+  const author = extractedAuthor ?? (options.fallbackAuthor?.trim() || "anonymous");
   const identity: Record<string, string> = { author };
+  if (extractedAuthor) matches.push("identity.author");
   const handle = extractHandle(text);
   if (handle) {
     identity.handle = handle;
@@ -475,7 +489,7 @@ export function extractToi(input: string, options: ExtractOptions = {}): SafePar
   if (ethical_pillars) doc.ethical_pillars = ethical_pillars;
 
   doc.custom = {
-    freeform_terms: text,
+    freeform_terms: raw,
     "x-extract": {
       source: "nlt-toi/extract",
       matched_fields: matches,

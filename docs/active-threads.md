@@ -1,5 +1,7 @@
 # Active Threads
 
+## Thread Records
+
 ### Thread: TOI-NL-EXTRACTION
 **Status:** in-progress — implementation + tests green, PR open for review
 **Owner:** OpenCode CTO Orchestrator
