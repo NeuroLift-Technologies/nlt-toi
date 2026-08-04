@@ -64,6 +64,9 @@ export {
   type ResolveOptions,
 } from "./tier.js";
 
+// Natural-language extraction into a schema-valid document.
+export { extractToi, type ExtractOptions } from "./extract.js";
+
 // Error taxonomy.
 export {
   ToiError,

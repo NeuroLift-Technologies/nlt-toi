@@ -1,5 +1,14 @@
 # Active Threads
 
+### Thread: TOI-NL-EXTRACTION
+**Status:** in-progress — implementation + tests green, PR open for review
+**Owner:** OpenCode CTO Orchestrator
+**Started:** 2026-08-04
+**Last updated:** 2026-08-04
+**Summary:** Added Natural-Language→`.toi` extraction to the TypeScript reference library (`@neurolift-technologies/toi`). New `packages/toi/src/extract.ts` (`extractToi`, `ExtractOptions`) maps confident phrase matches onto SPEC §7 fields (identity, cognitive_profile, privacy, agency, communication, ethical_pillars) deterministically — no LLM, no provider. Confident-only: weak/unmatched text never populates a field; absence = "no stated preference" (SPEC §7). Lossless: original text under `custom.freeform_terms`, extraction metadata under `custom.x-extract`. Output guaranteed conforming via `safeParseToi`. Exported through `packages/toi/src/index.ts` (semver-covered surface). Rules aligned to `templates/personal-toi-template.md` vocabulary (identifier, session-only, anonymize, research case-by-case, focused sessions, context-sensitive, etc.). 26 new tests (91 total green), `tsc --noEmit` + `vitest run` clean.
+**Blockers:** None.
+**Next action:** `nlt-code-reviewer` review at gate, then merge to `main` via PR.
+
 ### Thread: NLT-TOI-RUST-PORT (PHASE 0 — JCS)
 **Status:** resolved — PR #24 merged
 **Owner:** OpenCode CTO Orchestrator
