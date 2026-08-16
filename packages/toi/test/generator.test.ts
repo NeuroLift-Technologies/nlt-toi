@@ -5,8 +5,11 @@ import { join } from "node:path";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import {
   TOIDocumentGenerator,
+  generateKeyPair,
+  isSigned,
   isToi,
   parseToi,
+  signToi,
   ToiValidationError,
 } from "../src/index.js";
 
@@ -70,6 +73,18 @@ describe("TOIDocumentGenerator", () => {
     expect(() =>
       TOIDocumentGenerator.fromDict({ communication: { tone: "gibberish" } }),
     ).toThrow(ToiValidationError);
+  });
+
+  it("fromDict strips a stale $signature from a signed input", () => {
+    const { privateKey } = generateKeyPair();
+    const signed = signToi(
+      { $toi: "1.0.0", $tier: "personal", identity: { author: "alice" } },
+      privateKey,
+    );
+    expect(isSigned(signed)).toBe(true);
+    const gen = TOIDocumentGenerator.fromDict(signed);
+    expect("$signature" in gen.document).toBe(false);
+    expect(isSigned(gen.document)).toBe(false);
   });
 
   it("toJson / parse round-trips", () => {

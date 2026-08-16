@@ -150,6 +150,7 @@ export class TOIDocumentGenerator {
     if (options.organization) identity.organization = options.organization;
     doc.$created = todayIso();
     doc.$id = randomUUID();
+    delete doc.$signature;
     return new TOIDocumentGenerator(parseToi(doc)).validate();
   }
 
@@ -161,6 +162,10 @@ export class TOIDocumentGenerator {
    * `author`/`tier` override the document values so callers do not have to build
    * the reserved keys by hand. When no author is supplied anywhere,
    * `identity.author` falls back to `"anonymous"`.
+   *
+   * A `$signature` present on the input is always stripped: the merged result
+   * changes the signed payload, so the returned document must not look signed.
+   * Callers that need a signature must re-sign the generated document.
    */
   static fromDict(
     preferences: Record<string, unknown>,
@@ -175,6 +180,7 @@ export class TOIDocumentGenerator {
       assertTier(options.tier);
       doc.$tier = options.tier;
     }
+    delete doc.$signature;
     return new TOIDocumentGenerator(parseToi(doc)).validate();
   }
 
