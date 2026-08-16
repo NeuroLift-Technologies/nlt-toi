@@ -100,6 +100,31 @@ Primary references for the Python standard:
 - Specification: `packages/toi/SPEC.md` (shared normative spec)
 - JSON Schema: `packages/toi/schema/toi-1.0.0.schema.json` (shared artifact)
 
+### Authoring with the `toi-generator` CLI
+
+`pip install nlt-toi` also provides a `toi-generator` console script for
+authoring and validating `.toi` documents without writing code:
+
+```bash
+# Guided wizard -> JSON document (extension .md renders a Markdown review copy)
+toi-generator --interactive --output me.toi
+
+# Build from a JSON preferences file, filling privacy-first defaults
+toi-generator --input preferences.json --output me.toi
+
+# Validate an existing document against the canonical schema
+toi-generator --input me.toi --validate
+
+# Print the canonical JSON Schema
+toi-generator --schema
+```
+
+The generator always produces conforming output: `identity`, `$toi`, and
+`$tier` are filled automatically, unknown/partial preferences fall back to
+privacy-first defaults (session-only retention, no sharing or training use),
+and every document is validated through the canonical schema before it is
+written.
+
 Both implementations share:
 - The exact same `.toi` v1.0.0 on-disk format
 - RFC 8785 (JCS) canonicalization

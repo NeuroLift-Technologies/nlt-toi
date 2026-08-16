@@ -51,6 +51,9 @@ Homepage = "https://github.com/NeuroLift-Technologies/nlt-toi"
 Repository = "https://github.com/NeuroLift-Technologies/nlt-toi"
 Issues = "https://github.com/NeuroLift-Technologies/nlt-toi/issues"
 
+[project.scripts]
+toi-generator = "nlt_toi.cli:main"
+
 # --- Build backend (Hatchling) -------------------------------------------------
 # src/ layout: the importable package is src/nlt_toi, published as ``nlt_toi``.
 # The canonical JSON Schema lives inside the package (src/nlt_toi/schemas/), so it
