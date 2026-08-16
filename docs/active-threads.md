@@ -2,14 +2,32 @@
 
 ## Thread Records
 
+### Thread: NLT-TOI-SIGNATURE-STRIP
+**Status:** in-progress — follow-up PR #32 open for review
+**Owner:** opencode
+**Started:** 2026-08-16
+**Last updated:** 2026-08-16
+**Summary:** When a signed `.toi` document is passed to `TOIDocumentGenerator.from_dict`, the generator merged new defaults and overrides into it but kept the original `$signature` — the document then looked signed even though the signed content had changed, so verification would fail. The generator now removes `$signature` before validating, mirroring the TypeScript fix in `89c26da`:
+
+```json
+// signed input (excerpt)
+{ "$signature": { "alg": "ed25519", "value": "..." } }
+// generated output (excerpt)
+{ "$tier": "personal", "identity": { "author": "anonymous" } }  // no "$signature"
+```
+
+Flow: signed input → merge with defaults/overrides → unsigned output → caller re-signs if needed. Covered by a new regression test (running `from_dict` on a signed document yields an unsigned result). Python suite: 97 passing; governance validation: 29 of 29 checks passing.
+**Blockers:** None.
+**Next action:** Review + merge.
+
 ### Thread: NLT-TOI-TS-GENERATOR
-**Status:** in-progress — PR #31 open for review
+**Status:** resolved — merged to `main` via PR #31
 **Owner:** opencode
 **Started:** 2026-08-16
 **Last updated:** 2026-08-16
 **Summary:** Added a TypeScript generator to `@neurolift-technologies/toi`, mirroring the Python `nlt_toi.TOIDocumentGenerator` (PR #30). New `packages/toi/src/generator.ts` (`DEFAULT_DOCUMENT`, `TOIDocumentGenerator.fromDefaults`/`fromDict`, `validate`/`toDict`/`toJson`/`toMarkdown`/`write`) — partial preferences merged over privacy-first defaults, `identity.author` falls back to `anonymous`, input `$tier` preserved unless overridden, every path validated through the canonical schema (`parseToi`). Exported via `src/index.ts`; version bumped `1.0.2 → 1.0.3`. 9 new tests (112 total green), `tsc` + `vitest` clean. Prerequisite for wiring the generator into `@neurolift-technologies/asfdk` so the foundation's TOI is generated before any component activates (asfdk PR #31).
-**Blockers:** Publish `@neurolift-technologies/toi@1.0.3` to npm (maintainer 2FA) before merging.
-**Next action:** After publish, regenerate the asfdk dependency/lockfile against `^1.0.3` and re-run asfdk TS build/tests.
+**Blockers:** None — merged via PR #31.
+**Next action:** Publish `@neurolift-technologies/toi@1.0.3`, then regenerate the asfdk dependency/lockfile against `^1.0.3` and re-run asfdk TS build/tests.
 
 ### Thread: NLT-TOI-PY-CLI-GENERATOR
 **Status:** resolved — merged to `main` via PR #30
