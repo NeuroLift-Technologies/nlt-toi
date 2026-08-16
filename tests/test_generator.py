@@ -79,7 +79,8 @@ def test_from_dict_rejects_invalid_enum():
         TOIDocumentGenerator.from_dict({"communication": {"tone": "gibberish"}}, author="bob")
 
 
-def test_from_dict_strips_stale_signature_from_signed_input():
+def test_from_dict_strips_stale_signature_from_signed_input() -> None:
+    """Verify that from_dict strips a stale signature from signed input."""
     keys = generate_key_pair()
     signed = sign_toi(
         {"$toi": "1.0.0", "$tier": "personal", "identity": {"author": "alice"}},

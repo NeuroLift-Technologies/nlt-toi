@@ -7,7 +7,16 @@
 **Owner:** opencode
 **Started:** 2026-08-16
 **Last updated:** 2026-08-16
-**Summary:** Parity fix for the codex P2 finding on PR #31 (stale `$signature`). Python `TOIDocumentGenerator.from_defaults`/`from_dict` now `pop("$signature")` before validating, so a generated document never looks signed after its payload changed. Mirrors the TS fix in `89c26da`. New regression test signs a doc, regenerates via `from_dict`, asserts unsigned. 97 tests green, governance 29/29.
+**Summary:** When a signed `.toi` document is passed to `TOIDocumentGenerator.from_dict`, the generator merged new defaults and overrides into it but kept the original `$signature` — the document then looked signed even though the signed content had changed, so verification would fail. The generator now removes `$signature` before validating, mirroring the TypeScript fix in `89c26da`:
+
+```json
+// signed input (excerpt)
+{ "$signature": { "alg": "ed25519", "value": "..." } }
+// generated output (excerpt)
+{ "$tier": "personal", "identity": { "author": "anonymous" } }  // no "$signature"
+```
+
+Flow: signed input → merge with defaults/overrides → unsigned output → caller re-signs if needed. Covered by a new regression test (running `from_dict` on a signed document yields an unsigned result). Python suite: 97 passing; governance validation: 29 of 29 checks passing.
 **Blockers:** None.
 **Next action:** Review + merge.
 
