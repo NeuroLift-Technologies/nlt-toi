@@ -53,6 +53,6 @@
       "pip install -e . + toi-generator run/validate end-to-end"
     ],
     "tests_passing": true,
-    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/"
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/30"
   }
 }
