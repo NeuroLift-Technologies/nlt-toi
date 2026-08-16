@@ -1,0 +1,58 @@
+{
+  "handoff_record": {
+    "session_id":         "2026-08-16-toi-generator-cli",
+    "agent_name":         "opencode",
+    "date":               "2026-08-16",
+    "otoi_version":       "ORG-DEV-OTOI-1.0.2",
+    "repo":               "NeuroLift-Technologies/nlt-toi",
+    "branch":             "feature/toi-generator-cli",
+    "work_completed": [
+      "Added TOIDocumentGenerator in src/nlt_toi/generator.py (from_defaults/from_dict, validate, to_json, to_markdown, write) producing conforming .toi v1.0.0 documents with privacy-first defaults",
+      "Added toi-generator console script in src/nlt_toi/cli.py (--interactive wizard, --input JSON preferences, --output/--format JSON or Markdown, --validate, --schema)",
+      "Registered console script under [project.scripts] in pyproject.toml; exported TOIDocumentGenerator/DEFAULT_DOCUMENT from __init__.py",
+      "Added 17 tests (tests/test_generator.py, tests/test_cli.py); full suite 88 green",
+      "Updated README quick-start and CHANGELOG (Unreleased > Added)",
+      "Verified wheel build ships toi-generator entry point; editable install + CLI run/validate end-to-end",
+      "Governance validation 29/29 passed; self-registered per OTOI Section 3"
+    ],
+    "work_in_progress": [
+      "PR review and merge of feature/toi-generator-cli"
+    ],
+    "blockers": [
+      "None. Publishing the updated nlt-toi package to PyPI is a maintainer action."
+    ],
+    "decisions_made": [
+      "Chose the modern .toi v1.0.0 authoring CLI over porting the legacy OTOI custom-instructions generator (user-selected)",
+      "Matched existing codebase typing style (typing.Dict/Optional/List) rather than ruff's modern-typing rules, which the repo does not enforce (176 pre-existing violations, no config/CI)"
+    ],
+    "decisions_pending": [
+      "Whether to bump the package version (currently 1.0.0) at release — Joshua",
+      "PyPI publication of the updated package — Joshua"
+    ],
+    "escalations": [
+      "None"
+    ],
+    "next_agent_notes": "Review the PR, then consider bumping nlt-toi to 1.1.0 (new public API + CLI) before publishing to PyPI. The toi-generator CLI surface is documented in README under 'Authoring with the toi-generator CLI'.",
+    "files_modified": [
+      "src/nlt_toi/generator.py",
+      "src/nlt_toi/cli.py",
+      "src/nlt_toi/__init__.py",
+      "pyproject.toml",
+      "tests/test_generator.py",
+      "tests/test_cli.py",
+      "README.md",
+      "CHANGELOG.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-08-16-opencode-toi-generator-cli.json",
+      "docs/agent-log/handoffs/2026-08-16-opencode-toi-generator-cli.json"
+    ],
+    "tests_run": [
+      "python3 -m pytest -q (88 passed)",
+      "bash .nltotoi/scripts/validate-governance.sh (29 passed)",
+      "python3 -m build --wheel (nlt_toi-1.0.0-py3-none-any.whl, toi-generator entry point verified)",
+      "pip install -e . + toi-generator run/validate end-to-end"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/"
+  }
+}
