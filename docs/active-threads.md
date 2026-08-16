@@ -2,14 +2,23 @@
 
 ## Thread Records
 
+### Thread: NLT-TOI-TS-GENERATOR
+**Status:** in-progress — PR #31 open for review
+**Owner:** opencode
+**Started:** 2026-08-16
+**Last updated:** 2026-08-16
+**Summary:** Added a TypeScript generator to `@neurolift-technologies/toi`, mirroring the Python `nlt_toi.TOIDocumentGenerator` (PR #30). New `packages/toi/src/generator.ts` (`DEFAULT_DOCUMENT`, `TOIDocumentGenerator.fromDefaults`/`fromDict`, `validate`/`toDict`/`toJson`/`toMarkdown`/`write`) — partial preferences merged over privacy-first defaults, `identity.author` falls back to `anonymous`, input `$tier` preserved unless overridden, every path validated through the canonical schema (`parseToi`). Exported via `src/index.ts`; version bumped `1.0.2 → 1.0.3`. 9 new tests (112 total green), `tsc` + `vitest` clean. Prerequisite for wiring the generator into `@neurolift-technologies/asfdk` so the foundation's TOI is generated before any component activates (asfdk PR #31).
+**Blockers:** Publish `@neurolift-technologies/toi@1.0.3` to npm (maintainer 2FA) before merging.
+**Next action:** After publish, regenerate the asfdk dependency/lockfile against `^1.0.3` and re-run asfdk TS build/tests.
+
 ### Thread: NLT-TOI-PY-CLI-GENERATOR
-**Status:** open — PR #30 submitted for review
+**Status:** resolved — merged to `main` via PR #30
 **Owner:** opencode
 **Started:** 2026-08-16
 **Last updated:** 2026-08-16
 **Summary:** Added the modern `.toi` v1.0.0 authoring surface to the `nlt-toi` PyPI package: `TOIDocumentGenerator` (`from_defaults`/`from_dict`, `validate`, `to_json`, `to_markdown`, `write`) with privacy-first defaults, and the `toi-generator` console script (`--interactive`, `--input`, `--output`/`--format`, `--validate`, `--schema`), registered under `[project.scripts]`. 17 new tests (88 total green), governance validation 29/29, wheel entry point verified. Self-registered per OTOI §3 (`docs/agent-log/registrations/2026-08-16-opencode-toi-generator-cli.json`). **PR: #30**.
 **Blockers:** None.
-**Next action:** Review + merge the PR; optionally bump the package version at release and publish to PyPI (maintainer action).
+**Next action:** None — merged via PR #30.
 
 ### Thread: TOI-NL-EXTRACTION
 **Status:** resolved — merged to `main` via PR #28 (squash `6e9214c`)

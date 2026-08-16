@@ -67,6 +67,14 @@ export {
 // Natural-language extraction into a schema-valid document.
 export { extractToi, type ExtractOptions } from "./extract.js";
 
+// Document generation (authoring helper).
+export {
+  DEFAULT_DOCUMENT,
+  TOIDocumentGenerator,
+  type FromDefaultsOptions,
+  type FromDictOptions,
+} from "./generator.js";
+
 // Error taxonomy.
 export {
   ToiError,
