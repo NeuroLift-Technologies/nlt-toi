@@ -2,14 +2,23 @@
 
 ## Thread Records
 
+### Thread: NLT-TOI-SIGNATURE-STRIP
+**Status:** in-progress — follow-up PR #32 open for review
+**Owner:** opencode
+**Started:** 2026-08-16
+**Last updated:** 2026-08-16
+**Summary:** Parity fix for the codex P2 finding on PR #31 (stale `$signature`). Python `TOIDocumentGenerator.from_defaults`/`from_dict` now `pop("$signature")` before validating, so a generated document never looks signed after its payload changed. Mirrors the TS fix in `89c26da`. New regression test signs a doc, regenerates via `from_dict`, asserts unsigned. 97 tests green, governance 29/29.
+**Blockers:** None.
+**Next action:** Review + merge.
+
 ### Thread: NLT-TOI-TS-GENERATOR
-**Status:** in-progress — PR #31 open for review
+**Status:** resolved — merged to `main` via PR #31
 **Owner:** opencode
 **Started:** 2026-08-16
 **Last updated:** 2026-08-16
 **Summary:** Added a TypeScript generator to `@neurolift-technologies/toi`, mirroring the Python `nlt_toi.TOIDocumentGenerator` (PR #30). New `packages/toi/src/generator.ts` (`DEFAULT_DOCUMENT`, `TOIDocumentGenerator.fromDefaults`/`fromDict`, `validate`/`toDict`/`toJson`/`toMarkdown`/`write`) — partial preferences merged over privacy-first defaults, `identity.author` falls back to `anonymous`, input `$tier` preserved unless overridden, every path validated through the canonical schema (`parseToi`). Exported via `src/index.ts`; version bumped `1.0.2 → 1.0.3`. 9 new tests (112 total green), `tsc` + `vitest` clean. Prerequisite for wiring the generator into `@neurolift-technologies/asfdk` so the foundation's TOI is generated before any component activates (asfdk PR #31).
-**Blockers:** Publish `@neurolift-technologies/toi@1.0.3` to npm (maintainer 2FA) before merging.
-**Next action:** After publish, regenerate the asfdk dependency/lockfile against `^1.0.3` and re-run asfdk TS build/tests.
+**Blockers:** None — merged via PR #31.
+**Next action:** Publish `@neurolift-technologies/toi@1.0.3`, then regenerate the asfdk dependency/lockfile against `^1.0.3` and re-run asfdk TS build/tests.
 
 ### Thread: NLT-TOI-PY-CLI-GENERATOR
 **Status:** resolved — merged to `main` via PR #30

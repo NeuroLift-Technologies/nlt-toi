@@ -9,8 +9,11 @@ from nlt_toi import (
     DEFAULT_DOCUMENT,
     TOIDocumentGenerator,
     ToiValidationError,
+    generate_key_pair,
+    is_signed,
     is_toi,
     parse_toi,
+    sign_toi,
 )
 
 
@@ -74,6 +77,18 @@ def test_from_dict_explicit_tier_overrides_input_tier():
 def test_from_dict_rejects_invalid_enum():
     with pytest.raises(ToiValidationError):
         TOIDocumentGenerator.from_dict({"communication": {"tone": "gibberish"}}, author="bob")
+
+
+def test_from_dict_strips_stale_signature_from_signed_input():
+    keys = generate_key_pair()
+    signed = sign_toi(
+        {"$toi": "1.0.0", "$tier": "personal", "identity": {"author": "alice"}},
+        keys.private_key,
+    )
+    assert is_signed(signed)
+    gen = TOIDocumentGenerator.from_dict(signed)
+    assert "$signature" not in gen.document
+    assert is_signed(gen.document) is False
 
 
 def test_to_json_round_trips_through_parse():
