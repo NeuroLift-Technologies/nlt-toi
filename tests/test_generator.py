@@ -50,6 +50,27 @@ def test_from_dict_merges_over_defaults():
     assert is_toi(gen.document) is True
 
 
+def test_from_dict_falls_back_to_anonymous_author():
+    gen = TOIDocumentGenerator.from_dict({"communication": {"tone": "friendly"}})
+    assert gen.document["identity"]["author"] == "anonymous"
+    assert is_toi(gen.document) is True
+
+
+def test_from_dict_preserves_input_tier_when_not_overridden():
+    gen = TOIDocumentGenerator.from_dict(
+        {"$toi": "1.0.0", "$tier": "community", "identity": {"author": "alice"}}
+    )
+    assert gen.document["$tier"] == "community"
+
+
+def test_from_dict_explicit_tier_overrides_input_tier():
+    gen = TOIDocumentGenerator.from_dict(
+        {"$toi": "1.0.0", "$tier": "community", "identity": {"author": "alice"}},
+        tier="project",
+    )
+    assert gen.document["$tier"] == "project"
+
+
 def test_from_dict_rejects_invalid_enum():
     with pytest.raises(ToiValidationError):
         TOIDocumentGenerator.from_dict({"communication": {"tone": "gibberish"}}, author="bob")

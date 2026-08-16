@@ -119,11 +119,12 @@ toi-generator --input me.toi --validate
 toi-generator --schema
 ```
 
-The generator always produces conforming output: `identity`, `$toi`, and
-`$tier` are filled automatically, unknown/partial preferences fall back to
-privacy-first defaults (session-only retention, no sharing or training use),
-and every document is validated through the canonical schema before it is
-written.
+The generator always produces conforming output: `$toi` and `$tier` are
+filled automatically, `identity.author` falls back to `anonymous` when
+unspecified, and known preferences are merged over privacy-first defaults
+(session-only retention, no sharing or training use). Every document is
+validated through the canonical schema before it is written, so unknown or
+invalid fields surface as clear errors rather than being silently dropped.
 
 Both implementations share:
 - The exact same `.toi` v1.0.0 on-disk format

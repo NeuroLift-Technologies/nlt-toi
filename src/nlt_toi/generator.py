@@ -138,11 +138,20 @@ class TOIDocumentGenerator:
         *preferences* may be a full ``.toi`` document or a partial set of
         content sections; missing fields fall back to the privacy-first
         defaults. ``author``/``tier`` keyword arguments override the document
-        values so callers do not have to build the reserved keys by hand.
+        values so callers do not have to build the reserved keys by hand. When
+        no author is supplied anywhere, ``identity.author`` falls back to
+        ``"anonymous"`` so the advertised partial-preferences path still
+        produces a conforming document.
         """
         doc: ToiDocument = _deep_merge(DEFAULT_DOCUMENT, preferences or {})
+        identity = doc.get("identity")
+        if not isinstance(identity, dict):
+            identity = {}
+            doc["identity"] = identity
         if author is not None:
-            doc["identity"] = _deep_merge(doc["identity"], {"author": author})
+            identity["author"] = author
+        if not identity.get("author"):
+            identity["author"] = "anonymous"
         if tier is not None:
             if tier not in TOI_TIERS:
                 raise ValueError(f"tier must be one of {', '.join(TOI_TIERS)}; got {tier!r}")

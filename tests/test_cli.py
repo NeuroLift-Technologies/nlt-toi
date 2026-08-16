@@ -80,6 +80,48 @@ def test_build_document_without_file_uses_defaults():
     assert gen.document["identity"]["author"] == "zoe"
 
 
+def test_tier_preserved_when_input_supplies_tier(tmp_path):
+    prefs = _write(
+        tmp_path,
+        "community.toi",
+        json.dumps({"$toi": "1.0.0", "$tier": "community", "identity": {"author": "alice"}}),
+    )
+    out = tmp_path / "out.toi"
+    assert main(["--input", str(prefs), "--output", str(out)]) == 0
+    assert json.loads(out.read_text(encoding="utf-8"))["$tier"] == "community"
+
+
+def test_tier_explicit_override_wins(tmp_path):
+    prefs = _write(
+        tmp_path,
+        "community.toi",
+        json.dumps({"$toi": "1.0.0", "$tier": "community", "identity": {"author": "alice"}}),
+    )
+    out = tmp_path / "out.toi"
+    assert main(["--input", str(prefs), "--tier", "project", "--output", str(out)]) == 0
+    assert json.loads(out.read_text(encoding="utf-8"))["$tier"] == "project"
+
+
+def test_tier_defaults_to_personal_without_input():
+    gen = build_document(None, author="zoe", tier=None)
+    assert gen.document["$tier"] == "personal"
+
+
+def test_author_falls_back_to_anonymous_on_cli(tmp_path):
+    prefs = _write(tmp_path, "prefs.json", json.dumps({"communication": {"tone": "casual"}}))
+    out = tmp_path / "me.toi"
+    assert main(["--input", str(prefs), "--output", str(out)]) == 0
+    assert json.loads(out.read_text(encoding="utf-8"))["identity"]["author"] == "anonymous"
+
+
+def test_invalid_enum_in_preferences_returns_clean_error(tmp_path, capsys):
+    bad = _write(tmp_path, "bad.json", json.dumps({"communication": {"tone": "gibberish"}}))
+    assert main(["--input", str(bad)]) == 1
+    err = capsys.readouterr().err
+    assert "error:" in err
+    assert "Traceback" not in err
+
+
 def test_wizard_honors_numbered_choices():
     # author, then tone="2" (casual), then all-empty -> defaults.
     answers = iter(["zoe", "2"] + [""] * 17)

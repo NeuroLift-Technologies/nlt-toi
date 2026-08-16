@@ -155,12 +155,12 @@ def main(argv: Optional[List[str]] = None) -> int:
         choices=["json", "markdown"],
         help="output format (default: inferred from --output suffix; JSON if unknown)",
     )
-    parser.add_argument("--author", metavar="NAME", help="identity.author for the generated document")
+    parser.add_argument("--author", metavar="NAME", help="identity.author for the generated document (default: anonymous)")
     parser.add_argument(
         "--tier",
         choices=["personal", "community", "project"],
-        default="personal",
-        help="interaction tier (default: personal)",
+        default=None,
+        help="interaction tier (default: personal when generating a new document; preserved when --input supplies one)",
     )
     parser.add_argument(
         "--validate",
@@ -179,11 +179,15 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _run_validate(args.input, parser)
 
     if args.interactive:
-        document = wizard_document(args.author or "", tier=args.tier)
+        try:
+            document = wizard_document(args.author or "", tier=args.tier or "personal")
+        except ToiError as err:
+            print(f"error: {err}", file=sys.stderr)
+            return 1
     else:
         try:
             document = build_document(args.input, author=args.author, tier=args.tier)
-        except ValueError as err:
+        except (ValueError, ToiError) as err:
             print(f"error: {err}", file=sys.stderr)
             return 1
 
