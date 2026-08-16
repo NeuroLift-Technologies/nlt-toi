@@ -1,0 +1,25 @@
+{
+  "agent_registration": {
+    "agent_name":         "opencode",
+    "platform":           "OpenCode CLI",
+    "version":            "deepseek-v4-flash-free",
+    "session_id":         "2026-08-16-toi-generator-cli",
+    "entry_date":         "2026-08-16",
+    "entry_point":        "User request: package toi-generator as part of nlt-toi PyPI package (modern .toi v1.0.0 authoring CLI)",
+    "acknowledged_otoi":  true,
+    "otoi_version":       "ORG-DEV-OTOI-1.0.2",
+    "working_repo":       "NeuroLift-Technologies/nlt-toi",
+    "working_branch":     "feature/toi-generator-cli",
+    "capabilities_self_reported": [
+      "Python packaging (hatchling) and pyproject.toml",
+      "argparse CLI design",
+      "jsonschema validation wiring",
+      "pytest test authoring"
+    ],
+    "known_limitations": [
+      "Cannot publish to PyPI (maintainer action)",
+      "Cannot merge to main (PR-only workflow)"
+    ],
+    "preferred_handoff_format": "Structured JSON handoff record per templates/handoff-record.json"
+  }
+}

@@ -37,6 +37,7 @@ from .errors import (
     ToiTierError,
     ToiValidationError,
 )
+from .generator import DEFAULT_DOCUMENT, TOIDocumentGenerator
 from .parse import (
     SafeParseResult,
     ToiDocument,
@@ -68,6 +69,9 @@ __all__ = [
     "TOI_TIERS",
     "TIER_PRECEDENCE",
     "TIER_RANK",
+    # generator / authoring
+    "DEFAULT_DOCUMENT",
+    "TOIDocumentGenerator",
     # schema + types
     "toi_schema",
     "schema_issues",

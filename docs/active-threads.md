@@ -2,6 +2,15 @@
 
 ## Thread Records
 
+### Thread: NLT-TOI-PY-CLI-GENERATOR
+**Status:** open — PR #30 submitted for review
+**Owner:** opencode
+**Started:** 2026-08-16
+**Last updated:** 2026-08-16
+**Summary:** Added the modern `.toi` v1.0.0 authoring surface to the `nlt-toi` PyPI package: `TOIDocumentGenerator` (`from_defaults`/`from_dict`, `validate`, `to_json`, `to_markdown`, `write`) with privacy-first defaults, and the `toi-generator` console script (`--interactive`, `--input`, `--output`/`--format`, `--validate`, `--schema`), registered under `[project.scripts]`. 17 new tests (88 total green), governance validation 29/29, wheel entry point verified. Self-registered per OTOI §3 (`docs/agent-log/registrations/2026-08-16-opencode-toi-generator-cli.json`). **PR: #30**.
+**Blockers:** None.
+**Next action:** Review + merge the PR; optionally bump the package version at release and publish to PyPI (maintainer action).
+
 ### Thread: TOI-NL-EXTRACTION
 **Status:** resolved — merged to `main` via PR #28 (squash `6e9214c`)
 **Owner:** OpenCode CTO Orchestrator
