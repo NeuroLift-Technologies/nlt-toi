@@ -45,7 +45,7 @@ incidental documentation. Coding agents must follow them before changing code or
 | Governance | `AGENTS.md`, `NLT-DEV-OTOI.md`, `nltotoi.json`, `.nltotoi/`, `SOPs/` | Agent operating rules, escalation paths, handoff templates, and governance validation. |
 | `.toi` TypeScript library | `packages/toi/` | Normative reference: `.toi` specification, parser/schema/types, canonicalization, signing, and conformance tests. |
 | `.toi` Python library | `src/nlt_toi/` | Feature-parity Python reference: parse/validate/serialize, canonicalization, Ed25519 sign/verify, tier resolution. |
-| Schemas / templates | `legacy/schemas/`, `legacy/templates/` | Archived JSON Schemas and Markdown templates (superseded by published packages). |
+| Schemas / templates | [`.toi` v1.0.0 schema](packages/toi/schema/toi-1.0.0.schema.json), [`templates/`](templates/) | Canonical TypeScript package schema and working-tree templates. |
 | Contributor docs | `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CHANGELOG.md` | Community expectations, security reporting, changelog, and CI runbooks. |
 
 ## Quick start: `@neurolift-technologies/toi` (TypeScript)
@@ -146,12 +146,10 @@ tokens and TOI data must never be committed to this repository.
 
 ## Documentation map
 
-- Framework definition: `legacy/docs/framework-overview.md` (archived)
-- Developer implementation guide: `legacy/docs/implementation-guide.md` (archived)
-- Best practices: `legacy/docs/best-practices.md` (archived)
-- NeuroLift multi-agent integration playbook: `legacy/docs/neurolift-integration.md` (archived)
-- Development process and CI runbooks: `legacy/docs/development-process.md` (archived)
-- Active work threads: `docs/active-threads.md`
+- [.toi v1.0.0 specification](packages/toi/SPEC.md)
+- [Solidarity Framework architecture](https://github.com/NeuroLift-Technologies/solidarity-framework/blob/main/docs/unified_architecture.md)
+- [Active work threads](docs/active-threads.md)
+- [Historical TOI archive](https://github.com/NeuroLift-Technologies/nlt-toi/tree/7d5241b97277de35dced70b6f9b67fb7e79b57cd/legacy) at the last revision that included it. The archive contains the retired schemas, examples and integration notes.
 
 ## Development and validation
 

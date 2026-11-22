@@ -1,5 +1,0 @@
-{
-  "$toi": "1.0.0",
-  "$tier": "personal",
-  identity: { author: "trailing comma + unquoted keys -> not valid JSON" },
-}
