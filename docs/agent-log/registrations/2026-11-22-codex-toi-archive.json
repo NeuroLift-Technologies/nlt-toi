@@ -1,0 +1,22 @@
+{
+  "agent_registration": {
+    "agent_name": "Codex",
+    "platform": "ChatGPT Work Mode",
+    "version": "GPT-6",
+    "session_id": "codex-toi-archive-20261122",
+    "entry_date": "2026-11-22T15:51:27-05:00",
+    "entry_point": "Joshua confirmed the Solidarity Framework retirement PR was merged and directed the next work item.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/nlt-toi",
+    "working_branch": "codex/retire-toi-archive",
+    "capabilities_self_reported": [
+      "Repository editing",
+      "Package and test verification"
+    ],
+    "known_limitations": [
+      "Archive scope. Organization public baseline ORG-DEV-OTOI-1.0.4 observed alongside repo-local guidance."
+    ],
+    "preferred_handoff_format": "JSON"
+  }
+}

@@ -2,6 +2,18 @@
 
 ## Thread Records
 
+### Thread: NLT-TOI-ARCHIVE-RETIREMENT
+**Status:** in-progress
+**Owner:** Codex
+**Started:** 2026-11-22T15:51:27-05:00
+**Last updated:** 2026-11-22T15:51:27-05:00
+**Branch:** `codex/retire-toi-archive`
+**Task:** Retire the deprecated TOI archive from the working tree and verify package and deployment inputs.
+**Scope:** `legacy/`, README pointers, validation and coordination records. Follow-up to the archive migration recorded under NLT-TOI-LEGACY-CLEANUP.
+**Related PR:** TBD
+**Blockers:** None.
+**Next action:** Compare the baseline and cleanup branch, then submit for maintainer review.
+
 ### Thread: NLT-TOI-TS-GENERATOR
 **Status:** in-progress — PR #31 open for review
 **Owner:** opencode
