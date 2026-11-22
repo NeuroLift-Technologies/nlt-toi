@@ -37,6 +37,6 @@
       "README path targets, archive-only delete scope and Git whitespace checks."
     ],
     "tests_passing": true,
-    "pr_url": null
+    "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/36"
   }
 }

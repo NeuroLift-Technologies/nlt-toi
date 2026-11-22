@@ -10,7 +10,7 @@
 **Branch:** `codex/retire-toi-archive`
 **Task:** Retire the deprecated TOI archive from the working tree and verify package and deployment inputs.
 **Scope:** `legacy/`, README pointers, validation and coordination records. Follow-up to the archive migration recorded under NLT-TOI-LEGACY-CLEANUP.
-**Related PR:** TBD
+**Related PR:** [#36](https://github.com/NeuroLift-Technologies/nlt-toi/pull/36)
 **Blockers:** None.
 **Next action:** Review the archive-only deletion, pinned documentation links and package comparison.
 
