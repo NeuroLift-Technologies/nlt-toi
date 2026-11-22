@@ -1,0 +1,42 @@
+{
+  "handoff_record": {
+    "session_id": "codex-toi-archive-20261122",
+    "agent_name": "Codex",
+    "date": "2026-11-22T15:52:50-05:00",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/nlt-toi",
+    "branch": "codex/retire-toi-archive",
+    "work_completed": [
+      "Retired 73 previously archived paths under legacy/.",
+      "Pointed README readers to the current specification and pinned archive.",
+      "Compared baseline and branch tests and build artifacts."
+    ],
+    "work_in_progress": [
+      "Maintainer review and hosted checks."
+    ],
+    "blockers": [
+      "Go and Rust test toolchains are unavailable in the execution environment."
+    ],
+    "decisions_made": [
+      "Retain active packages, the root vendored OTOI copy, fixtures, workflow files and Pages application assets."
+    ],
+    "decisions_pending": [],
+    "escalations": [],
+    "next_agent_notes": "Use the historical archive link at the pinned base for the deleted files. The existing Pages workflow uploads docs/ on main; this PR changes only coordination files within docs/.",
+    "files_modified": [
+      "legacy/ (73 tracked files)",
+      "README.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-11-22-codex-toi-archive.json",
+      "docs/agent-log/handoffs/2026-11-22-codex-toi-archive.json"
+    ],
+    "tests_run": [
+      "TypeScript 113/113 and Python 96/96 before and after.",
+      "Governance validator 29/29. npm pack and independent ESM import. Python wheel and sdist build, wheel install and CLI help.",
+      "npm payloads identical. Python member lists identical; README and derived metadata are the only content changes.",
+      "README path targets, archive-only delete scope and Git whitespace checks."
+    ],
+    "tests_passing": true,
+    "pr_url": null
+  }
+}
