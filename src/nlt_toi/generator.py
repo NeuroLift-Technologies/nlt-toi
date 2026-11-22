@@ -111,7 +111,8 @@ class TOIDocumentGenerator:
     ) -> TOIDocumentGenerator:
         """Build a privacy-first personal TOI for *author*.
 
-        The returned document is validated before construction completes.
+        The returned document is validated and unsigned. Sign it separately
+        when a signature is required.
         """
         if tier not in TOI_TIERS:
             raise ValueError(f"tier must be one of {', '.join(TOI_TIERS)}; got {tier!r}")
@@ -123,6 +124,7 @@ class TOIDocumentGenerator:
             doc["identity"]["organization"] = organization
         doc["$created"] = datetime.now(timezone.utc).date().isoformat()
         doc["$id"] = str(uuid.uuid4())
+        doc.pop("$signature", None)
         return cls(doc).validate()
 
     @classmethod
@@ -142,6 +144,11 @@ class TOIDocumentGenerator:
         no author is supplied anywhere, ``identity.author`` falls back to
         ``"anonymous"`` so the advertised partial-preferences path still
         produces a conforming document.
+
+        A ``$signature`` present on the input is always stripped: the merged
+        result changes the signed payload, so the returned document must not
+        look signed. Callers that need a signature must re-sign the generated
+        document.
         """
         doc: ToiDocument = _deep_merge(DEFAULT_DOCUMENT, preferences or {})
         identity = doc.get("identity")
@@ -156,6 +163,7 @@ class TOIDocumentGenerator:
             if tier not in TOI_TIERS:
                 raise ValueError(f"tier must be one of {', '.join(TOI_TIERS)}; got {tier!r}")
             doc["$tier"] = tier
+        doc.pop("$signature", None)
         return cls(doc).validate()
 
     def validate(self) -> TOIDocumentGenerator:
