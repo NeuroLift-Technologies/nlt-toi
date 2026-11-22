@@ -111,7 +111,8 @@ class TOIDocumentGenerator:
     ) -> TOIDocumentGenerator:
         """Build a privacy-first personal TOI for *author*.
 
-        The returned document is validated before construction completes.
+        The returned document is validated and unsigned. Sign it separately
+        when a signature is required.
         """
         if tier not in TOI_TIERS:
             raise ValueError(f"tier must be one of {', '.join(TOI_TIERS)}; got {tier!r}")

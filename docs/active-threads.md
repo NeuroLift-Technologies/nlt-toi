@@ -27,7 +27,7 @@ Flow: signed input → merge with defaults/overrides → unsigned output → cal
 **Last updated:** 2026-08-16
 **Summary:** Added a TypeScript generator to `@neurolift-technologies/toi`, mirroring the Python `nlt_toi.TOIDocumentGenerator` (PR #30). New `packages/toi/src/generator.ts` (`DEFAULT_DOCUMENT`, `TOIDocumentGenerator.fromDefaults`/`fromDict`, `validate`/`toDict`/`toJson`/`toMarkdown`/`write`) — partial preferences merged over privacy-first defaults, `identity.author` falls back to `anonymous`, input `$tier` preserved unless overridden, every path validated through the canonical schema (`parseToi`). Exported via `src/index.ts`; version bumped `1.0.2 → 1.0.3`. 9 new tests (112 total green), `tsc` + `vitest` clean. Prerequisite for wiring the generator into `@neurolift-technologies/asfdk` so the foundation's TOI is generated before any component activates (asfdk PR #31).
 **Blockers:** None — merged via PR #31.
-**Next action:** Publish `@neurolift-technologies/toi@1.0.3`, then regenerate the asfdk dependency/lockfile against `^1.0.3` and re-run asfdk TS build/tests.
+**Next action:** Check whether ASFDK already uses the published `@neurolift-technologies/toi@1.0.3` release before updating its dependency and rerunning the TypeScript checks.
 
 ### Thread: NLT-TOI-PY-CLI-GENERATOR
 **Status:** resolved — merged to `main` via PR #30
