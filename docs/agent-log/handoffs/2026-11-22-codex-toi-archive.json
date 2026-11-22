@@ -9,7 +9,8 @@
     "work_completed": [
       "Retired 73 previously archived paths under legacy/.",
       "Pointed README readers to the current specification and pinned archive.",
-      "Compared baseline and branch tests and build artifacts."
+      "Compared baseline and branch tests and build artifacts.",
+      "Merged current main into the PR branch after #32, #34 and #35 merged. Reconciled the active-thread conflict and recorded the verified historical merges."
     ],
     "work_in_progress": [
       "Maintainer review and hosted checks."
@@ -34,7 +35,8 @@
       "TypeScript 113/113 and Python 96/96 before and after.",
       "Governance validator 29/29. npm pack and independent ESM import. Python wheel and sdist build, wheel install and CLI help.",
       "npm payloads identical. Python member lists identical; README and derived metadata are the only content changes.",
-      "README path targets, archive-only delete scope and Git whitespace checks."
+      "README path targets, archive-only delete scope and Git whitespace checks.",
+      "After reconciliation against main at cb3fa3f: 97 Python tests, 113 TypeScript tests, typecheck, build and 29 governance checks passed. npm contents and Python member lists matched the updated baseline; Python content differences remained limited to README and derived metadata."
     ],
     "tests_passing": true,
     "pr_url": "https://github.com/NeuroLift-Technologies/nlt-toi/pull/36"

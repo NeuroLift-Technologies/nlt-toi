@@ -6,22 +6,40 @@
 **Status:** in-progress
 **Owner:** Codex
 **Started:** 2026-11-22T15:51:27-05:00
-**Last updated:** 2026-11-22T15:52:50-05:00
+**Last updated:** 2026-11-22T16:05:00-05:00
 **Branch:** `codex/retire-toi-archive`
 **Task:** Retire the deprecated TOI archive from the working tree and verify package and deployment inputs.
 **Scope:** `legacy/`, README pointers, validation and coordination records. Follow-up to the archive migration recorded under NLT-TOI-LEGACY-CLEANUP.
 **Related PR:** [#36](https://github.com/NeuroLift-Technologies/nlt-toi/pull/36)
 **Blockers:** None.
-**Next action:** Review the archive-only deletion, pinned documentation links and package comparison.
+**Next action:** Review the archive-only deletion and package comparison against main after PRs #32, #34 and #35 merged.
+
+### Thread: NLT-TOI-SIGNATURE-STRIP
+**Status:** resolved — merged to `main` via [PR #32](https://github.com/NeuroLift-Technologies/nlt-toi/pull/32)
+**Owner:** opencode
+**Started:** 2026-08-16
+**Last updated:** 2026-11-22T16:05:00-05:00
+**Summary:** When a signed `.toi` document is passed to `TOIDocumentGenerator.from_dict`, the generator merged new defaults and overrides into it but kept the original `$signature` — the document then looked signed even though the signed content had changed, so verification would fail. The generator now removes `$signature` before validating, mirroring the TypeScript fix in `89c26da`:
+
+```json
+// signed input (excerpt)
+{ "$signature": { "alg": "ed25519", "value": "..." } }
+// generated output (excerpt)
+{ "$tier": "personal", "identity": { "author": "anonymous" } }  // no "$signature"
+```
+
+Flow: signed input → merge with defaults/overrides → unsigned output → caller re-signs if needed. Covered by a new regression test (running `from_dict` on a signed document yields an unsigned result). Python suite: 97 passing; governance validation: 29 of 29 checks passing.
+**Blockers:** None.
+**Next action:** None. The regression test remains in the Python suite.
 
 ### Thread: NLT-TOI-TS-GENERATOR
-**Status:** in-progress — PR #31 open for review
+**Status:** resolved — merged to `main` via PR #31
 **Owner:** opencode
 **Started:** 2026-08-16
 **Last updated:** 2026-08-16
 **Summary:** Added a TypeScript generator to `@neurolift-technologies/toi`, mirroring the Python `nlt_toi.TOIDocumentGenerator` (PR #30). New `packages/toi/src/generator.ts` (`DEFAULT_DOCUMENT`, `TOIDocumentGenerator.fromDefaults`/`fromDict`, `validate`/`toDict`/`toJson`/`toMarkdown`/`write`) — partial preferences merged over privacy-first defaults, `identity.author` falls back to `anonymous`, input `$tier` preserved unless overridden, every path validated through the canonical schema (`parseToi`). Exported via `src/index.ts`; version bumped `1.0.2 → 1.0.3`. 9 new tests (112 total green), `tsc` + `vitest` clean. Prerequisite for wiring the generator into `@neurolift-technologies/asfdk` so the foundation's TOI is generated before any component activates (asfdk PR #31).
-**Blockers:** Publish `@neurolift-technologies/toi@1.0.3` to npm (maintainer 2FA) before merging.
-**Next action:** After publish, regenerate the asfdk dependency/lockfile against `^1.0.3` and re-run asfdk TS build/tests.
+**Blockers:** None — merged via PR #31.
+**Next action:** Check whether ASFDK already uses the published `@neurolift-technologies/toi@1.0.3` release before updating its dependency and rerunning the TypeScript checks.
 
 ### Thread: NLT-TOI-PY-CLI-GENERATOR
 **Status:** resolved — merged to `main` via PR #30
@@ -60,32 +78,32 @@
 **Next action:** None — Go JCS conformance gate passed.
 
 ### Thread: NLT-TOI-PHASE1-SIGNING (PHASE 1 — Core Types + Ed25519 sign/verify)
-**Status:** in-progress — implementation green, PR open for review
+**Status:** resolved — merged to `main` via [PR #26](https://github.com/NeuroLift-Technologies/nlt-toi/pull/26)
 **Owner:** OpenCode CTO Orchestrator
 **Started:** 2026-08-01
 **Last updated:** 2026-08-01
-**Summary:** Phase 1 (core types + Ed25519 sign/verify) across `crates/nlt-toi` and `go/nlt-toi`, cross-validated against the TS/Python references. Added `generate_key_pair`/`GenerateKeyPair`, `signing_payload`/`SigningPayload`, `sign_toi`/`SignToi`, `verify_toi`/`VerifyToi`, `is_signed`/`IsSigned` + a dependency-free unpadded base64url codec (Rust) and `crypto/ed25519` (Go). Signature envelope corrected to `{alg, public_key, value}` per `toiSignatureSchema`. Both ports verify the committed JS-produced `signed.toi` fixture byte-for-byte and share a deterministic vector (seed 1..=32) asserting identical envelope bytes across TS/Python/Rust/Go. 30 Rust tests and 31 Go tests green; TS (65) and Python (65) reference suites unchanged. Phase gates passed: nlt-code-reviewer APPROVE_WITH_NITS (all closed in c90ea15: Go trailing-bit strictness, non-object sign guard, Debug seed redaction) and Mistral Vibe Technical Assurance APPROVE (0 critical / 0 important / 0 minor). **MERGED** to main via squash (`09a87b7`), PR #26 closed, branch deleted.
+**Summary:** Phase 1 (core types + Ed25519 sign/verify) across `crates/nlt-toi` and `go/nlt-toi`, cross-validated against the TS/Python references. Added `generate_key_pair`/`GenerateKeyPair`, `signing_payload`/`SigningPayload`, `sign_toi`/`SignToi`, `verify_toi`/`VerifyToi`, `is_signed`/`IsSigned` + a dependency-free unpadded base64url codec (Rust) and `crypto/ed25519` (Go). Signature envelope corrected to `{alg, public_key, value}` per `toiSignatureSchema`. Both ports verify the committed JS-produced `signed.toi` fixture byte-for-byte and share a deterministic vector (seed 1..=32) asserting identical envelope bytes across TS/Python/Rust/Go. 30 Rust tests and 31 Go tests green; TS (65) and Python (65) reference suites unchanged. Phase gates passed: nlt-code-reviewer APPROVE_WITH_NITS (all closed in c90ea15: Go trailing-bit strictness, non-object sign guard, Debug seed redaction) and Mistral Vibe Technical Assurance APPROVE (0 critical / 0 important / 0 minor). **MERGED** to main via squash (`09a87b7`), PR #26 merged and the branch was deleted.
 **Blockers:** None.
 **Next action:** Continue Phase 2 (schema/validation + resolve) in Rust/Go, or per the port plan; run `nlt-code-reviewer` + Mistral Vibe at the next phase gate.
 
 ### Thread: NLT-TOI-LEGACY-CLEANUP
-**Status:** in-progress
+**Status:** resolved — archive migration merged via [PR #22](https://github.com/NeuroLift-Technologies/nlt-toi/pull/22)
 **Owner:** SWE (OpenCode CTO Orchestrator)
 **Started:** 2026-07-31
 **Last updated:** 2026-07-31
 **Summary:** Archive/deprecate Python-era legacy files, rewrite stale docs to match published npm+PyPI APIs, clean untracked artifacts. Moved `src/fusion/`, `nlt-otoi/`, `examples/neuroLift/`, `schemas/`, `GEMINI_TOPOGRAPHY.py`, `mcp-config.yaml`, `toi-otoi-agents.md`, `templates/` (including nested `templates/templates/` duplicate), and stale `docs/*.md` files to `legacy/` with `DEPRECATED.md` index. Rewrote root `README.md` to describe both npm (`packages/toi` → `@neurolift-technologies/toi@1.0.1`) and PyPI (`src/nlt_toi` → `nlt-toi@1.0.0`) APIs; fixed version claim (1.0.0 → 1.0.1). Cleaned untracked artifacts: `.pytest_cache/`, `nlt_toi.egg-info/`, `__pycache__/` directories. Updated this thread record.
 **Blockers:** None.
-**Next action:** Commit and merge to `main`.
+**Next action:** Archive retirement is tracked under NLT-TOI-ARCHIVE-RETIREMENT ([PR #36](https://github.com/NeuroLift-Technologies/nlt-toi/pull/36)).
 
 ### Thread: TOI-NPM-DIST-FIX
-**Status:** published — PR in review for merge
+**Status:** resolved — distribution fix merged via [PR #18](https://github.com/NeuroLift-Technologies/nlt-toi/pull/18)
 **Owner:** Claude (Claude Code)
 **Started:** 2026-06-22
 **Last updated:** 2026-06-22
 **Summary:** The published `@neurolift-technologies/toi@1.0.0` tarball shipped without its compiled `dist/`, so its `main`/`types`/`exports` entry points did not resolve on install — the package was non-functional (and it blocked building/publishing `@neurolift-technologies/otoi`, which imports it at runtime). Bumped `packages/toi/package.json` to `1.0.1`; verified the build (tsc), tests (65 passing), and a publish dry-run confirming `dist/` ships via the `prepack` build. **`@neurolift-technologies/toi@1.0.1` is now published** (Apache-2.0, tarball includes `dist/`), which unblocked **`@neurolift-technologies/otoi@1.1.0`** — also built and published (Apache-2.0). A clean `npm install @neurolift-technologies/otoi@1.1.0` + ESM import was verified end-to-end. Delivered via PR off `origin/main`.
 **Blockers:** None — both packages published (the maintainer supplied the 2FA OTPs).
 **Review feedback applied:** synced `packages/toi/package-lock.json` root version to `1.0.1` (Codex) and added `publishConfig.access: "public"` (Gemini Code Assist + Codex). CodeRabbit was rate-limited (no review).
-**Next action:** Merge this PR (#18) to land the `1.0.1` bump in `main`. Optional follow-up: `npm deprecate` the broken `toi@1.0.0` and `otoi@1.0.0` so they warn on install (needs an OTP).
+**Next action:** Optional maintainer follow-up: deprecate the broken `toi@1.0.0` and `otoi@1.0.0` releases.
 
 ### Thread: TOI-LICENSE-PKG
 **Status:** resolved
