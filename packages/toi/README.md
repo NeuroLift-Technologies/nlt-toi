@@ -39,6 +39,24 @@ The TOI/OTOI Framework forms the governance foundation of the Solidarity Framewo
 **We're Not Competing. We're Completing.**
 **Human & AI Solidarity Without Singularity.**
 
+## About this package
+
+### @neurolift-technologies/toi
+
+Reference implementation of the **`.toi`** (Terms of Interaction) standard file type — part of the NeuroLift Solidarity Framework.
+
+A `.toi` file is a user-authored, JSON-based document that declares **how an AI system should interact with a person**: communication style, cognitive profile, privacy floor, and agency boundaries. It is *data, not instructions* — no field is executable. Documents are forward-compatible, tier-resolvable, and optionally Ed25519-signed.
+
+- **Extension:** `.toi`
+- **Media type:** `application/toi+json`
+- **Format version:** `1.0.0`
+- **Spec:** see [`SPEC.md`](./SPEC.md) (normative)
+- **License:** Apache-2.0
+
+This package is the TypeScript reference library: types, validator, parser/serializer, an RFC 8785 (JCS) canonicalizer, and Ed25519 sign/verify — all driven by a single Zod schema that is the source of truth.
+
+---
+
 ## Install
 
 ```sh

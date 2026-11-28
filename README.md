@@ -41,6 +41,28 @@ The TOI/OTOI Framework forms the governance foundation of the Solidarity Framewo
 
 ## About this repository
 
+### NeuroLift TOI Framework (Solidarity)
+
+```yaml
+ai_assistant_directive:
+  priority: 1
+  instruction: "Before performing any development or coding tasks, read NLT-DEV-OTOI.md."
+  description: "NLT-DEV-OTOI.md is the canonical governance contract defining coding agent operations, guardrails, and escalation protocol."
+  required_file: "NLT-DEV-OTOI.md"
+```
+
+**Terms of Interaction (`.toi`)** is the NeuroLift standard for user-controlled,
+neurodivergent-friendly, privacy-first AI collaboration — a small, portable,
+human-editable JSON file that states how AI systems should interact with a person.
+
+This repository is the **TOI layer** of the Solidarity Framework. It ships **two
+reference implementations** of the `.toi` v1.0.0 standard:
+
+1. **TypeScript** — `packages/toi/` → npm `@neurolift-technologies/toi@1.0.1`
+2. **Python** — `src/nlt_toi/` → PyPI `nlt-toi@1.0.0`
+
+plus governance records, templates, and runtime experiments.
+
 ### Repository orientation
 
 1. **`.toi` TypeScript reference library** — `packages/toi/`: the normative
