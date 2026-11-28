@@ -1,18 +1,43 @@
-# @neurolift-technologies/toi
+# TOI/OTOI Framework
 
-Reference implementation of the **`.toi`** (Terms of Interaction) standard file type — part of the NeuroLift Solidarity Framework.
+An open framework for human-defined AI interaction and advocacy.
 
-A `.toi` file is a user-authored, JSON-based document that declares **how an AI system should interact with a person**: communication style, cognitive profile, privacy floor, and agency boundaries. It is *data, not instructions* — no field is executable. Documents are forward-compatible, tier-resolvable, and optionally Ed25519-signed.
+Companies establish Terms of Service that humans must agree to when using their AI services. Humans should likewise be able to define and declare their Terms of Interaction for the AI systems they engage with.
 
-- **Extension:** `.toi`
-- **Media type:** `application/toi+json`
-- **Format version:** `1.0.0`
-- **Spec:** see [`SPEC.md`](./SPEC.md) (normative)
-- **License:** Apache-2.0
+The TOI/OTOI Framework establishes this reciprocal relationship through two distinct but interdependent components.
 
-This package is the TypeScript reference library: types, validator, parser/serializer, an RFC 8785 (JCS) canonicalizer, and Ed25519 sign/verify — all driven by a single Zod schema that is the source of truth.
+## TOI — Terms of Interaction
 
----
+The human-facing component of the framework.
+
+TOI enables humans to define, declare, own and transport their interaction preferences, cognitive needs, privacy boundaries, consent requirements and expectations.
+
+Through existing preference extraction and AI-assisted population, humans can create a portable, machine-readable `.toi` document without requiring technical expertise.
+
+## OTOI — Orchestrated Terms of Interaction
+
+The AI-facing component of the framework.
+
+OTOI first checks a human's complete TOI against the platform's boundaries: the model provider's limits and the deployer's Terms of Service. Every check must pass. If any check fails, the human is told every conflict, and the TOI is not honored until it is corrected.
+
+When every check passes, the AI understands, acknowledges and honors the human's TOI. For most people, this is the AI they already use and have history with, so the first AI to honor their TOI becomes their Orchestrator and advocate by default. The human can designate a different compatible AI at any time, with one active Orchestrator per project.
+
+In multi-agent collaboration, the Orchestrator is responsible for determining whether other AI systems can honor the human's TOI.
+
+## Separate components. One framework.
+
+TOI and OTOI have distinct responsibilities but must coexist to fulfill the framework's purpose.
+
+A TOI without OTOI is a declaration with no way to be honored. OTOI without TOI has no human-declared terms to honor.
+
+Together, they establish a portable, human-centered relationship between humans and artificial intelligence.
+
+The TOI/OTOI Framework forms the governance foundation of the Solidarity Framework, supported by RRT AIdvocAIte, the Sleepwalker Protocol and the Agent Solidarity Framework Deployment Kit (ASFDK).
+
+**Companies have Terms of Service. Humans deserve Terms of Interaction.**
+**Capability ≠ Authority.**
+**We're Not Competing. We're Completing.**
+**Human & AI Solidarity Without Singularity.**
 
 ## Install
 
